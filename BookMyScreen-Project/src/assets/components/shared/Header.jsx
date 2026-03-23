@@ -1,8 +1,12 @@
 import { FaSearch } from "react-icons/fa";
+import { useLocation } from "../context/LocationContext";
 import mainLogo from "../../images/main-icon.png";
+import map from "../../images/pin.gif";
 
 
 const Header = () => {
+
+  const { location, loading, error } = useLocation();
   return (
     <header className="header">
       <div className="header-top">
@@ -24,7 +28,13 @@ const Header = () => {
         </div>
 
         <div className="header-right">
-          <div className="location">St Louis ▼</div>
+          <div className="location">
+  {loading && <p>Loading...</p>}
+  {error && <p>{error}</p>}
+  {location && <img src={map} alt="location" className="location-icon" />}
+  {location && <p>{location} ▼</p>}
+</div>
+          
           <button className="sign-in-btn">Sign in</button>
         </div>
       </div>
