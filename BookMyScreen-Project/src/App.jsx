@@ -1,25 +1,29 @@
-import { Route,Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Header from "./assets/components/shared/Header";
 import Footer from "./assets/components/shared/Footer";
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="app-container">
       <Header />
-      <main className="flex-1">
-        
+
+      <main className="main-content">
         <Routes>
-          {/*  difining  all routes here */}
-          <Route path="/" element={<h1>Home Page</h1>} />
-          <Route path="profile/:id" element={<h1>Profile Page</h1>} />
-          <Route path="movies" element={<h1>Movies Page</h1>} />
-          {/* Add more routes as needed */}
+          <Route path="/" element={<h1 className="page-title">Home Page</h1>} />
+          <Route
+            path="/profile/:id"
+            element={<h1 className="page-title">Profile Page</h1>}
+          />
+          <Route
+            path="/movies"
+            element={<h1 className="page-title">Movies Page</h1>}
+          />
         </Routes>
-        
       </main>
+
       <Footer />
     </div>
-    
   );
 }
-export  default App;
+
+export default App;
