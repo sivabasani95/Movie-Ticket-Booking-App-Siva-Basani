@@ -1,5 +1,5 @@
 import React from "react";
-import mainLogo from "../../images/main-icon.png";
+import mainLogo from "/src/images/main-icon.png";
 import {
   FaFacebook,
   FaInstagram,

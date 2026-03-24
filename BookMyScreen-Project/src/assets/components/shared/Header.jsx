@@ -1,7 +1,7 @@
 import { FaSearch } from "react-icons/fa";
-import { useLocation } from "../context/LocationContext";
-import mainLogo from "../../images/main-icon.png";
-import map from "../../images/pin.gif";
+import { useLocation } from "../../../context/LocationContext";
+import mainLogo from "/src/images/main-icon.png";
+import map from "/src/images/pin.gif";
 
 
 const Header = () => {
