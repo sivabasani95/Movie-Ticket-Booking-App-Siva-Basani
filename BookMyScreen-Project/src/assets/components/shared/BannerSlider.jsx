@@ -20,7 +20,7 @@ const BannerSlider = () => {
                     slidesToShow={1}
                     infinite={true}
                     autoplay={true}
-                    autoplaySpeed={1000}
+                    autoplaySpeed={3000}
                     speed={800}
                     dots={true}
                     arrows={true}

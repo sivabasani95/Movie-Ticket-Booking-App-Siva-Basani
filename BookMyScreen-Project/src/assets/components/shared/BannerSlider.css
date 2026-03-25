@@ -1,8 +1,3 @@
-/*BannerSlider.css */
-/*Main containr */
-/* Main container */
-
-
 /* =========================
    BANNER SLIDER STYLES
 ========================= */
@@ -11,7 +6,7 @@
 .banner-container {
   width: 100%;
   background-color: #ffffff;
-  padding:  0;
+  padding: 0;
 }
 
 /* Wrapper */
@@ -24,24 +19,18 @@
 
 /* Each slide */
 .banner-slide {
-  padding: 0 10px;
+  padding: 0 2px;
 }
 
 /* Banner image */
 .banner-image {
   width: 100%;
-  height: 250px;
+  height: 180px;        /* consistent height */
   border-radius: 7px;
   object-fit: cover;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
-/* Hover effect */
-/*.banner-image:hover {
-  transform: scale(1.02);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-}*/
 
 /* =========================
    SLICK ARROWS
@@ -62,7 +51,6 @@
   right: -15px;
 }
 
-/* Arrow icon */
 .slick-prev:before,
 .slick-next:before {
   font-size: 28px;
@@ -80,7 +68,7 @@
 ========================= */
 
 .slick-dots {
-  bottom: -20px;
+  bottom: 5px;          /* FIXED: no more extra height */
 }
 
 .slick-dots li button:before {
@@ -89,24 +77,15 @@
 }
 
 .slick-dots li.slick-active button:before {
-  color: #dc2626; /* red */
+  color: #dc2626;
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
 
-@media (max-width: 992px) {
-  .banner-image {
-    height: 240px;
-  }
-}
-
+/* Tablet & below */
 @media (max-width: 768px) {
-  .banner-image {
-    height: 180px;
-  }
-
   .slick-prev {
     left: -8px;
   }
@@ -116,13 +95,14 @@
   }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
   .banner-wrapper {
     padding: 0 10px;
   }
 
   .banner-image {
-    height: 150px;
+    height: 150px;      /* smaller for mobile */
     border-radius: 8px;
   }
 
@@ -132,6 +112,7 @@
   }
 }
 
+/* Remove bottom spacing from slider */
 .slick-slider {
   margin-bottom: 0 !important;
 }
