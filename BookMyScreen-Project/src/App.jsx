@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Header from "./assets/components/shared/Header";
 import Footer from "./assets/components/shared/Footer";
 import Home from "./pages/Home";
+import Movies from "./pages/Movies";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
           />
           <Route
             path="/movies"
-            element={<h1 className="page-title">Movies Page</h1>}
+            element={<Movies/>}
           />
         </Routes>
       </main>

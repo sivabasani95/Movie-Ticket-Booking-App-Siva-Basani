@@ -15,8 +15,7 @@ const BannerSlider = () => {
         <div className="banner-container">
             <div className="banner-wrapper">
                 <Slider
-                    centerMode={true}
-                    centerPadding="200px"
+                    
                     slidesToShow={1}
                     infinite={true}
                     autoplay={true}

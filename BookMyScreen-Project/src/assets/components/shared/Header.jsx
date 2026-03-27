@@ -2,20 +2,16 @@ import { FaSearch } from "react-icons/fa";
 import { useLocation } from "../../../context/LocationContext";
 import mainLogo from "/src/images/main-icon.png";
 import map from "/src/images/pin.gif";
-
+import { Link } from "react-router-dom";
 
 const Header = () => {
-
   const { location, loading, error } = useLocation();
+
   return (
     <header className="header">
       <div className="header-top">
         <div className="header-left">
-          <img
-            src={mainLogo}
-            alt="BookMyScreen Logo"
-            className="logo"
-          />
+          <img src={mainLogo} alt="BookMyScreen Logo" className="logo" />
 
           <div className="search-box">
             <input
@@ -29,19 +25,21 @@ const Header = () => {
 
         <div className="header-right">
           <div className="location">
-  {loading && <p>Loading...</p>}
-  {error && <p>{error}</p>}
-  {location && <img src={map} alt="location" className="location-icon" />}
-  {location && <p>{location} ▼</p>}
-</div>
-          
+            {loading && <p>Loading...</p>}
+            {error && <p>{error}</p>}
+            {location && <img src={map} alt="location" className="location-icon" />}
+            {location && <p>{location} ▼</p>}
+          </div>
+
           <button className="sign-in-btn">Sign in</button>
         </div>
       </div>
 
+      {/* FIXED: header-bottom is now active again */}
       <div className="header-bottom">
+
         <div className="bottom-left-nav">
-          <span>Movies</span>
+          <Link to="/movies">Movies</Link>
           <span>Stream</span>
           <span>Events</span>
           <span>Plays</span>
@@ -55,6 +53,7 @@ const Header = () => {
           <span>Offers</span>
           <span>Gift Cards</span>
         </div>
+
       </div>
     </header>
   );

@@ -1,0 +1,42 @@
+/* Whole page wrapper */
+.movies-page {
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* Layout: sidebar + content */
+.movies-layout {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+}
+
+/* Right side content area */
+.movies-content {
+  flex: 1;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 8px;
+  min-height: 400px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* Temporary placeholder */
+.movies-placeholder {
+  font-size: 20px;
+  color: #777;
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .movies-layout {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .movies-content {
+    padding: 16px;
+  }
+}
