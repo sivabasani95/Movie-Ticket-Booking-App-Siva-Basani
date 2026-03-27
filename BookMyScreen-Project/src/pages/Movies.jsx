@@ -1,30 +1,33 @@
 import React from "react";
-import BannerSlider from "../assets/components/shared/BannerSlider";
-import MovieFilters from "../assets/components/movies/MoviesFilters";
+import MoviesFilters from "../assets/components/movies/MoviesFilters";
 import MovieList from "../assets/components/movies/MovieList";
 import "./Movies.css";
 
 const Movies = () => {
-    return (
-        <div className="movies-page">
-            <BannerSlider />
-            <div className="movies-layout">
-                <MovieFilters />
-                <div className="movie-content">
-                    {/* Movie grid will go here later */}
-                    {/*<h2 className="movies-paceholder">Movies Content Area</h2>*/}
-                    <MovieList />
+  return (
+    <div className="movies-page">
 
-                </div>
-                
+      {/* LEFT SIDEBAR */}
+      <div className="movies-left">
+        <MoviesFilters />
+      </div>
 
-            </div>
+      {/* RIGHT CONTENT */}
+      <div className="movies-right">
+         {/* COMING SOON TITLE */}
+        <h2 className="coming-title">Coming Soon</h2>
 
+        {/* BANNERS */}
+        <div className="movies-banners">
+  
+</div>
 
+        
+        {/* MOVIE GRID */}
+        <MovieList />
+      </div>
+    </div>
+  );
+};
 
-
-        </div>
-    )
-
-}
 export default Movies;

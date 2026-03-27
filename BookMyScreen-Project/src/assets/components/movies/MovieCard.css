@@ -1,0 +1,49 @@
+/* MovieCard.css */
+
+/* Main card container */
+.movie-card {
+  width: 160px;              /* similar to w-40 */
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .movie-card {
+    width: 210px;            /* similar to md:w-52 */
+  }
+}
+
+/* Poster image */
+.movie-card-img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Movie title */
+.movie-card-title {
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Rating + votes */
+.movie-card-rating {
+  font-size: 12px;
+  color: #6b7280; /* gray-500 */
+}
+
+/* Certification */
+.movie-card-cert {
+  font-size: 14px;
+  color: #4b5563; /* gray-600 */
+}
+
+/* Language list */
+.movie-card-lang {
+  font-size: 13px;
+  color: #6b7280; /* gray-500 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* same as truncate */
+}

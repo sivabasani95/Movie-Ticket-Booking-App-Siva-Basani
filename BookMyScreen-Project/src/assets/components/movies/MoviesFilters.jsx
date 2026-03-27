@@ -1,66 +1,71 @@
+// MoviesFilters.jsx
+// Sidebar filter component for the Movies page
+
 import React from "react";
 import "./MoviesFilter.css";
 
-// List of available languages for the filter
-const languages = ["English", "Hindi", "Tamil", "Telugu"];
-
-const MoviesFilter = () => {
+const MoviesFilters = () => {
   return (
-    // Wrapper that holds the title + filter card
-    <div className="filters-wrapper">
-
-      {/* Title shown OUTSIDE the white filter box */}
+    <div className="movie-filters">
+      {/* Title */}
       <h2 className="filter-title">Filters</h2>
 
-      {/* Main white filter card */}
-      <div className="movie-filters">
-
-        {/* -------------------------------
-            LANGUAGES SECTION
-        -------------------------------- */}
-        <div className="filter-section">
-
-          {/* Header row: label + clear button */}
-          <div className="filter-header">
-            <span className="filter-label">Languages</span>
-            <button className="filter-clear-btn">Clear</button>
-          </div>
-
-          {/* Language pills */}
-          {languages.map((lang, i) => (
-            <span key={i} className="language-pill">
-              {lang}
-            </span>
-          ))}
+      {/* Languages Section */}
+      <div className="filter-section">
+        <div className="filter-header">
+          <span className="filter-label">Languages</span>
+          <button className="filter-clear-btn">Clear</button>
         </div>
 
-        {/* -------------------------------
-            GENRES SECTION
-        -------------------------------- */}
-        <div className="filter-block">
-          <div className="filter-block-header">
-            <span>Genres</span>
-            <button>Clear</button>
-          </div>
-          {/* Add genre pills here later */}
+        <div className="filter-options">
+          <label className="filter-option">
+            <input type="checkbox" />
+            <span>Telugu</span>
+          </label>
+
+          <label className="filter-option">
+            <input type="checkbox" />
+            <span>Hindi</span>
+          </label>
+
+          <label className="filter-option">
+            <input type="checkbox" />
+            <span>English</span>
+          </label>
+
+          <label className="filter-option">
+            <input type="checkbox" />
+            <span>Tamil</span>
+          </label>
+        </div>
+      </div>
+
+      {/* Format Section */}
+      <div className="filter-section">
+        <div className="filter-header">
+          <span className="filter-label">Format</span>
+          <button className="filter-clear-btn">Clear</button>
         </div>
 
-        {/* -------------------------------
-            FORMAT SECTION
-        -------------------------------- */}
-        <div className="filter-block">
-          <div className="filter-block-header">
-            <span>Format</span>
-            <button>Clear</button>
-          </div>
+        <div className="filter-options">
+          <label className="filter-option">
+            <input type="checkbox" />
+            <span>2D</span>
+          </label>
 
-          {/* Browse by Cinemas button */}
-          <button className="browse-btn">Browse by Cinemas</button>
+          <label className="filter-option">
+            <input type="checkbox" />
+            <span>3D</span>
+          </label>
+
+          <label className="filter-option">
+            <input type="checkbox" />
+            <span>IMAX</span>
+          </label>
         </div>
-
       </div>
     </div>
   );
 };
 
-export default MoviesFilter;
+export default MoviesFilters;

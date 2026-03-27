@@ -1,31 +1,33 @@
+
 import React from "react";
-import "./MovieList.css";// Styles for the MovieList layout and language pills
+import "./MovieList.css";
+import { languages } from "../../../utils/constants";
 
-
-
-/* Renders a list of language pills using the `languages` array */
 const MovieList = () => {
-    return (
-        <div className="movie-list-container">
-            
-            {/* Wrapper for all language pills */}
-            <div className="language-list">
+  return (
+    <>
+    <div className="movie-list-container">
 
-                {/* Loop through languages and display each as a pill */}
-                {languages.map((lang, i) => (
-                    <span key={i} className="language-pill">
-                        {lang}
-                    </span>
-                ))}
+      {/* Language Pills */}
+      <div className="language-list">
+        {languages.map((lang, i) => (
+          <span key={i} className="language-pill">
+            {lang}
+          </span>
+        ))}
+      </div>
 
-            </div>
+      {/* Coming Soon Header Block */}
+      <div className="coming-soon-card">
+        <h3 className="coming-title">Coming Soon</h3>
+        <a href="#" className="coming-link">
+          Explore Upcoming Movies <span className="arrow">...</span>
+        </a>
+      </div>
 
-            
-
-
-
-        </div>
-    );
+    </div>
+    </>
+  );
 };
 
 export default MovieList;

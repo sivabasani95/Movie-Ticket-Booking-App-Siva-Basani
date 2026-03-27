@@ -1,39 +1,28 @@
-/* ===========================
-   MAIN FILTER CONTAINER
-=========================== */
+/* MoviesFilter.css */
+/* Main filter sidebar container */
 .movie-filters {
+  width: 260px;
   background: #ffffff;
   padding: 20px;
   border-radius: 8px;
-  width: 100%;
-  max-width: 300px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  height: fit-content;
- 
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-/* ===========================
-   TITLE
-=========================== */
+/* Title */
 .filter-title {
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 16px;
-  color: #333;
-}
-
-/* ===========================
-   FILTER SECTION
-=========================== */
-.filter-section {
   margin-bottom: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
 }
 
+/* Each filter block */
+.filter-section {
+  margin-bottom: 25px;
+}
+
+/* Header row: label + clear button */
 .filter-header {
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -42,127 +31,41 @@
 
 .filter-label {
   font-size: 16px;
-  font-weight: 600;
-  color: #333;
+  font-weight: 500;
 }
 
 .filter-clear-btn {
   background: none;
   border: none;
-  color: #f74362;
+  color: #ff3d3d;
   font-size: 14px;
   cursor: pointer;
 }
 
-.filter-clear-btn:hover {
-  text-decoration: underline;
-}
-
-/* ===========================
-   LANGUAGE PILLS
-=========================== */
-.language-pill {
-  display: inline-block;
-  padding: 6px 12px;
-  margin: 4px 0;
-  background: #f5f5f5;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  transition: all 0.2s ease;
-}
-
-.language-pill:hover {
-  background: #f74362;
-  color: white;
-  border-color: #f74362;
-}
-
-/* ===========================
-   GENRES + FORMAT BLOCKS
-=========================== */
-.filter-block {
-  background: #ffffff;
-  padding: 16px;
-  border-radius: 8px;
-  margin-top: 10px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-}
-
-.filter-block-header {
+/* Options list */
+.filter-options {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Checkbox + label */
+.filter-option {
+  display: flex;
   align-items: center;
-  margin-bottom: 12px;
-}
-
-.filter-block-header span {
-  font-weight: 500;
-  font-size: 16px;
-}
-
-.filter-block-header button {
-  background: none;
-  border: none;
-  color: #f74362;
+  gap: 10px;
   cursor: pointer;
-  font-size: 14px;
 }
 
-.filter-block-header button:hover {
-  text-decoration: underline;
+.filter-option input {
+  width: 16px;
+  height: 16px;
 }
 
-/* ===========================
-   BROWSE BY CINEMAS BUTTON
-=========================== */
-.browse-btn {
-  width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #f74362;
-  background: white;
-  color: #f74362;
-  cursor: pointer;
-  font-size: 15px;
-  transition: all 0.2s ease;
-}
-
-.browse-btn:hover {
-  background: #f74362;
-  color: white;
-}
-
-/* ===========================
-   RESPONSIVE DESIGN
-=========================== */
-
-/* Phones */
-@media (max-width: 480px) {
-  .movie-filters {
-    width: 100%;
-    padding: 16px;
-    box-shadow: none;
-    border-radius: 0;
-  }
-
-  .language-pill {
-    font-size: 12px;
-    padding: 5px 10px;
-  }
-}
-
-/* Tablets */
+/* Responsive */
 @media (max-width: 768px) {
   .movie-filters {
-    max-width: 100%;
-  }
-}
-
-/* Small laptops */
-@media (max-width: 1024px) {
-  .movie-filters {
-    max-width: 280px;
+    width: 100%;
+    margin-bottom: 20px;
   }
 }

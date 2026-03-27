@@ -1,7 +1,7 @@
 import React from "react";
 import BannerSlider from "../assets/components/shared/BannerSlider";
 import Recommended from "../assets/components/Recommended";
-import LiveEvents from "../assets/components/LiveEvents";
+import LiveEvents from "../assets/components/shared/LiveEvents";
 
 const Home = () => {
     return (
