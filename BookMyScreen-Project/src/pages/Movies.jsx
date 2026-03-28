@@ -1,29 +1,16 @@
 import React from "react";
-import MoviesFilters from "../assets/components/movies/MoviesFilters";
-import MovieList from "../assets/components/movies/MovieList";
 import "./Movies.css";
+import MoviesFilters from "../assets/components/movies/MovieFilters";
+import MovieList from "../assets/components/movies/MovieList";
+import BannerSlider from "../assets/components/shared/BannerSlider";
 
 const Movies = () => {
   return (
     <div className="movies-page">
+      <BannerSlider />
 
-      {/* LEFT SIDEBAR */}
-      <div className="movies-left">
+      <div className="movies-content">
         <MoviesFilters />
-      </div>
-
-      {/* RIGHT CONTENT */}
-      <div className="movies-right">
-         {/* COMING SOON TITLE */}
-        <h2 className="coming-title">Coming Soon</h2>
-
-        {/* BANNERS */}
-        <div className="movies-banners">
-  
-</div>
-
-        
-        {/* MOVIE GRID */}
         <MovieList />
       </div>
     </div>

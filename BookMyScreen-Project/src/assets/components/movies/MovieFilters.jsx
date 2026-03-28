@@ -2,9 +2,9 @@
 // Sidebar filter component for the Movies page
 
 import React from "react";
-import "./MoviesFilter.css";
+import "./MovieFilters.css";
 
-const MoviesFilters = () => {
+const MovieFilters = () => {
   return (
     <div className="movie-filters">
       {/* Title */}
@@ -68,4 +68,4 @@ const MoviesFilters = () => {
   );
 };
 
-export default MoviesFilters;
+export default MovieFilters;
