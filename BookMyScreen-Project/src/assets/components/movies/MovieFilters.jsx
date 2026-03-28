@@ -1,69 +1,46 @@
-// MoviesFilters.jsx
-// Sidebar filter component for the Movies page
-
 import React from "react";
 import "./MovieFilters.css";
+import { languages } from "../../../utils/constants";
 
 const MovieFilters = () => {
   return (
-    <div className="movie-filters">
-      {/* Title */}
-      <h2 className="filter-title">Filters</h2>
+    <div className="filters-container">
+      <h2 className="filters-title">Filters</h2>
 
-      {/* Languages Section */}
-      <div className="filter-section">
+      <div className="filter-box">
         <div className="filter-header">
-          <span className="filter-label">Languages</span>
-          <button className="filter-clear-btn">Clear</button>
+          <span className="filter-name">Languages</span>
+          <button className="clear-btn">Clear</button>
         </div>
 
         <div className="filter-options">
-          <label className="filter-option">
-            <input type="checkbox" />
-            <span>Telugu</span>
-          </label>
-
-          <label className="filter-option">
-            <input type="checkbox" />
-            <span>Hindi</span>
-          </label>
-
-          <label className="filter-option">
-            <input type="checkbox" />
-            <span>English</span>
-          </label>
-
-          <label className="filter-option">
-            <input type="checkbox" />
-            <span>Tamil</span>
-          </label>
+          {languages.map((lang, i) => (
+            <span key={i} className="filter-tag">
+              {lang}
+            </span>
+          ))}
         </div>
       </div>
 
-      {/* Format Section */}
-      <div className="filter-section">
+      <div className="filter-box">
         <div className="filter-header">
-          <span className="filter-label">Format</span>
-          <button className="filter-clear-btn">Clear</button>
+          <span className="filter-name">Genres</span>
+          <button className="clear-btn">Clear</button>
         </div>
 
-        <div className="filter-options">
-          <label className="filter-option">
-            <input type="checkbox" />
-            <span>2D</span>
-          </label>
-
-          <label className="filter-option">
-            <input type="checkbox" />
-            <span>3D</span>
-          </label>
-
-          <label className="filter-option">
-            <input type="checkbox" />
-            <span>IMAX</span>
-          </label>
-        </div>
+        <div className="filter-options"></div>
       </div>
+
+      <div className="filter-box">
+        <div className="filter-header">
+          <span className="filter-name">Format</span>
+          <button className="clear-btn">Clear</button>
+        </div>
+        <div className="filter-options"></div>
+      </div>
+      <button className="browse-btn">
+        Browse by Cinemas
+        </button>
     </div>
   );
 };

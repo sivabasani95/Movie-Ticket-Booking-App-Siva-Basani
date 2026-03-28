@@ -1,6 +1,7 @@
 import React from "react";
 import "./Movies.css";
-import MoviesFilters from "../assets/components/movies/MovieFilters";
+
+import MovieFilters from "../assets/components/movies/MovieFilters";
 import MovieList from "../assets/components/movies/MovieList";
 import BannerSlider from "../assets/components/shared/BannerSlider";
 
@@ -9,10 +10,12 @@ const Movies = () => {
     <div className="movies-page">
       <BannerSlider />
 
-      <div className="movies-content">
-        <MoviesFilters />
+      <div className="movies-container">
+        <MovieFilters />
+        
+      
         <MovieList />
-      </div>
+     </div>
     </div>
   );
 };
