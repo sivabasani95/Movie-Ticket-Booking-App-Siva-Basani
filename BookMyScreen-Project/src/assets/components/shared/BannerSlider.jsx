@@ -6,37 +6,60 @@ import "slick-carousel/slick/slick-theme.css";
 import "./BannerSlider.css";
 
 const BannerSlider = () => {
-    const Slider = SliderModule.default || SliderModule;
+  const Slider = SliderModule.default || SliderModule;
 
-    console.log("SLIDER:", Slider);
-    console.log("BANNERS:", banners);
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: true,
+    centerMode: true,
+    centerPadding: "80px",
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          centerPadding: "60px",
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          centerPadding: "40px",
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          centerPadding: "20px",
+          arrows: false,
+        },
+      },
+    ],
+  };
 
-    return (
-        <div className="banner-container">
-            <div className="banner-wrapper">
-                <Slider
-                    
-                    slidesToShow={1}
-                    infinite={true}
-                    autoplay={true}
-                    autoplaySpeed={3000}
-                    speed={800}
-                    dots={true}
-                    arrows={true}
-                >
-                    {banners.map((banner, i) => (
-                        <div key={i} className="banner-slide">
-                            <img
-                                src={banner}
-                                alt={`banner-${i}`}
-                                className="banner-image"
-                            />
-                        </div>
-                    ))}
-                </Slider>
+  return (
+    <div className="banner-section">
+      <div className="banner-wrapper">
+        <Slider {...settings}>
+          {banners.map((banner, i) => (
+            <div key={i} className="banner-slide">
+              <img
+                src={banner}
+                alt={`banner-${i}`}
+                className="banner-image"
+              />
             </div>
-        </div>
-    );
+          ))}
+        </Slider>
+      </div>
+    </div>
+  );
 };
 
 export default BannerSlider;

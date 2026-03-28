@@ -7,7 +7,7 @@ const Recommended = () => {
         <div className="recommended-container">
             <div className="recommended-wrapper">
                 <div className="recommended-header">
-                    <h2 className="recommended-title">Recommended</h2>
+                    <h2 className="recommended-title">Recommended Movies</h2>
 
                     <span className="recommended-seeall">See All</span>
                         
