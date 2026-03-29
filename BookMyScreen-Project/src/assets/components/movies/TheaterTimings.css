@@ -299,6 +299,223 @@
     font-weight: 500;
   }
 }
+/* this is for available theaters*/
+/* RESET */
+* {
+  box-sizing: border-box;
+}
+
+/* MAIN WRAPPER */
+.theater-timings {
+  width: 100%;
+  padding: 0 8px;
+  background-color: #f5f5f5;
+}
+
+/* ================= FILTER SECTION ================= */
+
+.filters-wrapper {
+  padding: 8px 12px 0;
+}
+
+.filters-container {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: 8px;
+}
+
+.filters-container::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-pill {
+  padding: 6px 12px;
+  border: 1px solid #dcdcdc;
+  border-radius: 20px;
+  background-color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s;
+}
+
+.filter-pill:hover {
+  border-color: #f84464;
+  color: #f84464;
+}
+
+/* ================= STATUS ================= */
+
+.status-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 6px 0 10px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #666;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.available {
+  background-color: #28a745;
+}
+
+.filling {
+  background-color: #ff9800;
+}
+
+.almost {
+  background-color: #f44336;
+}
+
+/* ================= DIVIDER ================= */
+
+.divider {
+  border: none;
+  border-top: 1px solid #e4e4e4;
+  margin: 0;
+}
+
+/* ================= DATE SECTION ================= */
+
+.date-container {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 14px 12px;
+  background-color: #fff;
+  scrollbar-width: none;
+}
+
+.date-container::-webkit-scrollbar {
+  display: none;
+}
+
+.date-button {
+  min-width: 64px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 6px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.date-button.selected {
+  background-color: #f84464;
+  color: #fff;
+  border-color: #f84464;
+}
+
+.date-day {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.date-weekday {
+  font-size: 12px;
+}
+
+.date-month {
+  font-size: 11px;
+}
+
+/* ================= THEATRES ================= */
+
+.theatres-container {
+  padding: 16px 12px 30px;
+}
+
+.theatre-card {
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #e6e6e6;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.theatre-header {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.theatre-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.theatre-info {
+  flex: 1;
+}
+
+.theatre-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.theatre-location {
+  font-size: 13px;
+  color: #777;
+  margin-top: 4px;
+}
+
+/* ================= TIMINGS ================= */
+
+.timings-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.timing-btn {
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.timing-btn:hover {
+  border-color: #f84464;
+  color: #f84464;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+  .date-button {
+    min-width: 56px;
+  }
+
+  .theatre-card {
+    padding: 12px;
+  }
+
+  .timing-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
 
 /* Laptop / desktop */
 @media screen and (min-width: 768px) {
@@ -352,5 +569,231 @@
   .date-month {
     font-size: 7px;
     font-weight: 500;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/* RESET */
+* {
+  box-sizing: border-box;
+}
+
+/* MAIN WRAPPER */
+.theater-timings {
+  width: 100%;
+  padding: 0 8px;
+  background-color: #f5f5f5;
+}
+
+/* ================= FILTER SECTION ================= */
+
+.filters-wrapper {
+  padding: 8px 12px 0;
+}
+
+.filters-container {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: 8px;
+}
+
+.filters-container::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-pill {
+  padding: 6px 12px;
+  border: 1px solid #dcdcdc;
+  border-radius: 20px;
+  background-color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s;
+}
+
+.filter-pill:hover {
+  border-color: #f84464;
+  color: #f84464;
+}
+
+/* ================= STATUS ================= */
+
+.status-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 6px 0 10px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #666;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.available {
+  background-color: #28a745;
+}
+
+.filling {
+  background-color: #ff9800;
+}
+
+.almost {
+  background-color: #f44336;
+}
+
+/* ================= DIVIDER ================= */
+
+.divider {
+  border: none;
+  border-top: 1px solid #e4e4e4;
+  margin: 0;
+}
+
+/* ================= DATE SECTION ================= */
+
+.date-container {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 14px 12px;
+  background-color: #fff;
+  scrollbar-width: none;
+}
+
+.date-container::-webkit-scrollbar {
+  display: none;
+}
+
+.date-button {
+  min-width: 64px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 6px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.date-button.selected {
+  background-color: #f84464;
+  color: #fff;
+  border-color: #f84464;
+}
+
+.date-day {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.date-weekday {
+  font-size: 12px;
+}
+
+.date-month {
+  font-size: 11px;
+}
+
+/* ================= THEATRES ================= */
+
+.theatres-container {
+  padding: 16px 12px 30px;
+}
+
+.theatre-card {
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #e6e6e6;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.theatre-header {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.theatre-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.theatre-info {
+  flex: 1;
+}
+
+.theatre-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.theatre-location {
+  font-size: 13px;
+  color: #777;
+  margin-top: 4px;
+}
+
+/* ================= TIMINGS ================= */
+
+.timings-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.timing-btn {
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.timing-btn:hover {
+  border-color: #f84464;
+  color: #f84464;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+  .date-button {
+    min-width: 56px;
+  }
+
+  .theatre-card {
+    padding: 12px;
+  }
+
+  .timing-btn {
+    font-size: 12px;
+    padding: 6px 10px;
   }
 }

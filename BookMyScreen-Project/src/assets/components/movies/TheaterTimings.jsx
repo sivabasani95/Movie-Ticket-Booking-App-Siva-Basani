@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./TheaterTimings.css";
 import dayjs from "dayjs";
+import pvr from "../../../images/pvr.avif";
+import inox from "../../../images/inox.avif";
+import cinepolis from "../../../images/cinepolis.avif";
 
 const TheaterTimings = () => {
   const today = dayjs();
@@ -19,7 +22,26 @@ const TheaterTimings = () => {
     "Laser",
     "Dolby Atmos",
   ];
-
+const theatres = [
+  {
+    name: "PVR Cinemas",
+    location: "Phoenix Mall",
+    img: pvr,
+    timings: ["10:30 AM", "1:45 PM", "5:00 PM", "8:15 PM"],
+  },
+  {
+    name: "INOX",
+    location: "City Center",
+    img: inox,
+    timings: ["11:00 AM", "2:15 PM", "6:00 PM", "9:10 PM"],
+  },
+  {
+    name: "Cinepolis",
+    location: "Grand Plaza",
+    img: cinepolis,
+    timings: ["9:45 AM", "12:30 PM", "4:20 PM", "7:40 PM"],
+  },
+];
   return (
     <>
     <div className="theater-timings">
@@ -72,6 +94,43 @@ const TheaterTimings = () => {
           );
         })}
       </div>
+
+      <div className="theatres-container">
+  {theatres.map((theatre, i) => (
+    <div key={i} className="theatre-card">
+
+      <div className="theatre-header">
+        <img
+          src={theatre.img}
+          alt={theatre.name}
+          className="theatre-logo"
+        />
+
+        <div className="theatre-info">
+          <h3 className="theatre-name">{theatre.name}</h3>
+          <p className="theatre-location">{theatre.location}</p>
+           
+        </div>
+      </div>
+
+      <div className="timings-row">
+       
+        {theatre.timings.map((time, index) => (
+          <button key={index} className="timing-btn">
+            {time}
+          </button>
+         
+        ))}
+        <button className="cancel-btn">Allow Cancellation</button>
+      </div>
+
+    </div>
+  ))}
+</div>
+
+
+
+
     </div>
     </>
   );
