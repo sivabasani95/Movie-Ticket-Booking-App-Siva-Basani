@@ -48,7 +48,7 @@ const TheaterTimings = () => {
             Almost Full
           </span>
         </div>
-      </div>
+    </div>
 
       <hr className="divider" />
 
