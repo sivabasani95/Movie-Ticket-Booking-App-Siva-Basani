@@ -3,6 +3,8 @@ import Header from "./assets/components/shared/Header";
 import Footer from "./assets/components/shared/Footer";
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
+import MovieDetails from "./pages/MovieDetails";
+
 
 function App() {
   return (
@@ -20,6 +22,9 @@ function App() {
             path="/movies"
             element={<Movies />}
           />
+          <Route
+           path="/movies/:movieId" 
+           element={<MovieDetails />} />
         </Routes>
       </main>
 

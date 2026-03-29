@@ -1,0 +1,276 @@
+  
+  
+  
+  /* Main container with background image */
+
+.movie-details {
+   position: relative;
+  width: 100%;
+  min-height: 30vh;
+  padding: 40px 20px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  font-family: sans-serif;
+ 
+
+}
+
+/* Dark overlay */
+.movie-details .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Content wrapper */
+.details-container {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-direction: flex-start;
+  gap: 30px;
+}
+
+/* Poster section */
+.poster-section {
+  display: flex;
+  justify-content: center;
+   flex-shrink: 0;
+  display: flex;
+}
+
+.poster-img {
+  width: 220px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Info section */
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.movie-title {
+  font-size: 36px;
+  font-weight: bold;
+  color: whitesmoke;
+}
+
+/* Rating box */
+.rating-box {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #3a3a3a;
+  padding: 12px 20px;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+.votes {
+  color: #d1d1d1;
+  font-size: 14px;
+}
+
+.rate-btn {
+  background: #2f2f2f;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.rate-btn:hover {
+  background: #444;
+}
+
+/* Format pills */
+.format-box {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.format-pill {
+  background: #3a3a3a;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.movie-image-wrapper {
+  width: 150px;   /* reduce width */
+  height: 200px;  /* reduce height */
+}
+
+.movie-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Responsive layout for larger screens */
+@media (min-width: 768px) {
+  .details-container {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .poster-section {
+    flex: 0 0 250px;
+  }
+.movie-image-wrapper img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.poster-img {
+  width: 150px;      /* reduce width */
+  height: auto;      /* keep proportions */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  object-fit: contain; /* ensures no cropping */
+}
+
+
+  .info-section {
+    flex: 1;
+  }
+
+  .movie-title {
+    font-size: 48px;
+  }
+}
+.info-text {
+  font-size: 15px;
+  color: #d1d1d1;
+  line-height: 1.6;
+  margin: 10px 0 0;
+  letter-spacing: 0.3px;
+}
+
+/* Small devices (mobile) */
+@media (max-width: 767px) {
+  .info-text {
+    font-size: 14px;
+    text-align: center;
+    padding: 0 10px;
+  }
+}
+
+/* Tablets */
+@media (min-width: 768px) {
+  .info-text {
+    font-size: 16px;
+    text-align: left;
+  }
+}
+
+/* Large screens */
+@media (min-width: 1024px) {
+  .info-text {
+    font-size: 17px;
+  }
+}
+/* About the movie container */
+.about-section {
+
+ 
+  backdrop-filter: blur(4px);
+  width: 130%;
+ 
+}
+
+/* Title */
+.about-title {
+    padding-left: 0px;
+  font-size: 5px;
+  font-weight: 200;
+  margin-bottom: 5px;
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+}
+
+/* Description text */
+.about-text {
+  font-size: 3px;
+  line-height: 1;
+  color: #d1d1d1;
+ 
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .about-section {
+    padding: 3px;
+  }
+
+  .about-title {
+    font-size: 22px;
+  }
+
+  .about-text {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-section {
+    padding: 30px;
+  }
+
+  .about-title {
+    font-size: 24px;
+  }
+
+  .about-text {
+    font-size: 17px;
+  }
+}
+
+/* Share button */
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  font-size: 14px;
+  backdrop-filter: blur(4px);
+  transition: 0.3s ease;
+  margin-top: 10px;
+}
+
+/* Hover effect */
+.share-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Share icon */
+.share-icon {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .share-btn {
+    padding: 10px 18px;
+    font-size: 15px;
+  }
+
+  .share-icon {
+    font-size: 18px;
+  }
+}
