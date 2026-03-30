@@ -277,3 +277,45 @@ max-height: 100%;
 .save-btn:hover {
   background: #d73754;
 }
+
+
+/*conditional rendering inside Profile.jsx */
+
+/* MAIN CONTAINER */
+.profile-container {
+  min-height: 100vh;
+  padding: 40px 16px;
+  background-color: #f5f5f5;
+}
+
+/* INNER WRAPPER */
+.profile-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* OPTIONAL: section spacing */
+.profile-section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* BOOKING SECTION STYLE */
+.booking-history {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 20px 10px;
+  }
+
+  .profile-wrapper {
+    max-width: 100%;
+  }
+}

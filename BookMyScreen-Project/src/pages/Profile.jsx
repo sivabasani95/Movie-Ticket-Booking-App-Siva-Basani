@@ -177,7 +177,26 @@ const Profile = () => {
         <div className="profile-actions">
           <button className="save-btn">Save Details</button>
         </div>
+
+
       </div>
+
+
+      {/* profile section */}
+      {/* booking section */}
+      <div className="profile-container">
+        <div className="profile-wrapper">
+            {activeTab === "Profile" && (
+                <>...
+                {/* profile section */}</>
+            )}
+
+            {activeTab === "Your Order" && <BookingHistorey />}
+        </div>
+
+      </div>
+
+      
     </div>
   );
 };
