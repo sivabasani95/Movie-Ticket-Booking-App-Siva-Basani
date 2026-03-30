@@ -1,0 +1,279 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.profile-page {
+  height: 100%;
+  background: #f5f5f5;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 10px 15px;
+  font-family: Arial, sans-serif;
+}
+
+
+/* 👇 MAIN CARD (HALF WIDTH) */
+.profile-card {
+  width: 50%;
+  max-width: 750px;
+  min-width: 320px;
+max-height: 100%;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* HEADER */
+.profile-header {
+  height: 80px;
+  background: linear-gradient(90deg, #4a2945, #f84464);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+  color: #fff;
+}
+
+.profile-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.profile-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* SECTIONS */
+.profile-section {
+  padding: 16px 24px;
+  border-top: 1px solid #ececec;
+}
+
+.profile-section h3 {
+  font-size: 16px;
+  color: #222;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+/* ACCOUNT ROW */
+.profile-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 120px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.profile-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-size: 14px;
+  color: #666;
+}
+
+/* INPUT */
+.input-field {
+  width: 100%;
+  height: 42px;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  padding: 0 12px;
+  font-size: 14px;
+  color: #222;
+  background: #fff;
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: #f84464;
+}
+
+/* GRID */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 20px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-field label {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* VERIFIED CHECKBOX */
+.verified-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #20b26b;
+  font-weight: 600;
+}
+
+.verified-checkbox input {
+  display: none;
+}
+
+.custom-check {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #20b26b;
+  border-radius: 3px;
+  position: relative;
+}
+
+.verified-checkbox input:checked + .custom-check {
+  background: #20b26b;
+}
+
+.verified-checkbox input:checked + .custom-check::after {
+  content: "✔";
+  color: #fff;
+  font-size: 11px;
+  position: absolute;
+  top: -1px;
+  left: 2px;
+}
+
+/* RADIO BUTTONS */
+.radio-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.radio-item input {
+  display: none;
+}
+
+.custom-radio {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  position: relative;
+}
+
+.radio-item input:checked + .custom-radio {
+  border-color: #f84464;
+}
+
+.radio-item input:checked + .custom-radio::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: #f84464;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+}
+
+/* BUTTON */
+.profile-actions {
+  padding: 20px 24px;
+}
+
+.save-btn {
+  height: 42px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 4px;
+  background: #f84464;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  opacity: 0.95;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 1024px) {
+  .profile-card {
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-card {
+    width: 95%;
+  }
+
+  .profile-row {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: auto;
+  }
+}
+
+
+/* ACTION BUTTON SECTION */
+.profile-actions {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #eee;
+}
+
+/* SAVE BUTTON */
+.save-btn {
+  background: #f84464;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.save-btn:hover {
+  background: #d73754;
+}
