@@ -23,6 +23,16 @@ const Profile = () => {
   };
 
   return (
+    
+ <>
+     
+<div className="tabs-container">
+  <button className="tab-btn active">Profile</button>
+  <button className="tab-btn">Your Orders</button>
+</div>
+
+
+
     <div className="profile-page">
       <div className="profile-card">
         <div className="profile-header">
@@ -182,22 +192,11 @@ const Profile = () => {
       </div>
 
 
-      {/* profile section */}
-      {/* booking section */}
-      <div className="profile-container">
-        <div className="profile-wrapper">
-            {activeTab === "Profile" && (
-                <>...
-                {/* profile section */}</>
-            )}
-
-            {activeTab === "Your Order" && <BookingHistorey />}
-        </div>
-
-      </div>
+    
 
       
     </div>
+    </>
   );
 };
 
