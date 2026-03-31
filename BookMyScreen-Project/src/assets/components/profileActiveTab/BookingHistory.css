@@ -1,0 +1,151 @@
+
+
+
+/* Container */
+.booking-container {
+  padding: 20px;
+}
+
+/* Title */
+.booking-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  
+}
+
+/* Card */
+.booking-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Top Section */
+.booking-top {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* Poster */
+.booking-poster {
+  width: 120px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* Divider */
+.divider {
+  height: 160px;
+  border-left: 1px dashed #ccc;
+}
+
+/* Details */
+.booking-details {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Left Info */
+.booking-info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Text styles */
+.movie-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: black;
+}
+
+.movie-format {
+  font-size: 14px;
+  color: #777;
+}
+
+.movie-time {
+  font-size: 14px;
+  margin-top: 6px;
+  color: #555;
+}
+
+.movie-qty {
+  font-size: 13px;
+  margin-top: 4px;
+  color: #666;
+}
+
+.movie-seats {
+  margin-top: 8px;
+  font-weight: 200;
+}
+
+/* Ticket type */
+.ticket-type {
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+}
+
+/* Price Section */
+.booking-price {
+  text-align: right;
+  margin-top: 15px;
+}
+
+.price-breakdown {
+  font-size: 13px;
+  color: #777;
+}
+
+.total-price {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* Meta Section */
+.booking-meta {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.seat-icon {
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+
+.meta-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .booking-top {
+    flex-direction: column;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .booking-details {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .booking-price {
+    text-align: left;
+  }
+}
