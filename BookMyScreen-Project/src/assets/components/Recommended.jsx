@@ -1,22 +1,33 @@
 import React from "react";
 import "./Recommended.css";
 import { movies } from "../../utils/constants";
+import { useNavigate } from "react-router-dom";
+
 
 const Recommended = () => {
+
+
+    const navigate = useNavigate();
+
+    
     return (
         <div className="recommended-container">
             <div className="recommended-wrapper">
                 <div className="recommended-header">
                     <h2 className="recommended-title">Recommended Movies</h2>
 
-                    <span className="recommended-seeall">See All</span>
+                    <span className="recommended-seeall" onClick={ () => navigate("/movies")}>See All</span>
                         
                     
                 </div>
 
+
+
                 <div className="movies-grid">
                     {movies.map((movie, i) => (
-                        <div key={i} className="movie-card">
+                        
+                         <div key={i} className="movie-card"
+                          onClick={ () => navigate(`/movies/${movie.id}`)}>
                             <div className="movie-image-wrapper">
                             <img
                                 src={movie.img}
@@ -31,11 +42,9 @@ const Recommended = () => {
                                 {movie.genre.replaceAll("/","|")}
                                 </p>
                             </div>
-
-
-
-
                         </div>
+
+
 
                     ))}
                 </div>
