@@ -4,8 +4,13 @@ import Recommended from "../assets/components/Recommended";
 import LiveEvents from "../assets/components/shared/LiveEvents";
 
 const Home = () => {
+
+    const [showAbout, setShowAbout] = useState(false);
     return (
-        <div>
+        <div className="home-page">
+            <Header onAboutClick= {() => setShowAbout(!showAbout)} />
+                {showAbout && <About />}
+
             <BannerSlider />
             <Recommended />
             <LiveEvents />

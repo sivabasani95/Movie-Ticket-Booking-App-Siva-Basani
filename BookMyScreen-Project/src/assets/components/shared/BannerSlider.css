@@ -21,7 +21,7 @@
 
 .banner-image {
   width: 100%;
-  height: 100%;   /* ✅ always fill parent */
+  height: 80%;   /* ✅ always fill parent */
   object-fit: cover;
   border-radius: 12px;
   display: block;

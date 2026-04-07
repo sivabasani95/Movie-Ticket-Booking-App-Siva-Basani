@@ -3,11 +3,19 @@ import { useLocation } from "../../../context/LocationContext";
 import mainLogo from "/src/images/main-icon.png";
 import map from "/src/images/pin.gif";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import About from "./About";
+
+
 
 const Header = () => {
+  const [showAbout, setShowAbout] = useState(false);
+
+
   const { location, loading, error } = useLocation();
 
   return (
+    <>
     <header className="header">
       <div className="header-top">
         <div className="header-left">
@@ -33,6 +41,18 @@ const Header = () => {
 
           <button className="sign-in-btn">Sign in</button>
         </div>
+
+        <div className="about-container">
+         <button 
+         className="about-btn"
+          onClick={() => setShowAbout(!showAbout)}>
+            About
+            </button>
+        </div>
+        
+
+
+
       </div>
 
       {/* FIXED: header-bottom is now active again */}
@@ -56,6 +76,8 @@ const Header = () => {
 
       </div>
     </header>
+    {showAbout && <About/>}
+    </>
   );
 };
 
