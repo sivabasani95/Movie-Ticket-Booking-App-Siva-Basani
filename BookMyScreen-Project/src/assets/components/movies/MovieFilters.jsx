@@ -4,8 +4,11 @@ import { languages } from "../../../utils/constants";
 
 const MovieFilters = () => {
   return (
-    <div className="filters-container">
+
+    <div>
       <h2 className="filters-title">Filters</h2>
+    <div className="filters-container">
+    
 
       <div className="filter-box">
         <div className="filter-header">
@@ -20,9 +23,8 @@ const MovieFilters = () => {
             </span>
           ))}
         </div>
-      </div>
 
-      <div className="filter-box">
+        <div className="filter-box">
         <div className="filter-header">
           <span className="filter-name">Genres</span>
           <button className="clear-btn">Clear</button>
@@ -37,11 +39,18 @@ const MovieFilters = () => {
           <button className="clear-btn">Clear</button>
         </div>
         <div className="filter-options"></div>
-      </div>
-      <button className="browse-btn">
+         <button className="browse-btn">
         Browse by Cinemas
         </button>
-    </div>
+      </div>
+
+      </div>
+
+     
+
+      </div>
+     
+ </div>
   );
 };
 

@@ -6,48 +6,19 @@
 
 /* Container */
 .movies-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
+  padding: 24px 16px;
+  display: grid;
+  grid-template-columns: 260px 1fr; /* sidebar + content */
+  gap: 32px;
+  align-items: start;
 }
 
-/* Desktop layout */
-@media (min-width: 768px) {
+/* Mobile layout */
+@media (max-width: 767px) {
   .movies-container {
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 40px 20px;
-  }
-}
-
-/* Filters section */
-.movie-filters {
-  width: 100%;
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-}
-
-/* Desktop filters */
-@media (min-width: 768px) {
-  .movie-filters {
-    width: 25%;
-    position: sticky;
-    top: 20px;
-  }
-}
-
-/* Movies list */
-.movies-list {
-  width: 100%;
-}
-
-/* Desktop movies list */
-@media (min-width: 768px) {
-  .movies-list {
-    width: 75%;
+    grid-template-columns: 1fr; /* stack on small screens */
+    gap: 20px;
   }
 }
