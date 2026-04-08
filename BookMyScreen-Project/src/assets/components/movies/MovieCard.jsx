@@ -10,9 +10,21 @@ const MovieCard = ({movie}) => {
 
 const navigate = useNavigate();
 
+ const handleClick = () => {
+    if (movie.id === 4) {   // ✅ only F1
+      navigate(`/movies/${movie.id}`);
+    }
+  };
+
     return (
         <div className="movie-card"
-         onClick={ () => navigate(`/movies/${movie.id}`)}>
+       
+      onClick={handleClick}
+      style={{
+        cursor: movie.id === 4 ? "pointer" : "default"
+      }}>
+        
+        
       <img
         src={movie.img}
         alt={movie.title}
