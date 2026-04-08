@@ -1,0 +1,64 @@
+/* Page background */
+.about-page {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 40px 16px;
+}
+
+/* Main container */
+.about-box {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.about-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #1f1f1f;
+}
+
+/* Text */
+.about-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #444;
+  margin-bottom: 16px;
+}
+
+/* 🔥 MOBILE (small devices) */
+@media (max-width: 600px) {
+  .about-page {
+    padding: 20px 12px;
+  }
+
+  .about-box {
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  .about-title {
+    font-size: 20px;
+  }
+
+  .about-text {
+    font-size: 14px;
+  }
+}
+
+/* 🔥 TABLET */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .about-box {
+    max-width: 90%;
+    padding: 24px;
+  }
+
+  .about-title {
+    font-size: 22px;
+  }
+}

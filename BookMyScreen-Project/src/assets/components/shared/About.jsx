@@ -1,9 +1,12 @@
 
 
 import React from "react";
+import "./About.css";
+
 
 const About = () => {
   return (
+    <div className="about-page">
     <div className="about-box">
       <h2>About BookMyScreen</h2>
 
@@ -22,7 +25,9 @@ const About = () => {
         using React, CSS, and component-based architecture.
       </p>
     </div>
+    </div>
   );
+
 };
 
 export default About;

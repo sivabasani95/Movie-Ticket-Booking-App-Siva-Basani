@@ -3,15 +3,12 @@ import { useLocation } from "../../../context/LocationContext";
 import mainLogo from "/src/images/main-icon.png";
 import map from "/src/images/pin.gif";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import About from "./About";
+
 
 
 
 const Header = () => {
-  const [showAbout, setShowAbout] = useState(false);
-
-
+ 
   const { location, loading, error } = useLocation();
 
   return (
@@ -43,11 +40,8 @@ const Header = () => {
         </div>
 
         <div className="about-container">
-         <button 
-         className="about-btn"
-          onClick={() => setShowAbout(!showAbout)}>
-            About
-            </button>
+         <Link to="/about" className="about-btn">About</Link>
+                                   
         </div>
         
 
@@ -76,7 +70,7 @@ const Header = () => {
 
       </div>
     </header>
-    {showAbout && <About/>}
+    
     </>
   );
 };

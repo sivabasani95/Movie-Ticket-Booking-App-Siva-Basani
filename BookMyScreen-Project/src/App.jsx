@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Movies from "./pages/Movies";
 import MovieDetails from "./pages/MovieDetails";
 import Profile from "./pages/Profile";
+import About from "./assets/components/shared/About";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/movies" element={<Movies />} />
           <Route path="/movies/:movieId" element={<MovieDetails />} />
-         
+          <Route path="/about" element={<About />} />
         </Routes>
       </main>
 
