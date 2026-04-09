@@ -1,121 +1,103 @@
 /* TheaterTimings.css */
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .theater-timings {
-    width: 100%;
-    padding: 0 8px;
+  width: 100%;
+  padding: 0 8px;
+  background-color: #f5f5f5;
 }
-
 
 /* FILTER SECTION */
 .filters-wrapper {
-    padding: 8px 12px 0;
+  padding: 8px 12px 0;
 }
 
-/* 🔥 force single visible line */
 .filters-container {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-
-    flex-wrap: nowrap;
-    /* no wrapping */
-    gap: 6px;
-    /* no scroll */
-
-    margin-bottom: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: 8px;
 }
 
-/* 🔥 smaller filters */
+.filters-container::-webkit-scrollbar {
+  display: none;
+}
+
 .filter-pill {
-    padding: 4px 8px;
-    /* reduced */
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    /* less round */
-    background-color: #ffffff;
-    color: #4b5563;
-
-    font-size: 10px;
-    /* smaller text */
-    font-weight: 500;
-
-    cursor: pointer;
-    white-space: nowrap;
-
-    flex-shrink: 1;
-    /* allow shrinking */
-
-    transition: all 0.2s ease;
+  padding: 6px 12px;
+  border: 1px solid #dcdcdc;
+  border-radius: 20px;
+  background-color: #fff;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
 }
 
 .filter-pill:hover {
-    background-color: #f3f4f6;
+  border-color: #f84464;
+  color: #f84464;
+  background-color: #f3f4f6;
 }
 
+/* STATUS */
 .status-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    padding: 8px 8px;
-    /* 🔥 increase box size */
-    /* rounded box */
-    font-size: 13px;
-    font-weight: 500;
-
-    background-color: #f9fafb;
-    /* light background */
-    border: 1px solid #e5e7eb;
-    color: #374151;
-
-
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 4px 0 4px;
+  color: #374151;
 }
 
 .status-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #666;
 }
 
 .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
 }
 
-.status-dot.available {
-    background-color: #22c55e;
+.status-dot.available,
+.available {
+  background-color: #28a745;
 }
 
-.status-dot.filling {
-    background-color: #f59e0b;
+.status-dot.filling,
+.filling {
+  background-color: #ff9800;
 }
 
-.status-dot.almost {
-    background-color: #ef4444;
+.status-dot.almost,
+.almost {
+  background-color: #f44336;
 }
 
+/* DIVIDER */
 .divider {
-    margin: 8px;
-    border: none;
-    border-top: 1px solid #e5e7eb;
-}
-/* date - container*/
-.divider {
-  margin: 6px 0 8px 0;
+  margin: 2px;
   border: none;
   border-top: 1px solid #e5e7eb;
 }
 
+/* DATE SECTION */
 .date-container {
-  display: flex;
+  /*display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 4px;
@@ -124,6 +106,19 @@
   width: 100%;
   overflow-x: auto;
   scrollbar-width: none;
+  background-color: #fff; */
+    display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 6px 12px;
+  margin: 0;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background-color: #fff;
 }
 
 .date-container::-webkit-scrollbar {
@@ -149,27 +144,27 @@
 }
 
 .date-button.selected {
-  background-color: #111111;
-  border-color: #111111;
+  background-color: #f84464;
+  border-color: #f84464;
   color: #ffffff;
 }
 
 .date-day {
   font-size: 10px;
-  font-weight: 100;
+  font-weight: 600;
   line-height: 1;
 }
 
 .date-weekday {
   font-size: 7px;
-  font-weight: 100;
+  font-weight: 500;
   line-height: 1;
   text-transform: uppercase;
 }
 
 .date-month {
   font-size: 7px;
-  font-weight: 100;
+  font-weight: 500;
   line-height: 1;
   text-transform: uppercase;
   color: #6b7280;
@@ -179,264 +174,7 @@
   color: #ffffff;
 }
 
-/* =========================
-   Responsive Media Queries
-   ========================= */
-
-/* Small mobile */
-@media screen and (max-width: 480px) {
-  .theater-timings {
-    padding: 0 6px;
-  }
-
-  .filters-wrapper {
-    padding: 6px 8px 0;
-  }
-
-  .filters-container {
-    gap: 4px;
-  }
-
-  .filter-pill {
-    padding: 3px 6px;
-    font-size: 9px;
-  }
-
-  .status-row {
-    gap: 6px;
-    padding: 6px;
-  }
-
-  .status-item {
-    gap: 4px;
-    font-size: 10px;
-  }
-
-  .status-dot {
-    width: 7px;
-    height: 7px;
-  }
-
-  .date-container {
-    gap: 3px;
-    padding-top: 4px;
-    justify-content: flex-start;   /* keep left */
-  }
-
-  .date-button {
-    width: 28px;
-    min-width: 28px;
-    height: 48px;
-  }
-
-  .date-day {
-    font-size: 9px;
-    font-weight: 600;
-  }
-
-  .date-weekday {
-    font-size: 6px;
-    font-weight: 500;
-  }
-
-  .date-month {
-    font-size: 6px;
-    font-weight: 500;
-  }
-}
-
-/* Tablet */
-@media screen and (min-width: 481px) and (max-width: 767px) {
-  .theater-timings {
-    padding: 0 8px;
-  }
-
-  .filters-wrapper {
-    padding: 8px 10px 0;
-  }
-
-  .filters-container {
-    gap: 5px;
-  }
-
-  .filter-pill {
-    padding: 4px 7px;
-    font-size: 9px;
-  }
-
-  .status-row {
-    gap: 8px;
-    padding: 7px;
-  }
-
-  .status-item {
-    font-size: 10px;
-  }
-
-  .date-container {
-    gap: 4px;
-    justify-content: flex-start;   /* keep left */
-  }
-
-  .date-button {
-    width: 30px;
-    min-width: 30px;
-    height: 52px;
-  }
-
-  .date-day {
-    font-size: 10px;
-    font-weight: 600;
-  }
-
-  .date-weekday {
-    font-size: 7px;
-    font-weight: 500;
-  }
-
-  .date-month {
-    font-size: 7px;
-    font-weight: 500;
-  }
-}
-/* this is for available theaters*/
-/* RESET */
-* {
-  box-sizing: border-box;
-}
-
-/* MAIN WRAPPER */
-.theater-timings {
-  width: 100%;
-  padding: 0 8px;
-  background-color: #f5f5f5;
-}
-
-/* ================= FILTER SECTION ================= */
-
-.filters-wrapper {
-  padding: 8px 12px 0;
-}
-
-.filters-container {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  margin-bottom: 8px;
-}
-
-.filters-container::-webkit-scrollbar {
-  display: none;
-}
-
-.filter-pill {
-  padding: 6px 12px;
-  border: 1px solid #dcdcdc;
-  border-radius: 20px;
-  background-color: #fff;
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: 0.2s;
-}
-
-.filter-pill:hover {
-  border-color: #f84464;
-  color: #f84464;
-}
-
-/* ================= STATUS ================= */
-
-.status-row {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 6px 0 10px;
-}
-
-.status-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: #666;
-}
-
-.status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.available {
-  background-color: #28a745;
-}
-
-.filling {
-  background-color: #ff9800;
-}
-
-.almost {
-  background-color: #f44336;
-}
-
-/* ================= DIVIDER ================= */
-
-.divider {
-  border: none;
-  border-top: 1px solid #e4e4e4;
-  margin: 0;
-}
-
-/* ================= DATE SECTION ================= */
-
-.date-container {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 16px 12px 30px;
-  background-color: #fff;
-  scrollbar-width: none;
-}
-
-.date-container::-webkit-scrollbar {
-  display: none;
-}
-
-.date-button {
-  min-width: 64px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 8px 6px;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-}
-
-.date-button.selected {
-  background-color: #f84464;
-  color: #fff;
-  border-color: #f84464;
-}
-
-.date-day {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.date-weekday {
-  font-size: 12px;
-}
-
-.date-month {
-  font-size: 11px;
-}
-
-/* ================= THEATRES ================= */
-
+/* THEATRES */
 .theatres-container {
   padding: 16px 12px 30px;
 }
@@ -477,8 +215,7 @@
   margin-top: 4px;
 }
 
-/* ================= TIMINGS ================= */
-
+/* TIMINGS */
 .timings-row {
   display: flex;
   flex-wrap: wrap;
@@ -500,11 +237,71 @@
   color: #f84464;
 }
 
-/* ================= RESPONSIVE ================= */
+/* RESPONSIVE */
+@media screen and (max-width: 480px) {
+  .theater-timings {
+    padding: 0 6px;
+  }
 
-@media (max-width: 768px) {
+  .filters-wrapper {
+    padding: 6px 8px 0;
+  }
+
+  .filters-container {
+    gap: 4px;
+  }
+
+  .filter-pill {
+    padding: 3px 6px;
+    font-size: 9px;
+  }
+
+  .status-row {
+    gap: 6px;
+    padding: 4px 0;
+  }
+
+  .status-item {
+    gap: 4px;
+    font-size: 10px;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+  }
+
+  .date-container {
+    gap: 3px;
+     display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 6px 12px;
+  margin: 0;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  overflow-x: auto;
+  background-color: #fff;
+  }
+
   .date-button {
-    min-width: 56px;
+    width: 28px;
+    min-width: 28px;
+    height: 48px;
+  }
+
+  .date-day {
+    font-size: 9px;
+  }
+
+  .date-weekday {
+    font-size: 6px;
+  }
+
+  .date-month {
+    font-size: 6px;
   }
 
   .theatre-card {
@@ -517,7 +314,56 @@
   }
 }
 
-/* Laptop / desktop */
+@media screen and (min-width: 481px) and (max-width: 767px) {
+  .theater-timings {
+    padding: 0 8px;
+  }
+
+  .filters-wrapper {
+    padding: 8px 10px 0;
+  }
+
+  .filters-container {
+    gap: 5px;
+  }
+
+  .filter-pill {
+    padding: 4px 7px;
+    font-size: 9px;
+  }
+
+  .status-row {
+    gap: 8px;
+    padding: 7px 0 8px;
+  }
+
+  .status-item {
+    font-size: 10px;
+  }
+
+  .date-container {
+    gap: 4px;
+  }
+
+  .date-button {
+    width: 30px;
+    min-width: 30px;
+    height: 52px;
+  }
+
+  .date-day {
+    font-size: 10px;
+  }
+
+  .date-weekday {
+    font-size: 7px;
+  }
+
+  .date-month {
+    font-size: 7px;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .theater-timings {
     padding: 0 8px;
@@ -538,7 +384,7 @@
 
   .status-row {
     gap: 8px;
-    padding: 8px;
+    padding: 8px 0;
   }
 
   .status-item {
@@ -547,7 +393,7 @@
 
   .date-container {
     gap: 4px;
-    justify-content: flex-start;   /* very important */
+    justify-content: flex-start;
   }
 
   .date-button {
@@ -569,231 +415,5 @@
   .date-month {
     font-size: 7px;
     font-weight: 500;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-/* RESET */
-* {
-  box-sizing: border-box;
-}
-
-/* MAIN WRAPPER */
-.theater-timings {
-  width: 100%;
-  padding: 0 8px;
-  background-color: #f5f5f5;
-}
-
-/* ================= FILTER SECTION ================= */
-
-.filters-wrapper {
-  padding: 8px 12px 0;
-}
-
-.filters-container {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  margin-bottom: 8px;
-}
-
-.filters-container::-webkit-scrollbar {
-  display: none;
-}
-
-.filter-pill {
-  padding: 6px 12px;
-  border: 1px solid #dcdcdc;
-  border-radius: 20px;
-  background-color: #fff;
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: 0.2s;
-}
-
-.filter-pill:hover {
-  border-color: #f84464;
-  color: #f84464;
-}
-
-/* ================= STATUS ================= */
-
-.status-row {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 6px 0 10px;
-}
-
-.status-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: #666;
-}
-
-.status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.available {
-  background-color: #28a745;
-}
-
-.filling {
-  background-color: #ff9800;
-}
-
-.almost {
-  background-color: #f44336;
-}
-
-/* ================= DIVIDER ================= */
-
-.divider {
-  border: none;
-  border-top: 1px solid #e4e4e4;
-  margin: 0;
-}
-
-/* ================= DATE SECTION ================= */
-
-.date-container {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 14px 12px;
-  background-color: #fff;
-  scrollbar-width: none;
-}
-
-.date-container::-webkit-scrollbar {
-  display: none;
-}
-
-.date-button {
-  min-width: 64px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 8px 6px;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-}
-
-.date-button.selected {
-  background-color: #f84464;
-  color: #fff;
-  border-color: #f84464;
-}
-
-.date-day {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.date-weekday {
-  font-size: 12px;
-}
-
-.date-month {
-  font-size: 11px;
-}
-
-/* ================= THEATRES ================= */
-
-.theatres-container {
-  padding: 16px 12px 30px;
-}
-
-.theatre-card {
-  background-color: #fff;
-  border-radius: 12px;
-  border: 1px solid #e6e6e6;
-  padding: 14px;
-  margin-bottom: 16px;
-}
-
-.theatre-header {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.theatre-logo {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-}
-
-.theatre-info {
-  flex: 1;
-}
-
-.theatre-name {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0;
-}
-
-.theatre-location {
-  font-size: 13px;
-  color: #777;
-  margin-top: 4px;
-}
-
-/* ================= TIMINGS ================= */
-
-.timings-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.timing-btn {
-  padding: 8px 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff;
-  font-size: 13px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.timing-btn:hover {
-  border-color: #f84464;
-  color: #f84464;
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media (max-width: 768px) {
-  .date-button {
-    min-width: 56px;
-  }
-
-  .theatre-card {
-    padding: 12px;
-  }
-
-  .timing-btn {
-    font-size: 12px;
-    padding: 6px 10px;
   }
 }
