@@ -7,13 +7,11 @@ const Home = () => {
 
    
     return (
-        <div className="home-page">
-          
-
+        
+        <div className="home-page">         
             <BannerSlider />
             <Recommended />
             <LiveEvents />
-
         </div>
     );
 }
