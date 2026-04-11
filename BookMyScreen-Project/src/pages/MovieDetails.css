@@ -283,3 +283,32 @@
     font-size: 17px;
   }
 }
+
+
+
+/*============================*/
+.next-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 24px 0 40px;
+  width: 100%;
+}
+
+.next-btn {
+  background-color: #f84464;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 220px;
+  max-width: 280px;
+  width: auto;
+}
+
+.next-btn:hover {
+  background-color: #d63350;
+}

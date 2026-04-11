@@ -1,4 +1,7 @@
+
+
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import m4 from "../images/m4.avif";
 import "./MovieDetails.css";
 import { FiShare2 } from "react-icons/fi";
@@ -20,6 +23,8 @@ const movie = {
 };
 
 const MovieDetails = () => {
+
+  const navigate = useNavigate();
   return (
     <div className="movie-page">
     <div
@@ -78,7 +83,16 @@ const MovieDetails = () => {
       </div>
      <div className="timings-section">
   <TheaterTimings />
+  
 </div>
+
+<div className="next-btn-wrapper">
+        <button className="next-btn" onClick={() => navigate("/profile")}>
+          Next
+        </button>
+      </div>
+
+ 
     </div>
   );
 };
