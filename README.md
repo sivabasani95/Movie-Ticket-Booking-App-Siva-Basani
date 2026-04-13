@@ -24,7 +24,7 @@ BookMyScreen is a React-based movie ticket booking UI that allows users to brows
 
 ## 🌐 Live Demo
 
-👉 https://your-netlify-link.netlify.app
+👉 https://movie-ticket-booking-app-siva-basani.netlify.app/
 
 ## 📁 GitHub Repository
 
