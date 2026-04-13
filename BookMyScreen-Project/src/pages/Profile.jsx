@@ -2,7 +2,7 @@ import "./Profile.css";
 import { useState } from "react";
 import BookingHistory from "../assets/components/profileActiveTab/BookingHistory";
 
-const Profile = () => {
+const Profile = ({ wishlist, removeFromWishlist }) => {
   const [formData, setFormData] = useState({
     email: "",
     mobile: "",
@@ -198,6 +198,33 @@ const Profile = () => {
             <div className="profile-actions">
               <button className="save-btn">Save Details</button>
             </div>
+
+<div className="profile-section">
+  <h3>My Wishlist</h3>
+
+  {wishlist.length === 0 ? (
+    <p>No movies added yet</p>
+  ) : (
+    wishlist.map((movie) => (
+      <div key={movie.id} style={{ marginBottom: "10px" }}>
+        <span>{movie.title}</span>
+
+        <button
+          style={{ marginLeft: "10px" }}
+          onClick={() => removeFromWishlist(movie.id)}
+        >
+          Remove
+        </button>
+      </div>
+    ))
+  )}
+</div>
+
+
+
+
+
+
           </div>
         </div>
       )}

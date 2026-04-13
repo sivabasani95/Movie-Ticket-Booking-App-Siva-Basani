@@ -1,12 +1,12 @@
 import React from "react";
 import "./MovieCard.css";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 
 
 
 
-const MovieCard = ({movie}) => {
+const MovieCard = ({movie, addToWishlist }) => {
 
 const navigate = useNavigate();
 
@@ -42,6 +42,19 @@ const navigate = useNavigate();
       <p className="movie-card-lang">
         {movie.languages}
       </p>
+
+    <button
+      onClick={(e) => {
+        e.stopPropagation(); // 
+        addToWishlist(movie);
+      }}
+    >
+      Add to Wishlist
+    </button>
+
+
+
+
     </div>
 
     );

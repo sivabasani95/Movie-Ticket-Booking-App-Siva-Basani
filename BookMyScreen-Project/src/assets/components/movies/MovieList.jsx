@@ -3,7 +3,7 @@ import "./MovieList.css";
 import MovieCard from "./MovieCard";
 import { allMovies, languages } from "../../../utils/constants";
 
-const MovieList = () => {
+const MovieList = ({ addToWishlist, wishlist }) => {
   return (
     <div className="movie-list-container">
       {/* Language Pills */}
@@ -26,7 +26,11 @@ const MovieList = () => {
       {/* Movie card component */}
       <div className="movies-grid">
         {allMovies.map((movie, i) => (
-          <MovieCard key={i} movie={movie} />
+          <MovieCard
+           key={i}
+           movie={movie}
+           addToWishlist={addToWishlist} 
+            wishlist={wishlist}/>
         ))}
       </div>
     </div>
