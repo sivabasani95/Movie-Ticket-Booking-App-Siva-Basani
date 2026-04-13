@@ -7,6 +7,8 @@ import "./MovieDetails.css";
 import { FiShare2 } from "react-icons/fi";
 import TheaterTimings from "../assets/components/movies/TheaterTimings";
 
+
+
 const movie = {
   id: 4,
   title: "F1: The Movie",
@@ -22,9 +24,18 @@ const movie = {
   description: `F1: The Movie is a high-octane sports drama that dives into the intense world of Formula 1 racing.`,
 };
 
+
+
+
+
 const MovieDetails = () => {
 
   const navigate = useNavigate();
+
+
+
+
+
   return (
     <div className="movie-page">
     <div

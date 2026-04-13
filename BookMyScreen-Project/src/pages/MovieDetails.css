@@ -1,10 +1,8 @@
-  
-  
-  
-  /* Main container with background image */
 
+
+/* Main container with background image */
 .movie-details {
-   position: relative;
+  position: relative;
   width: 100%;
   min-height: 30vh;
   padding: 20px 20px 12px;
@@ -13,8 +11,6 @@
   background-repeat: no-repeat;
   color: white;
   font-family: sans-serif;
- 
-
 }
 
 /* Dark overlay */
@@ -31,7 +27,6 @@
   max-width: 1200px;
   margin: auto;
   display: flex;
-  flex-direction: flex-start;
   gap: 30px;
 }
 
@@ -39,8 +34,7 @@
 .poster-section {
   display: flex;
   justify-content: center;
-   flex-shrink: 0;
-  display: flex;
+  flex-shrink: 0;
 }
 
 .poster-img {
@@ -85,7 +79,6 @@
   border-radius: 6px;
   color: white;
   cursor: pointer;
-  transition: 0.3s ease;
 }
 
 .rate-btn:hover {
@@ -105,139 +98,32 @@
   border-radius: 6px;
   font-size: 14px;
 }
-.movie-image-wrapper {
-  width: 150px;   /* reduce width */
-  height: 200px;  /* reduce height */
-}
 
-.movie-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* Responsive layout for larger screens */
-@media (min-width: 768px) {
-  .details-container {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .poster-section {
-    flex: 0 0 250px;
-  }
-.movie-image-wrapper img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-.poster-img {
-  width: 150px;      /* reduce width */
-  height: auto;      /* keep proportions */
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-  object-fit: contain; /* ensures no cropping */
-}
-
-
-  .info-section {
-    flex: 1;
-  }
-
-  .movie-title {
-    font-size: 48px;
-  }
-}
+/* Info text */
 .info-text {
   font-size: 15px;
   color: #d1d1d1;
   line-height: 1.6;
   margin: 10px 0 0;
-  letter-spacing: 0.3px;
 }
 
-/* Small devices (mobile) */
-@media (max-width: 767px) {
-  .info-text {
-    font-size: 14px;
-    text-align: center;
-    padding: 0 10px;
-  }
-}
-
-/* Tablets */
-@media (min-width: 768px) {
-  .info-text {
-    font-size: 16px;
-    text-align: left;
-  }
-}
-
-/* Large screens */
-@media (min-width: 1024px) {
-  .info-text {
-    font-size: 17px;
-  }
-}
-/* About the movie container */
+/* About section */
 .about-section {
-  /*backdrop-filter: blur(4px);*/
   width: 100%;
   margin-top: 10px;
 }
 
-/* Title */
 .about-title {
-  /*  padding-left: 0px;
-  font-size: 5px;
-  font-weight: 200;
-  margin-bottom: 5px;
-  color: #ffffff;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.8); */
- font-size: 22px;
+  font-size: 22px;
   font-weight: 600;
   margin-bottom: 10px;
   color: rgb(187, 183, 183) !important;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-
 }
 
-
 .about-text {
- 
-
   font-size: 16px;
   line-height: 1.6;
   color: rgb(187, 183, 183) !important;
-}
-
-/* Responsive adjustments */
-@media (min-width: 768px) {
-  .about-section {
-    padding: 3px;
-  }
-
-  .about-title {
-    font-size: 22px;
-  }
-
-  .about-text {
-    font-size: 16px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .about-section {
-    padding: 30px;
-  }
-
-  .about-title {
-    font-size: 24px;
-  }
-
-  .about-text {
-    font-size: 17px;
-  }
 }
 
 /* Share button */
@@ -252,41 +138,29 @@
   border: 1px solid rgba(255, 255, 255, 0.25);
   cursor: pointer;
   font-size: 14px;
-  backdrop-filter: blur(4px);
-  transition: 0.3s ease;
   margin-top: 10px;
 }
 
-/* Hover effect */
 .share-btn:hover {
   background: rgba(255, 255, 255, 0.25);
 }
 
-/* Share icon */
 .share-icon {
   font-size: 16px;
-  font-weight: bold;
 }
 
-/* Responsive adjustments */
+/* ========================= */
+/* ✅ FIXED SECTION (IMPORTANT) */
 
-@media (min-width: 1024px) {
-  .about-section {
-    padding: 0;
-  }
-
-  .about-title {
-    font-size: 24px;
-  }
-
-  .about-text {
-    font-size: 17px;
-  }
+.timings-section {
+  margin-top: 12px;
+  padding: 0;
+  height: auto;
 }
 
+/* ========================= */
 
-
-/*============================*/
+/* Next Button */
 .next-btn-wrapper {
   display: flex;
   justify-content: center;
@@ -305,10 +179,33 @@
   font-weight: 600;
   cursor: pointer;
   min-width: 220px;
-  max-width: 280px;
-  width: auto;
 }
 
 .next-btn:hover {
   background-color: #d63350;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .details-container {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .poster-section {
+    flex: 0 0 250px;
+  }
+
+  .poster-img {
+    width: 150px;
+    object-fit: contain;
+  }
+
+  .info-section {
+    flex: 1;
+  }
+
+  .movie-title {
+    font-size: 48px;
+  }
 }
