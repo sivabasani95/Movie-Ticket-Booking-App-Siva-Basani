@@ -17,8 +17,11 @@ import React, { useState } from "react";
 function App() {
 
   const [wishlist, setWishlist] = useState([]);
+
+
 const addToWishlist = (movie) => {
-  setWishlist((prev) => [...prev, movie]);
+  setWishlist((prev) => prev.some((item) => item.id === movie.id) ? prev :
+   [...prev, movie]);
 };
 
 const removeFromWishlist = (id) => {
