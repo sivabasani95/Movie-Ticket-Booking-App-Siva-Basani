@@ -35,9 +35,9 @@ const MovieDetails = () => {
   return (
 
     <div className="movie-page">
+       {/* Movie banner section with background image */}
       <div
         className="movie-details"
-        {/* Movie banner section with background image */}
         style={{ backgroundImage: `url(${movie.img})` }}
       >
         {/* Dark overlay for better readability */}
