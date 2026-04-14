@@ -5,11 +5,15 @@ import pvr from "../../../images/pvr.avif";
 import inox from "../../../images/inox.avif";
 import cinepolis from "../../../images/cinepolis.avif";
 
+// TheaterTimings component
 const TheaterTimings = () => {
   const today = dayjs();
+   // Store selected date in state
   const [selectedDate, setSelectedDate] = useState(today);
+  // Create array for next 7 days
   const next7days = Array.from({ length: 7 }, (_, i) => today.add(i, "day"));
 
+  // Filter options
   const filters = [
     "2D",
     "3D",
@@ -22,6 +26,7 @@ const TheaterTimings = () => {
     "Laser",
     "Dolby Atmos",
   ];
+   // Theatre data
 const theatres = [
   {
     name: "PVR Cinemas",
@@ -53,7 +58,7 @@ const theatres = [
             </button>
           ))}
         </div>
-
+ {/* Seat availability status */}
         <div className="status-row">
           <span className="status-item">
             <span className="status-dot available"></span>
@@ -72,8 +77,9 @@ const theatres = [
         </div>
     </div>
 
+  {/* Divider line */}
       <hr className="divider" />
-
+{/* Date selection buttons */}
       <div className="date-container">
         {next7days.map((date, i) => {
           const isSelected = selectedDate.isSame(date, "day");
@@ -95,6 +101,7 @@ const theatres = [
         })}
       </div>
 
+  {/* Theatre cards section */}
       <div className="theatres-container">
   {theatres.map((theatre, i) => (
     <div key={i} className="theatre-card">
@@ -113,6 +120,7 @@ const theatres = [
         </div>
       </div>
 
+  {/* Show timings */}
       <div className="timings-row">
        
         {theatre.timings.map((time, index) => (
@@ -121,6 +129,7 @@ const theatres = [
           </button>
          
         ))}
+          {/* Cancellation button */}
         <button className="cancel-btn">Allow Cancellation</button>
       </div>
 

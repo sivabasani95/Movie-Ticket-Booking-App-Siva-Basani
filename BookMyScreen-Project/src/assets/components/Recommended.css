@@ -3,41 +3,39 @@
 ========================= */
 .movies-grid {
   display: grid;
-  justify-content: center;
-  grid-template-columns: repeat(5, 180px); /* fixed width */
-  gap: 24px;
-
+  justify-content: center; /* Center grid horizontally */
+  grid-template-columns: repeat(5, 180px); /* 5 fixed-width columns */
+  gap: 24px; /* Space between cards */
 }
 
 /* =========================
    MOVIE CARD
 ========================= */
 .movie-card {
-   width: 180px;
+  width: 180px; /* Fixed card width */
   overflow: hidden;
   border-radius: 6px;
   cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.movie-image-wrapper {
-  width: 180px;
-  height: 260px;        /* fixed height so the image can fit */
-  border-radius: 10px;
-  overflow: hidden;
- 
+  transition: transform 0.25s ease, box-shadow 0.25s ease; /* Hover animation */
 }
 
+/* Wrapper for movie image */
+.movie-image-wrapper {
+  width: 180px;
+  height: 260px; /* Fixed height */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Image inside wrapper */
 .movie-image-wrapper img {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  object-fit: cover; /* Fill container properly */
   display: block;
 }
 
-
-
-
-/* Container spacing */
+/* Container for text info */
 .movie-info {
   padding: 6px 2px;
 }
@@ -50,24 +48,25 @@
   margin: 0 0 2px 0;
 }
 
-/* Movie genre text */
+/* Movie genre */
 .movie-genre {
   font-size: 13px;
   color: #666;
-  white-space: nowrap;
+  white-space: nowrap; /* Single line */
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; /* Add "..." if long */
 }
 
-/* Wrapper to center whole section */
+/* Wrapper to center entire section */
 .recommended-wrapper {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto; /* Center */
   padding: 0 16px;
   box-sizing: border-box;
 }
 
+/* Header (title + see all) */
 .recommended-header {
   display: flex;
   justify-content: space-between;
@@ -76,11 +75,13 @@
   margin-top: 20px;
 }
 
+/* Section title */
 .recommended-title {
   font-size: 20px;
   font-weight: 600;
 }
 
+/* See all link */
 .recommended-seeall {
   font-size: 14px;
   color: #dc2626;
@@ -91,21 +92,23 @@
    RESPONSIVE GRID
 ========================= */
 
-/* Small phones */
+/* Tablet */
 @media (max-width: 1024px) {
   .movies-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr); /* 4 columns */
   }
 }
 
+/* Small tablet / large mobile */
 @media (max-width: 768px) {
   .movies-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
   }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
   .movies-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
   }
 }

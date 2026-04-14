@@ -7,10 +7,15 @@ import "./index.css";
 import App from "./App.jsx";
 import { LocationProvider } from "./context/LocationContext";
 
+
+// Render the React application into the root DOM element
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+     {/* Enables routing across the app */}
     <BrowserRouter>
+    {/* Provides location data globally to all components */}
       <LocationProvider>
+         {/* Main application component */}
         <App />
       </LocationProvider>
     </BrowserRouter>

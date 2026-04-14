@@ -1,9 +1,18 @@
+
+
+
+/* ========================= */
+/* 👤 PROFILE PAGE STYLING */
+/* ========================= */
+
+/* Reset default spacing and apply consistent box model */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Main profile page container */
 .profile-page {
   height: 100%;
   background: #f5f5f5;
@@ -12,17 +21,20 @@
   justify-content: center;
   align-items: center;
 
- /* padding: 10px 15px; */
   font-family: Arial, sans-serif;
 }
 
+/* ========================= */
+/* 📦 PROFILE CARD */
+/* ========================= */
 
-/* 👇 MAIN CARD (HALF WIDTH) */
+/* Main card container */
 .profile-card {
   width: 50%;
   max-width: 750px;
   min-width: 320px;
-max-height: 100%;
+  max-height: 100%;
+
   background: #ffffff;
   border-radius: 8px;
   overflow: hidden;
@@ -30,7 +42,10 @@ max-height: 100%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* HEADER */
+/* ========================= */
+/* 🧾 HEADER SECTION */
+/* ========================= */
+
 .profile-header {
   height: 80px;
   background: linear-gradient(90deg, #4a2945, #f84464);
@@ -41,6 +56,7 @@ max-height: 100%;
   color: #fff;
 }
 
+/* Avatar circle */
 .profile-avatar {
   width: 42px;
   height: 42px;
@@ -54,12 +70,10 @@ max-height: 100%;
   font-weight: bold;
 }
 
-.profile-header h2 {
-  font-size: 22px;
-  font-weight: 600;
-}
+/* ========================= */
+/* 📄 PROFILE SECTIONS */
+/* ========================= */
 
-/* SECTIONS */
 .profile-section {
   padding: 16px 24px;
   border-top: 1px solid #ececec;
@@ -72,7 +86,10 @@ max-height: 100%;
   font-weight: 600;
 }
 
-/* ACCOUNT ROW */
+/* ========================= */
+/* 📋 ACCOUNT ROW */
+/* ========================= */
+
 .profile-row {
   display: grid;
   grid-template-columns: 160px 1fr 120px;
@@ -82,16 +99,10 @@ max-height: 100%;
   border-bottom: 1px solid #f0f0f0;
 }
 
-.profile-row:last-child {
-  border-bottom: none;
-}
+/* ========================= */
+/* ✏️ INPUT FIELDS */
+/* ========================= */
 
-.label {
-  font-size: 14px;
-  color: #666;
-}
-
-/* INPUT */
 .input-field {
   width: 100%;
   height: 42px;
@@ -104,33 +115,30 @@ max-height: 100%;
   outline: none;
 }
 
+/* Highlight input on focus */
 .input-field:focus {
   border-color: #f84464;
 }
 
-/* GRID */
+/* ========================= */
+/* 🔲 GRID LAYOUT */
+/* ========================= */
+
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 18px 20px;
 }
 
-.profile-field {
-  display: flex;
-  flex-direction: column;
-}
-
-.profile-field label {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 8px;
-}
-
+/* Full-width element inside grid */
 .full-width {
   grid-column: 1 / -1;
 }
 
-/* VERIFIED CHECKBOX */
+/* ========================= */
+/* ✅ VERIFIED CHECKBOX */
+/* ========================= */
+
 .verified-checkbox {
   display: flex;
   align-items: center;
@@ -140,10 +148,7 @@ max-height: 100%;
   font-weight: 600;
 }
 
-.verified-checkbox input {
-  display: none;
-}
-
+/* Custom checkbox styling */
 .custom-check {
   width: 16px;
   height: 16px;
@@ -152,38 +157,17 @@ max-height: 100%;
   position: relative;
 }
 
-.verified-checkbox input:checked + .custom-check {
-  background: #20b26b;
-}
+/* ========================= */
+/* 🔘 RADIO BUTTONS */
+/* ========================= */
 
-.verified-checkbox input:checked + .custom-check::after {
-  content: "✔";
-  color: #fff;
-  font-size: 11px;
-  position: absolute;
-  top: -1px;
-  left: 2px;
-}
-
-/* RADIO BUTTONS */
 .radio-group {
   display: flex;
   gap: 20px;
   align-items: center;
 }
 
-.radio-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.radio-item input {
-  display: none;
-}
-
+/* Custom radio button */
 .custom-radio {
   width: 18px;
   height: 18px;
@@ -192,69 +176,10 @@ max-height: 100%;
   position: relative;
 }
 
-.radio-item input:checked + .custom-radio {
-  border-color: #f84464;
-}
+/* ========================= */
+/* 💾 SAVE BUTTON */
+/* ========================= */
 
-.radio-item input:checked + .custom-radio::after {
-  content: "";
-  width: 10px;
-  height: 10px;
-  background: #f84464;
-  border-radius: 50%;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-}
-
-/* BUTTON */
-.profile-actions {
-  padding: 20px 24px;
-}
-
-.save-btn {
-  height: 42px;
-  padding: 0 20px;
-  border: none;
-  border-radius: 4px;
-  background: #f84464;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.save-btn:hover {
-  opacity: 0.95;
-}
-
-/* 📱 RESPONSIVE */
-@media (max-width: 1024px) {
-  .profile-card {
-    width: 70%;
-  }
-}
-
-@media (max-width: 768px) {
-  .profile-card {
-    width: 95%;
-  }
-
-  .profile-row {
-    grid-template-columns: 1fr;
-  }
-
-  .profile-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .full-width {
-    grid-column: auto;
-  }
-}
-
-
-/* ACTION BUTTON SECTION */
 .profile-actions {
   padding: 20px;
   display: flex;
@@ -262,7 +187,6 @@ max-height: 100%;
   border-top: 1px solid #eee;
 }
 
-/* SAVE BUTTON */
 .save-btn {
   background: #f84464;
   color: #fff;
@@ -278,58 +202,63 @@ max-height: 100%;
   background: #d73754;
 }
 
+/* ========================= */
+/* 📱 RESPONSIVE DESIGN */
+/* ========================= */
 
-/*conditional rendering inside Profile.jsx */
+/* Tablet */
+@media (max-width: 1024px) {
+  .profile-card {
+    width: 70%;
+  }
+}
 
-/* MAIN CONTAINER */
+/* Mobile */
+@media (max-width: 768px) {
+  .profile-card {
+    width: 95%;
+  }
+
+  .profile-row {
+    grid-template-columns: 1fr; /* stack elements */
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: auto;
+  }
+}
+
+/* ========================= */
+/* 📊 BOOKING & EXTRA SECTIONS */
+/* ========================= */
+
 .profile-container {
   min-height: 100vh;
   padding: 40px 16px;
   background-color: #f5f5f5;
 }
 
-/* INNER WRAPPER */
 .profile-wrapper {
   max-width: 1100px;
   margin: 0 auto;
 }
 
-/* OPTIONAL: section spacing */
-.profile-section {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
+/* ========================= */
+/* 📌 TAB NAVIGATION */
+/* ========================= */
 
-/* BOOKING SECTION STYLE */
-.booking-history {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .profile-container {
-    padding: 20px 10px;
-  }
-
-  .profile-wrapper {
-    max-width: 100%;
-  }
-}
-
-
-/* this is for 3rd header bar */
-/* Wrapper (full width bar under header) */
+/* Top tabs bar under header */
 .tabs-wrapper {
   width: 100%;
   background: #fff;
   border-bottom: 1px solid #e5e5e5;
 }
 
-/* Inner container (aligned with profile card width) */
+/* Tab container */
 .tabs-container {
   max-width: 100%;
   margin: 0 auto;
@@ -339,7 +268,7 @@ max-height: 100%;
   background-color: #ececec;
 }
 
-/* Buttons */
+/* Tab buttons */
 .tab-btn {
   background: none;
   border: none;
@@ -351,12 +280,12 @@ max-height: 100%;
   position: relative;
 }
 
-/* Active tab */
+/* Active tab styling */
 .tab-btn.active {
   color: #f84464;
 }
 
-/* Underline effect */
+/* Underline effect for active tab */
 .tab-btn.active::after {
   content: "";
   position: absolute;

@@ -1,9 +1,13 @@
+
 /* TheaterTimings.css */
+
+/* Apply border-box sizing globally */
 
 * {
   box-sizing: border-box;
 }
 
+/* Main container for theater timings section */
 .theater-timings {
   width: 100%;
   padding: 0 8px;
@@ -12,23 +16,24 @@
 
 /* FILTER SECTION */
 .filters-wrapper {
-  padding: 0;
+  padding: 0; /* Wrapper around filter pills */
 }
-
+/* Horizontal scrollable filter pills container */
 .filters-container {
   display: flex;
   align-items: center;
   gap: 6px;
   flex-wrap: nowrap;
   overflow-x: auto;
-  scrollbar-width: none;
+  scrollbar-width: none;/* Hide scrollbar (Firefox) */
   margin-bottom: 8px;
 }
 
+/* Hide scrollbar (Chrome, Safari) */
 .filters-container::-webkit-scrollbar {
   display: none;
 }
-
+/* Individual filter pill styling */
 .filter-pill {
   padding: 6px 12px;
   border: 1px solid #dcdcdc;
@@ -41,7 +46,7 @@
   white-space: nowrap;
   transition: all 0.2s ease;
 }
-
+/* Hover effect for filter pills */
 .filter-pill:hover {
   border-color: #f84464;
   color: #f84464;
@@ -49,6 +54,7 @@
 }
 
 /* STATUS */
+/* STATUS SECTION (seat availability info) */
 .status-row {
   display: flex;
   align-items: center;
@@ -58,6 +64,7 @@
   color: #374151;
 }
 
+/* Individual status item */
 .status-item {
   display: flex;
   align-items: center;
@@ -66,6 +73,7 @@
   color: #666;
 }
 
+/* Status indicator dot */
 .status-dot {
   width: 10px;
   height: 10px;
@@ -73,6 +81,7 @@
   display: inline-block;
 }
 
+/* Status colors */
 .status-dot.available,
 .available {
   background-color: #28a745;
@@ -89,6 +98,7 @@
 }
 
 /* DIVIDER */
+/* Divider line between sections */
 .divider {
   margin: 2px;
   border: none;
@@ -115,10 +125,12 @@
   background-color: #fff;
 }
 
+/* Hide scrollbar */
 .date-container::-webkit-scrollbar {
   display: none;
 }
 
+/* Individual date button */
 .date-button {
   width: 30px;
   min-width: 30px;
@@ -137,12 +149,14 @@
   flex-shrink: 0;
 }
 
+/* Selected date styling */
 .date-button.selected {
   background-color: #f84464;
   border-color: #f84464;
   color: #ffffff;
 }
 
+/* Date text styles */
 .date-day {
   font-size: 10px;
   font-weight: 600;
@@ -164,12 +178,13 @@
   color: #6b7280;
 }
 
+/* Change month color when selected */
 .date-button.selected .date-month {
   color: #ffffff;
 }
 
 
-
+/* THEATRE CARD */
 .theatre-card {
   background-color: #fff;
   border-radius: 12px;
@@ -177,29 +192,31 @@
   padding: 14px;
   margin-bottom: 16px;
 }
-
+/* Theatre header layout */
 .theatre-header {
   display: flex;
   gap: 12px;
   margin-bottom: 12px;
 }
 
+/* Theatre logo image */
 .theatre-logo {
   width: 36px;
   height: 36px;
   object-fit: contain;
 }
 
+/* Theatre info container */
 .theatre-info {
   flex: 1;
 }
-
+/* Theatre name */
 .theatre-name {
   font-size: 16px;
   font-weight: 600;
   margin: 0;
 }
-
+/* Theatre location */
 .theatre-location {
   font-size: 13px;
   color: #777;
@@ -207,12 +224,14 @@
 }
 
 /* TIMINGS */
+/* TIMINGS BUTTONS */
 .timings-row {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
+/* Individual timing button */
 .timing-btn {
   padding: 8px 14px;
   border: 1px solid #ccc;
@@ -223,12 +242,13 @@
   transition: 0.2s;
 }
 
+/* Hover effect for timing buttons */
 .timing-btn:hover {
   border-color: #f84464;
   color: #f84464;
 }
 
-/* RESPONSIVE */
+/* ======================RESPONSIVE===================== */
 @media screen and (max-width: 480px) {
   .theater-timings {
     padding: 0 6px;

@@ -5,9 +5,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./BannerSlider.css";
 
+// BannerSlider component for displaying carousel banners
 const BannerSlider = () => {
+
+  // Fix for default export issue in react-slick
   const Slider = SliderModule.default || SliderModule;
 
+  // Slider configuration settings
   const settings = {
     dots: true,
     infinite: true,
@@ -19,6 +23,7 @@ const BannerSlider = () => {
     arrows: true,
     centerMode: true,
     centerPadding: "80px",
+    // Responsive settings
     responsive: [
       {
         breakpoint: 1024,
@@ -45,10 +50,14 @@ const BannerSlider = () => {
 
   return (
     <div className="banner-section">
+      {/* Wrapper for slider */}
       <div className="banner-wrapper">
+        {/* Slider component */}
         <Slider {...settings}>
+          {/* Loop through banner images */}
           {banners.map((banner, i) => (
             <div key={i} className="banner-slide">
+              {/* Banner image */}
               <img
                 src={banner}
                 alt={`banner-${i}`}

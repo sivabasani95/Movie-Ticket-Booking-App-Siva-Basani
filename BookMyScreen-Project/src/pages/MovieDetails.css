@@ -1,40 +1,45 @@
-
+/* ========================= */
+/* 🎬 MOVIE DETAILS PAGE */
+/* ========================= */
 
 /* Main container with background image */
 .movie-details {
-  position: relative;
+  position: relative; /* allows overlay positioning */
   width: 100%;
   min-height: 30vh;
   padding: 20px 20px 12px;
-  background-size: cover;
+  background-size: cover; /* cover entire section */
   background-position: center;
   background-repeat: no-repeat;
   color: white;
   font-family: sans-serif;
 }
 
-/* Dark overlay */
+/* Dark overlay to improve text readability on background image */
 .movie-details .overlay {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
 }
 
-/* Content wrapper */
+/* Wrapper for poster + info */
 .details-container {
   position: relative;
-  z-index: 10;
+  z-index: 10; /* ensures content appears above overlay */
   max-width: 1200px;
   margin: auto;
   display: flex;
   gap: 30px;
 }
 
-/* Poster section */
+/* ========================= */
+/* 🎞️ POSTER SECTION */
+/* ========================= */
+
 .poster-section {
   display: flex;
   justify-content: center;
-  flex-shrink: 0;
+  flex-shrink: 0; /* prevents shrinking */
 }
 
 .poster-img {
@@ -43,7 +48,10 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
-/* Info section */
+/* ========================= */
+/* 📝 MOVIE INFO SECTION */
+/* ========================= */
+
 .info-section {
   display: flex;
   flex-direction: column;
@@ -56,7 +64,7 @@
   color: rgb(187, 183, 183) !important;
 }
 
-/* Rating box */
+/* Rating container */
 .rating-box {
   display: flex;
   align-items: center;
@@ -72,6 +80,7 @@
   font-size: 14px;
 }
 
+/* Rate button styling */
 .rate-btn {
   background: #2f2f2f;
   padding: 8px 16px;
@@ -85,7 +94,10 @@
   background: #444;
 }
 
-/* Format pills */
+/* ========================= */
+/* 🎟️ FORMAT PILLS */
+/* ========================= */
+
 .format-box {
   display: flex;
   gap: 10px;
@@ -99,7 +111,10 @@
   font-size: 14px;
 }
 
-/* Info text */
+/* ========================= */
+/* 📄 TEXT CONTENT */
+/* ========================= */
+
 .info-text {
   font-size: 15px;
   color: #d1d1d1;
@@ -126,7 +141,10 @@
   color: rgb(187, 183, 183) !important;
 }
 
-/* Share button */
+/* ========================= */
+/* 🔗 SHARE BUTTON */
+/* ========================= */
+
 .share-btn {
   display: inline-flex;
   align-items: center;
@@ -150,7 +168,8 @@
 }
 
 /* ========================= */
-/* ✅ FIXED SECTION (IMPORTANT) */
+/* 🎬 THEATER TIMINGS SECTION */
+/* ========================= */
 
 .timings-section {
   margin-top: 12px;
@@ -159,8 +178,9 @@
 }
 
 /* ========================= */
+/* ➡️ NEXT BUTTON */
+/* ========================= */
 
-/* Next Button */
 .next-btn-wrapper {
   display: flex;
   justify-content: center;
@@ -185,7 +205,10 @@
   background-color: #d63350;
 }
 
-/* Responsive */
+/* ========================= */
+/* 📱 RESPONSIVE DESIGN */
+/* ========================= */
+
 @media (min-width: 768px) {
   .details-container {
     flex-direction: row;

@@ -1,24 +1,38 @@
-/* Main page */
+/* ========================= */
+/* 🎬 MOVIES PAGE STYLING */
+/* ========================= */
+
+/* Main page wrapper */
 .movies-page {
   width: 100%;
-  background-color: #f5f5f5;
+  background-color: #f5f5f5; /* light background for contrast */
 }
 
-/* Container */
+/* ========================= */
+/* 📦 MAIN LAYOUT CONTAINER */
+/* ========================= */
+
+/* Container that holds filters sidebar + movie list */
 .movies-container {
-  max-width: 1280px;
+  max-width: 1280px;        /* center content with fixed max width */
   margin: 0 auto;
   padding: 24px 16px;
+
   display: grid;
-  grid-template-columns: 260px 1fr; /* sidebar + content */
+  grid-template-columns: 260px 1fr; /* sidebar + main content */
   gap: 32px;
-  align-items: start;
+
+  align-items: start;       /* align items to top */
 }
 
-/* Mobile layout */
+/* ========================= */
+/* 📱 RESPONSIVE DESIGN */
+/* ========================= */
+
+/* Mobile layout: stack filters and movies vertically */
 @media (max-width: 767px) {
   .movies-container {
-    grid-template-columns: 1fr; /* stack on small screens */
-    gap: 20px;
+    grid-template-columns: 1fr; /* single column layout */
+    gap: 20px;                  /* reduce spacing for small screens */
   }
 }
