@@ -1,54 +1,66 @@
+
+
+
 /* =========================
-   GLOBAL STYLES
+   🌍 GLOBAL STYLES
 ========================= */
+
+/* Reset default browser styles */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Ensure full height layout */
 html, body {
   height: 100%;
   margin: 0;
 }
 
+/* Root container setup for sticky footer */
 #root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+/* Push footer to bottom */
 footer {
   margin-top: auto;
 }
 
-
-
+/* Base typography and colors */
 body {
   font-family: Arial, sans-serif;
   background-color: #ffffff;
   color: #222;
 }
 
+/* Remove default link styles */
 a {
   text-decoration: none;
   color: inherit;
 }
 
 /* =========================
-   APP LAYOUT
+   📦 APP LAYOUT
 ========================= */
+
+/* Main app wrapper */
 .app-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+/* Main content area */
 .main-content {
   flex: 1;
   padding: 15px 20px;
 }
 
+/* Page title styling */
 .page-title {
   text-align: center;
   font-size: clamp(1.8rem, 4vw, 2.5rem);
@@ -56,8 +68,10 @@ a {
 }
 
 /* =========================
-   HEADER
+   🧭 HEADER
 ========================= */
+
+/* Header container */
 .header {
   width: 100%;
   background-color: #ffffff;
@@ -65,6 +79,7 @@ a {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
+/* Top section layout */
 .header-top {
   max-width: 1200px;
   margin: 0 auto;
@@ -75,6 +90,7 @@ a {
   gap: 20px;
 }
 
+/* Left section (logo + search) */
 .header-left {
   display: flex;
   align-items: center;
@@ -82,18 +98,20 @@ a {
   flex: 1;
 }
 
+/* Logo */
 .logo {
   height: 32px;
-  width: auto;
   cursor: pointer;
 }
 
+/* Search input container */
 .search-box {
   position: relative;
   flex: 1;
   max-width: 650px;
 }
 
+/* Search input */
 .search-input {
   width: 100%;
   height: 32px;
@@ -104,79 +122,57 @@ a {
   outline: none;
 }
 
+/* Focus effect */
 .search-input:focus {
   border-color: #dc2626;
   box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.15);
 }
 
+/* Search icon */
 .search-icon {
   position: absolute;
   right: 14px;
   top: 50%;
   transform: translateY(-50%);
   color: #666;
-  font-size: 14px;
 }
 
+/* Right section (location + button) */
 .header-right {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-/*.location {
+/* Location display */
+.location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
-  white-space: nowrap;
-}*/
-/* Location container  */
-.location{
-    display:flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    white-space: nowrap;
-
 }
+
 /* Location icon */
 .location img {
   width: 20px;
   height: 20px;
-  object-fit: contain;
 }
 
-/* Location text */
-.location p {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
+/* Sign-in button */
 .sign-in-btn {
   background-color: #dc2626;
   color: #fff;
   border: none;
   border-radius: 6px;
   padding: 10px 18px;
-  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.sign-in-btn:hover {
-  background-color: #b91c1c;
-}
-
+/* About button */
 .about-btn {
   padding: 8px 14px;
   border-radius: 5px;
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
   border: 1px solid #ddd;
   transition: 0.2s ease;
 }
@@ -184,185 +180,87 @@ a {
 .about-btn:hover {
   background-color: #f84464;
   color: white;
-  border-color: #f84464;
 }
-
-
-
-
 
 /* =========================
-   BOTTOM NAV
+   📌 NAVIGATION BAR
 ========================= */
-.header-bottom {
-  background-color: #f2f2f2;
-  padding: 10px 10px;
-}
 
-.header-bottom {
-  display: flex;
-  justify-content: center;
-}
-
-.header-bottom > .bottom-left-nav,
-.header-bottom > .bottom-right-nav {
-  max-width: 1200px;
-}
-
+/* Bottom navigation */
 .header-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
+  background-color: #f2f2f2;
+  padding: 10px;
 }
 
+/* Navigation links */
 .bottom-left-nav,
 .bottom-right-nav {
   display: flex;
-  align-items: center;
   gap: 24px;
   font-size: 14px;
-  color: #444;
 }
 
-.bottom-left-nav span,
-.bottom-right-nav span {
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
+/* Hover effect */
 .bottom-left-nav span:hover,
 .bottom-right-nav span:hover {
   color: #dc2626;
 }
 
 /* =========================
-   FOOTER
+   📦 FOOTER
 ========================= */
+
+/* Footer container */
 .footer {
   background-color: #2b2b2b;
   color: whitesmoke;
-  padding: 0;
   margin-top: auto;
 }
 
+/* Footer content */
 .footer-content {
   max-width: 1000px;
   margin: 0 auto;
   text-align: center;
 }
 
-.footer-logo-wrapper {
-  margin-bottom: px;
-}
-
-.footer-logo {
-  width: 150px;
-  height: auto;
-}
-
+/* Social icons */
 .social-icons {
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 5px;
-  flex-wrap: wrap;
 }
 
+/* Icon styling */
 .social-icon {
   width: 36px;
   height: 30px;
-  padding: 5px;
   border-radius: 50%;
   background-color: #4b5563;
-  color: #ffffff;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.social-icon:hover {
-  transform: scale(1.08);
-  background-color: #6b7280;
-}
-
-.footer-text {
-  font-size: 10px;
-  line-height: 1.2;
-}
-
-.footer-note {
-  margin-bottom: 5px;
-
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* =========================
-   RESPONSIVE
+   📱 RESPONSIVE DESIGN
 ========================= */
+
+/* Tablet */
 @media (max-width: 992px) {
   .header-top {
     flex-direction: column;
-    align-items: stretch;
-  }
-
-  .header-left {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .search-box {
-    max-width: 100%;
-  }
-
-  .header-right {
-    justify-content: space-between;
-  }
-
-  .bottom-left-nav,
-  .bottom-right-nav {
-    gap: 16px;
-    flex-wrap: wrap;
   }
 }
 
+/* Mobile */
 @media (max-width: 600px) {
-  .header-top {
-    padding: 12px 16px;
-  }
-
-  .header-bottom {
-    padding: 10px 16px;
-  }
-
-  .logo {
-    height: 40px;
-  }
-
-  .search-input {
-    font-size: 14px;
-  }
-
   .header-right {
     flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
   }
 
   .sign-in-btn {
     width: 100%;
   }
-
-  .bottom-left-nav,
-  .bottom-right-nav {
-    font-size: 13px;
-    gap: 12px;
-  }
-
-  .footer {
-    padding: 20px 12px;
-  }
 }
-

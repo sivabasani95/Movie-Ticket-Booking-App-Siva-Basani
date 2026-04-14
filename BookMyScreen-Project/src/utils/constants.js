@@ -1,7 +1,15 @@
+
+// =========================
+// 📦 IMPORTS (Images & Assets)
+// =========================
+// Banner images for homepage slider
 import banner1 from "../images/banner1.jpg";
 import banner2 from "../images/banner2.avif";
 import banner3 from "../images/banner3.avif";
 import banner4 from "../images/banner4.avif";
+
+
+// Movie posters
 import m1 from "../images/m1.avif";
 import m2 from "../images/m2.avif";
 import m3 from "../images/m3.avif";
@@ -14,15 +22,23 @@ import m9 from "../images/m9.avif";
 import m10 from "../images/m10.avif";
 import m11 from "../images/m11.avif";
 import m12 from "../images/m12.avif";
+
+// Event images
 import e1 from "../images/e1.avif";
 import e2 from "../images/e2.avif";
 import e3 from "../images/e3.avif";
 import e4 from "../images/e4.avif";
 import e5 from "../images/e5.avif";
+
+// Theater logos
 import inox from "../images/inox.avif";
 import pvr from "../images/pvr.avif";
 import cinepolis from "../images/cinepolis.avif";
 
+
+// =========================
+// 🌐 LANGUAGE FILTER OPTIONS
+// =========================
 export const languages = [
   "Hindi",
   "English",
@@ -36,6 +52,9 @@ export const languages = [
 
 export const banners = [banner1, banner2, banner3, banner4];
 
+// =========================
+// 🎞️ BANNER SLIDER DATA
+// =========================
 export const movies = [
   {
     id: 1,
@@ -120,6 +139,11 @@ export const movies = [
   //     "img": m10
   //   }
 ];
+
+
+// =========================
+// 🎥 ALL MOVIES (MAIN LIST PAGE)
+// =========================
 
 export const allMovies = [
   {
@@ -226,6 +250,11 @@ export const allMovies = [
   },
 ];
 
+
+// =========================
+// 🎉 EVENTS SECTION DATA
+// =========================
+
 export const events = [
   {
     title: "COMEDY SHOWS",
@@ -254,6 +283,10 @@ export const events = [
   },
 ];
 
+
+// =========================
+// 🎭 THEATER TIMINGS DATA
+// =========================
 export const theatres = [
   {
     name: "INOX Quest Mall, Ballygunge, Kolkata",
@@ -315,6 +348,10 @@ export const theatres = [
   },
 ];
 
+
+// =========================
+// 🎟️ BOOKING HISTORY DATA
+// =========================
 export const ordersData = [
   {
     id: "TCAKJAB",
@@ -347,11 +384,18 @@ export const ordersData = [
     fee: 112.10
   }
 ];
-
+// =========================
+// 🎛️ FILTER OPTIONS
+// =========================
 export const filters = ["2D", "3D", "Wheelchair Friendly", "Premium Seats", "Recliners", "IMAX", "PVR PXL", "4DX", "Laser", "Dolby Atmos"];
-
+// =========================
+// 🧭 PROFILE TABS
+// =========================
 export const tabs = ["Profile", "Your Orders"];
 
+// =========================
+// 🌍 COUNTRY CODES (PHONE INPUT SUPPORT)
+// =========================
 export const countryCodes = [
   { name: "India", code: "IN", dial_code: "+91" },
   { name: "United States", code: "US", dial_code: "+1" },

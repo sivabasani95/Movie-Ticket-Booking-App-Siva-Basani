@@ -2,11 +2,13 @@
 
 
 /* Container */
+/* Container for entire booking section */
 .booking-container {
   padding: 20px;
 }
 
 /* Title */
+/* Page title */
 .booking-title {
   font-size: 22px;
   font-weight: 600;
@@ -15,6 +17,7 @@
 }
 
 /* Card */
+/* Individual booking card */
 .booking-card {
   background: #ffffff;
   padding: 20px;
@@ -24,6 +27,7 @@
 }
 
 /* Top Section */
+/* Top section (poster + details) */
 .booking-top {
   display: flex;
   gap: 20px;
@@ -31,6 +35,7 @@
 }
 
 /* Poster */
+/* Movie poster image */
 .booking-poster {
   width: 120px;
   height: 160px;
@@ -39,12 +44,14 @@
 }
 
 /* Divider */
+/* Vertical divider between poster and details */
 .divider {
   height: 160px;
   border-left: 1px dashed #ccc;
 }
 
 /* Details */
+/* Wrapper for booking details */
 .booking-details {
   display: flex;
   justify-content: space-between;
@@ -52,41 +59,49 @@
 }
 
 /* Left Info */
+
+/* Wrapper for booking details */
 .booking-info {
   display: flex;
   flex-direction: column;
 }
 
 /* Text styles */
+/* Movie title */
 .movie-title {
   font-size: 18px;
   font-weight: 500;
   color: black;
 }
 
+/* Format (2D, 3D, etc.) */
 .movie-format {
   font-size: 14px;
   color: #777;
 }
 
+/* Show time */
 .movie-time {
   font-size: 14px;
   margin-top: 6px;
   color: #555;
 }
 
+/* Quantity of tickets */
 .movie-qty {
   font-size: 13px;
   margin-top: 4px;
   color: #666;
 }
 
+/* Seat numbers */
 .movie-seats {
   margin-top: 8px;
   font-weight: 200;
 }
 
 /* Ticket type */
+/* Ticket type label */
 .ticket-type {
   font-size: 14px;
   font-weight: 500;
@@ -94,16 +109,19 @@
 }
 
 /* Price Section */
+/* Price section (right side) */
 .booking-price {
   text-align: right;
   margin-top: 15px;
 }
 
+/* Price breakdown text */
 .price-breakdown {
   font-size: 13px;
   color: #777;
 }
 
+/* Total price */
 .total-price {
   font-size: 20px;
   font-weight: bold;
@@ -111,6 +129,7 @@
 }
 
 /* Meta Section */
+/* Meta info section (seat, booking info, etc.) */
 .booking-meta {
   margin-top: 15px;
   display: flex;
@@ -119,12 +138,13 @@
   gap: 10px;
 }
 
+/* Seat icon styling */
 .seat-icon {
   margin-right: 6px;
   vertical-align: middle;
 }
 
-
+/* Meta title text */
 .meta-title {
   font-weight: 600;
   font-size: 14px;
@@ -132,19 +152,22 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+    /* Stack layout vertically */
   .booking-top {
     flex-direction: column;
   }
 
+    /* Hide divider on small screens */
   .divider {
     display: none;
   }
 
+    /* Stack details */
   .booking-details {
     flex-direction: column;
     gap: 10px;
   }
-
+  /* Align price to left */
   .booking-price {
     text-align: left;
   }
