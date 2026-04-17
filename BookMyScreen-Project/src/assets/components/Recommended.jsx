@@ -31,7 +31,7 @@ const Recommended = () => {
 
                         <div key={i} className="movie-card"
 
-                            onClick={() => navigate(`/movies/${movie.id}`)}> //{/* Navigate to movie details page */}
+                            onClick={() => navigate(`/movies/${movie.id}`)}> {/* Navigate to movie details page */}
                             {/* Movie image */}
                             <div className="movie-image-wrapper">
                                 <img
