@@ -1,110 +1,184 @@
-
-
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import m4 from "../images/m4.avif";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import "./MovieDetails.css";
 import { FiShare2 } from "react-icons/fi";
 import TheaterTimings from "../assets/components/movies/TheaterTimings";
+import { getMovieById } from "../apis";
 
-// Static movie data (used for demo purposes)
-// In a real app, this would come from an API or database
-const movie = {
-  id: 4,
-  title: "F1: The Movie",
-  genre: ["Action", "Drama", "Sports"],
-  rating: 9.5,
-  votes: "6.8K",
-  img: m4,
-  languages: ["English", "Hindi", "Tamil", "Telugu"],
-  age: "UA16+",
-  format: ["2D", "3D", "IMAX 3D"],
-  duration: "2h 24m",
-  releaseDate: "2023-09-15",
-  description: `F1: The Movie is a high-octane sports drama that dives into the intense world of Formula 1 racing.`,
-};
-
-
-
-
-// MovieDetails component displays detailed information about a selected movie
+// Displays details for the selected movie using data from the Spring Boot backend.
 const MovieDetails = () => {
-  // Hook used for programmatic navigation
+
+  // Gets the movie ID from the URL such as /movies/4.
+  const { movieId } = useParams();
+
+  // Stores the selected movie returned from the backend.
+  const [movie, setMovie] = useState(null);
+
+  // Tracks whether the movie data is still loading.
+  const [loading, setLoading] = useState(true);
+
+  // Stores an error message if the movie request fails.
+  const [error, setError] = useState("");
+
+  // Provides navigation to other React pages.
   const navigate = useNavigate();
 
-  return (
+  // Formats remain local because the Movie backend does not currently provide them.
+  const formats = ["2D", "3D", "IMAX 3D"];
 
+  // Loads the selected movie whenever the movie ID changes.
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+
+        // Calls GET /api/movies/{id} through the API helper.
+        const response = await getMovieById(movieId);
+
+        // Stores the movie returned from Spring Boot.
+        setMovie(response.data);
+
+      } catch (error) {
+
+        // Displays a user-friendly message if the request fails.
+        setError("Unable to load movie details.");
+
+      } finally {
+
+        // Stops the loading state after the request finishes.
+        setLoading(false);
+      }
+    };
+
+    fetchMovie();
+
+  }, [movieId]);
+
+  // Displays a message while waiting for the backend response.
+  if (loading) {
+    return <p>Loading movie details...</p>;
+  }
+
+  // Displays an error if the selected movie cannot be loaded.
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  // Prevents the page from rendering if no movie was returned.
+  if (!movie) {
+    return <p>Movie not found.</p>;
+  }
+
+  return (
     <div className="movie-page">
-       {/* Movie banner section with background image */}
+
+      {/* Uses bannerUrl when available and posterUrl as a fallback. */}
       <div
         className="movie-details"
-        style={{ backgroundImage: `url(${movie.img})` }}
+        style={{
+          backgroundImage: `url(${movie.bannerUrl || movie.posterUrl})`,
+        }}
       >
-        {/* Dark overlay for better readability */}
+
+        {/* Adds a dark overlay so the movie information is easier to read. */}
         <div className="overlay"></div>
 
-        {/* Main content container */}
+        {/* Main movie details container. */}
         <div className="details-container">
 
-          {/*Movie Poster */}
+          {/* Displays the Cloudinary movie poster returned from the backend. */}
           <div className="poster-section">
-            <img src={movie.img} alt={movie.title} className="poster-img" />
+            <img
+              src={movie.posterUrl}
+              alt={movie.title}
+              className="poster-img"
+            />
           </div>
 
-          {/* Movie Information */}
+          {/* Displays the selected movie information. */}
           <div className="info-section">
-            <h1 className="movie-title">{movie.title}</h1>
-            {/* Rating and votes */}
+
+            <h1 className="movie-title">
+              {movie.title}
+            </h1>
+
+            {/* Displays the backend movie rating. */}
             <div className="rating-box">
-              <span className="votes">{movie.votes} votes</span>
-              <button className="rate-btn">Rate Now</button>
+              <span className="votes">
+                ⭐ {movie.rating}/10
+              </span>
+
+              <button type="button" className="rate-btn">
+                Rate Now
+              </button>
             </div>
-            {/* Available formats */}
+
+            {/* Displays the currently supported movie formats. */}
             <div className="format-box">
-              {movie.format.map((f, index) => (
-                <span key={index} className="format-pill">
-                  {f}
+              {formats.map((format, index) => (
+                <span
+                  key={index}
+                  className="format-pill"
+                >
+                  {format}
                 </span>
               ))}
             </div>
 
-            {/* Basic movie info */}
+            {/* Displays movie language from the backend. */}
+            <div className="format-box">
+              <span className="format-pill">
+                {movie.language}
+              </span>
+            </div>
+
+            {/* Displays duration, genre, certificate, and release date. */}
             <p className="info-text">
-              {movie.duration} • {movie.genre.join(", ")} • {movie.age} •{" "}
-              {movie.releaseDate}
+              {movie.duration} min •{" "}
+              {Array.isArray(movie.genre)
+                ? movie.genre.join(", ")
+                : movie.genre}{" "}
+              • {movie.certificate} • {movie.releaseDate}
             </p>
 
-            {/* About section */}
+            {/* Displays the movie description returned from Spring Boot. */}
             <div className="about-section">
-              <h2 className="about-title">About the movie</h2>
-              <p className="about-text">{movie.description}</p>
+              <h2 className="about-title">
+                About the movie
+              </h2>
+
+              <p className="about-text">
+                {movie.description}
+              </p>
             </div>
+
           </div>
 
-          {/* ✅ Share Button (FIXED) */}
+          {/* Displays the share button for the movie details page. */}
           <div className="share-btn-container">
-            <button className="share-btn">
+            <button type="button" className="share-btn">
               <FiShare2 className="share-icon" />
               Share
             </button>
           </div>
 
         </div>
-
       </div>
-      {/* Theater timings section */}
+
+      {/* Displays theater and show timing information below the movie details. */}
       <div className="timings-section">
         <TheaterTimings />
-
       </div>
-      
-{/* Navigation button to move to Profile page */}
+
+      {/* Navigates to the profile page. */}
       <div className="next-btn-wrapper">
-        <button className="next-btn" onClick={() => navigate("/profile")}>
+        <button
+          type="button"
+          className="next-btn"
+          onClick={() => navigate("/profile")}
+        >
           Next
         </button>
       </div>
-
 
     </div>
   );
