@@ -1,64 +1,131 @@
-
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Recommended.css";
-import { movies } from "../../utils/constants";
 import { useNavigate } from "react-router-dom";
+import { getAllMovies } from "../../apis";
 
-// Recommended component to show movie list on home page
+// Displays recommended movies on the Home page using backend data.
 const Recommended = () => {
 
-    // Hook for navigation
-    const navigate = useNavigate();
+  // Stores movies received from the backend.
+  const [movies, setMovies] = useState([]);
 
+  // Tracks whether movie data is still loading.
+  const [loading, setLoading] = useState(true);
 
-    return (
-        <div className="recommended-container">
-            {/* Wrapper for centered layout */}
-            <div className="recommended-wrapper">
-                <div className="recommended-header">
-                    <h2 className="recommended-title">Recommended Movies</h2>
-                    {/* Navigate to movies page */}
-                    <span className="recommended-seeall" onClick={() => navigate("/movies")}>See All</span>
+  // Stores an error message if the API request fails.
+  const [error, setError] = useState("");
 
+  // Used to navigate between movie pages.
+  const navigate = useNavigate();
 
-                </div>
+  // Fetches movie data when the component first loads.
+  useEffect(() => {
 
-                {/* Movies grid */}
-                <div className="movies-grid">
-                    {movies.map((movie, i) => (
+    const fetchRecommendedMovies = async () => {
+      try {
 
+        // Gets all movies from the Spring Boot backend.
+        const response = await getAllMovies();
 
-                        <div key={i} className="movie-card"
+        // Displays the first five movies in the Recommended section.
+        setMovies(response.data.slice(0, 4));
 
-                            onClick={() => navigate(`/movies/${movie.id}`)}> {/* Navigate to movie details page */}
-                            {/* Movie image */}
-                            <div className="movie-image-wrapper">
-                                <img
-                                    src={movie.img}
-                                    alt={movie.title}
-                                />
-                            </div>
+      } catch (error) {
 
-                            {/* Movie info */}
-                            <div className="movie-info">
-                                <h3 className="movie-title">{movie.title}</h3>
-                                {/* Movie genre (replace / with | for display) */}
-                                <p className="movie-genre">{movie.genre}
-                                    {movie.genre.replaceAll("/", "|")}
-                                </p>
-                            </div>
-                        </div>
+        // Displays an error message when movie data cannot be loaded.
+        setError("Unable to load recommended movies.");
 
+      } finally {
 
+        // Stops the loading state after the API request finishes.
+        setLoading(false);
+      }
+    };
 
-                    ))}
-                </div>
+    fetchRecommendedMovies();
 
-            </div>
+  }, []);
+
+  return (
+    <div className="recommended-container">
+
+      {/* Main container for the Recommended Movies section. */}
+      <div className="recommended-wrapper">
+
+        {/* Displays the section title and See All option. */}
+        <div className="recommended-header">
+
+          <h2 className="recommended-title">
+            Recommended Movies
+          </h2>
+
+          {/* Navigates to the complete Movies page. */}
+          <span
+            className="recommended-seeall"
+            onClick={() => navigate("/movies")}
+          >
+            See All
+          </span>
 
         </div>
-    );
+
+        {/* Displays a message while movies are loading. */}
+        {loading && (
+          <p>Loading movies...</p>
+        )}
+
+        {/* Displays an error message if the backend request fails. */}
+        {error && (
+          <p>{error}</p>
+        )}
+
+        {/* Displays movies after the backend data is loaded. */}
+        {!loading && !error && (
+          <div className="movies-grid">
+
+            {movies.map((movie) => (
+
+              <div
+                key={movie.id}
+                className="movie-card"
+                onClick={() => navigate(`/movies/${movie.id}`)}
+              >
+
+                {/* Displays the movie poster from the backend. */}
+                <div className="movie-image-wrapper">
+                  <img
+                    src={movie.posterUrl}
+                    alt={movie.title}
+                  />
+                </div>
+
+                {/* Displays movie title and genre information. */}
+                <div className="movie-info">
+
+                  <h3 className="movie-title">
+                    {movie.title}
+                  </h3>
+
+                  {/* Converts the backend genre array into readable text. */}
+                  <p className="movie-genre">
+                    {Array.isArray(movie.genre)
+                      ? movie.genre.join(" | ")
+                      : movie.genre}
+                  </p>
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+        )}
+
+      </div>
+
+    </div>
+  );
 };
 
 export default Recommended;
