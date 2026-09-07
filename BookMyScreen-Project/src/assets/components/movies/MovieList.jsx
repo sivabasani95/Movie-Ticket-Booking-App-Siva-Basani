@@ -1,9 +1,11 @@
 import React from "react";
 import "./MovieList.css";
 import MovieCard from "./MovieCard";
-import { allMovies, languages } from "../../../utils/constants";
+import { languages } from "../../../utils/constants";
 
-const MovieList = ({ addToWishlist, wishlist }) => {
+// Receives movie data from Movies.jsx.
+// Displays backend movies using the existing MovieCard component.
+const MovieList = ({ movies, addToWishlist, wishlist }) => {
   return (
     <div className="movie-list-container">
       {/* Language Pills */}
@@ -18,19 +20,21 @@ const MovieList = ({ addToWishlist, wishlist }) => {
       {/* Coming Soon Header Block */}
       <div className="coming-soon-header">
         <h3 className="coming-title">Coming Soon</h3>
+
         <a href="#" className="explore-link">
           Explore upcoming Movies <span className="arrow">›</span>
         </a>
       </div>
 
-      {/* Movie card component */}
+      {/* Movie cards from Spring Boot backend */}
       <div className="movies-grid">
-        {allMovies.map((movie, i) => (
+        {movies.map((movie) => (
           <MovieCard
-           key={i}
-           movie={movie}
-           addToWishlist={addToWishlist} 
-            wishlist={wishlist}/>
+            key={movie.id}
+            movie={movie}
+            addToWishlist={addToWishlist}
+            wishlist={wishlist}
+          />
         ))}
       </div>
     </div>

@@ -1,8 +1,6 @@
 
 import axios from "axios";
 
-import axios from "axios";
-
 // Set the default headers for API requests.
 const defaultHeader = {
   "Content-Type": "application/json",

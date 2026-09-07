@@ -98,7 +98,8 @@ const theatres = [
           );
         })}
       </div>
-      </br>
+      <br />
+
   {/* Theatre cards section */}
       <div className="theatres-container">
   {theatres.map((theatre, i) => (
@@ -122,13 +123,15 @@ const theatres = [
       <div className="timings-row">
        
         {theatre.timings.map((time, index) => (
-          <button key={index} className="timing-btn">
+          <button key={index} className="timing-btn" type="button"> 
             {time}
           </button>
          
         ))}
           {/* Cancellation button */}
-        <button className="cancel-btn">Allow Cancellation</button>
+        <button className="cancel-btn" type="button">
+           Allow Cancellation 
+          </button>
       </div>
 
     </div>
