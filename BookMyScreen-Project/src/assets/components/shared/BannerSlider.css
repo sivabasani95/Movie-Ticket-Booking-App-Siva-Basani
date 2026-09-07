@@ -32,7 +32,7 @@
   transition: all 0.3s ease; /* Smooth animation */
 }
 
-/* Side slides (not active) */
+/* Side slides  */
 .slick-slide {
   opacity: 0.5; /* Dim effect */
   transform: scale(0.92); /* Slightly smaller */

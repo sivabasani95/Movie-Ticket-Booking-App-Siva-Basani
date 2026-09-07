@@ -27,7 +27,7 @@ const BookingHistory = () => {
                             />
 
                             {/* Vertical divider */}
-                            <div className="divider"></div>
+                            {/* <div className="divider"></div> */}
                             {/* Booking details section */}
                             <div className="booking-details">
 

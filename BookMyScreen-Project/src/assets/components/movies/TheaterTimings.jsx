@@ -77,8 +77,6 @@ const theatres = [
         </div>
     </div>
 
-  {/* Divider line */}
-      <hr className="divider" />
 {/* Date selection buttons */}
       <div className="date-container">
         {next7days.map((date, i) => {
@@ -100,7 +98,7 @@ const theatres = [
           );
         })}
       </div>
-
+      </br>
   {/* Theatre cards section */}
       <div className="theatres-container">
   {theatres.map((theatre, i) => (

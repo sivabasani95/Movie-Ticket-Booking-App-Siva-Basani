@@ -1,6 +1,3 @@
-
-
-
 import { Route, Routes } from "react-router-dom";
 import Header from "./assets/components/shared/Header";
 import Footer from "./assets/components/shared/Footer";
@@ -37,7 +34,9 @@ function App() {
       <main className="main-content">
         <Routes>
           {/* Home page route */}
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home/>} />
+         
+      
           {/* Profile page route with wishlist props */}
           <Route path="/profile" element={<Profile
             wishlist={wishlist}

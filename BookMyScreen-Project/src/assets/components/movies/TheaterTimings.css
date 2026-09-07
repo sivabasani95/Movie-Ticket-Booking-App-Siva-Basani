@@ -111,12 +111,12 @@
 /* DATE SECTION */
 .date-container {
  
-    display: flex;
+  display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 6px;
   padding: 6px 12px;
-  margin: 0;
+  margin: 5px;
   width: 100%;
   height: auto;
   min-height: 0;
