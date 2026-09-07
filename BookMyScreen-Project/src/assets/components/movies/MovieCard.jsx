@@ -2,65 +2,72 @@ import React from "react";
 import "./MovieCard.css";
 import { useNavigate } from "react-router-dom";
 
-
-
-
-// MovieCard component receives movie data and wishlist function as props//
+// MovieCard displays the information for one movie received from the backend.
+// The movie object contains fields such as posterUrl, title, rating, certificate, and language.
 const MovieCard = ({ movie, addToWishlist }) => {
-  // Hook used for navigation between pages
+
+  // useNavigate allows the user to move to the movie details page
+  // without refreshing the entire React application.
   const navigate = useNavigate();
-  // Handle click on movie card
+
+  // When the movie card is clicked, navigate to the details page
+  // using the movie ID received from the Spring Boot backend.
   const handleClick = () => {
-    if (movie.id === 4) {   // ✅ only F1
-      navigate(`/movies/${movie.id}`);
-    }
+    navigate(`/movies/${movie.id}`);
   };
 
   return (
-    <div className="movie-card"
+    <div
+      className="movie-card"
+      onClick={handleClick}
+      style={{ cursor: "pointer" }}
+    >
 
-      onClick={handleClick}  // Click event for card navigation
-      style={{
-        cursor: movie.id === 4 ? "pointer" : "default"
-      }}>
-
-      {/* Movie poster image */}
+      {/* Display the movie poster using the posterUrl provided by the backend */}
       <img
-        src={movie.img}
+        src={movie.posterUrl}
         alt={movie.title}
         className="movie-card-img"
       />
-      {/* Movie title */}
-      <p className="movie-card-title">{movie.title}</p>
 
-      {/* Age certification */}
+      {/* Display the movie title */}
+      <p className="movie-card-title">
+        {movie.title}
+      </p>
+
+      {/* Display the movie rating returned from the backend */}
       <p className="movie-card-rating">
-        {movie.rating} | {movie.votes}
+        {movie.rating}
       </p>
 
-      <p className="movie-card-cert">{movie.age}</p>
+      {/* Display the movie age/certificate classification */}
+      <p className="movie-card-cert">
+        {movie.certificate}
+      </p>
 
-      {/* Available languages */}
+      {/* Display the primary language of the movie */}
       <p className="movie-card-lang">
-        {movie.languages}
+        {movie.language}
       </p>
 
-      {/* Add to wishlist button */}
+      {/* Add the selected movie to the user's wishlist */}
       <button
+        type="button"
         onClick={(e) => {
-          e.stopPropagation(); //Prevents card click (navigation) when button is clicked
-          addToWishlist(movie);  // Adds movie to wishlist
+
+          // Prevent the movie card click event from running when
+          // the user only wants to click the wishlist button.
+          e.stopPropagation();
+
+          // Pass the selected movie to the wishlist function.
+          addToWishlist(movie);
         }}
       >
         Add to Wishlist
       </button>
 
-
-
-
     </div>
-
   );
+};
 
-}
 export default MovieCard;
