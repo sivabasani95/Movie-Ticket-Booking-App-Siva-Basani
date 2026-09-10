@@ -164,9 +164,12 @@ const MovieDetails = () => {
         </div>
       </div>
 
-      {/* Displays theater and show timing information below the movie details. */}
+      {/* Displays theater and show timing information below the movie details. 
+      Passes the selected movie ID so TheaterTimings can fetch
+      shows for this specific movie from the Spring Boot backend.*/}
+      
       <div className="timings-section">
-        <TheaterTimings />
+        <TheaterTimings movieId={movie.id} />
       </div>
 
       {/* Navigates to the profile page. */}
