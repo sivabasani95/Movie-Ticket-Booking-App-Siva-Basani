@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import React, { useState } from "react";
+import { Route, Routes, useMatch } from "react-router-dom";
 import Header from "./assets/components/shared/Header";
 import Footer from "./assets/components/shared/Footer";
 import Home from "./pages/Home";
@@ -6,52 +7,92 @@ import Movies from "./pages/Movies";
 import MovieDetails from "./pages/MovieDetails";
 import Profile from "./pages/Profile";
 import About from "./assets/components/shared/About";
-import React, { useState } from "react";
+import SeatLayout from "./pages/SeatLayout";
 
-
-
-// Main App component handles routing and shared wishlist state
+// Main App component handles routing and shared wishlist state.
 function App() {
-  // State to store wishlist movies
   const [wishlist, setWishlist] = useState([]);
 
-  // Adds a movie to wishlist only if it is not already added
+  // Checks whether the current page is the seat layout page.
+  const isSeatLayoutPage = useMatch("/shows/:showId/seats");
+
+  // Adds a movie to the wishlist if it is not already added.
   const addToWishlist = (movie) => {
-    setWishlist((prev) => prev.some((item) => item.id === movie.id) ? prev :
-      [...prev, movie]);
+    setWishlist((prev) =>
+      prev.some((item) => item.id === movie.id)
+        ? prev
+        : [...prev, movie]
+    );
   };
 
-  // Removes a movie from wishlist by id
+  // Removes a movie from the wishlist using its ID.
   const removeFromWishlist = (id) => {
-    setWishlist((prev) => prev.filter((m) => m.id !== id));
+    setWishlist((prev) =>
+      prev.filter((movie) => movie.id !== id)
+    );
   };
 
   return (
     <div className="app-container">
-      {/* Common header shown on all pages */}
-      <Header />
-      {/* Main page content */}
+
+      {/* Hides the header on the seat layout page. */}
+      {!isSeatLayoutPage && <Header />}
+
       <main className="main-content">
         <Routes>
-          {/* Home page route */}
-          <Route path="/" element={<Home/>} />
-         
-      
-          {/* Profile page route with wishlist props */}
-          <Route path="/profile" element={<Profile
-            wishlist={wishlist}
-            removeFromWishlist={removeFromWishlist}
-          />} />
-          {/* Movies page route with wishlist actions */}
-          <Route path="/movies" element={<Movies addToWishlist={addToWishlist} wishlist={wishlist} />} />
 
-          <Route path="/movies/:movieId" element={<MovieDetails />} />
-          {/* About page route */}
-          <Route path="/about" element={<About />} />
+          {/* Displays the home page. */}
+          <Route
+            path="/"
+            element={<Home />}
+          />
+
+          {/* Displays the movies page. */}
+          <Route
+            path="/movies"
+            element={
+              <Movies
+                addToWishlist={addToWishlist}
+                wishlist={wishlist}
+              />
+            }
+          />
+
+          {/* Displays details for the selected movie. */}
+          <Route
+            path="/movies/:movieId"
+            element={<MovieDetails />}
+          />
+
+          {/* Displays the user's profile and wishlist. */}
+          <Route
+            path="/profile"
+            element={
+              <Profile
+                wishlist={wishlist}
+                removeFromWishlist={removeFromWishlist}
+              />
+            }
+          />
+
+          {/* Displays the About page. */}
+          <Route
+            path="/about"
+            element={<About />}
+          />
+
+          {/* Displays the seat layout for the selected show. */}
+          <Route
+            path="/shows/:showId/seats"
+            element={<SeatLayout />}
+          />
+
         </Routes>
       </main>
-      {/* Common footer shown on all pages */}
-      <Footer />
+
+      {/* Hides the footer on the seat layout page. */}
+      {!isSeatLayoutPage && <Footer />}
+
     </div>
   );
 }

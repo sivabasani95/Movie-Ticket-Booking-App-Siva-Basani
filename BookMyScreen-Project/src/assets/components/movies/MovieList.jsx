@@ -8,6 +8,7 @@ import { languages } from "../../../utils/constants";
 const MovieList = ({ movies, addToWishlist, wishlist }) => {
   return (
     <div className="movie-list-container">
+
       {/* Language Pills */}
       <div className="language-list">
         {languages.map((lang, i) => (
@@ -37,6 +38,7 @@ const MovieList = ({ movies, addToWishlist, wishlist }) => {
           />
         ))}
       </div>
+
     </div>
   );
 };

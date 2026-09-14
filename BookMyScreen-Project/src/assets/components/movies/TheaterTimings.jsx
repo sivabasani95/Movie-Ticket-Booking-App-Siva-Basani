@@ -3,46 +3,39 @@ import "./TheaterTimings.css";
 import dayjs from "dayjs";
 import { getShows } from "../../../apis";
 import { useLocation } from "../../../context/LocationContext";
+import { useNavigate } from "react-router-dom";
 
-// Receives the selected movie ID from MovieDetails.
-// Uses movie ID, selected date, and state to fetch real shows from Spring Boot.
+// Displays theaters and show timings for the selected movie.
 const TheaterTimings = ({ movieId }) => {
   const today = dayjs();
 
+  // Allows navigation to the seat selection page.
+  const navigate = useNavigate();
+
   // Gets the user's state from LocationContext.
-  // This state is sent to the backend when searching for shows.
   const { state } = useLocation();
 
-  // Stores the date currently selected by the user.
-  // Today's date is selected when the component first loads.
+  // Stores the currently selected date.
   const [selectedDate, setSelectedDate] = useState(today);
 
-  // Stores show data returned from the Spring Boot backend.
-  // This replaces the old hard-coded theater and timing data.
+  // Stores shows returned from the backend.
   const [shows, setShows] = useState([]);
 
-  // Tracks whether show data is currently loading.
-  // This helps display a message while waiting for the API response.
+  // Tracks whether show data is loading.
   const [loadingShows, setLoadingShows] = useState(false);
 
-  // Stores an error message if show data cannot be loaded.
-  // Errors are displayed in the UI instead of using console.log().
+  // Stores an error message if shows cannot be loaded.
   const [showError, setShowError] = useState("");
 
   // Creates buttons for today and the next six days.
-  // Selecting another date sends a new request to the backend.
   const next7days = Array.from(
     { length: 7 },
     (_, i) => today.add(i, "day")
   );
 
-  // Loads shows whenever movie ID, selected date, or state changes.
-  // Spring Boot expects movieId, date, and location query parameters.
+  // Loads shows whenever the movie, date, or state changes.
   useEffect(() => {
     const fetchShows = async () => {
-
-      // Wait until both movie ID and state are available.
-      // This prevents sending an incomplete request to Spring Boot.
       if (!movieId || !state) {
         return;
       }
@@ -51,33 +44,23 @@ const TheaterTimings = ({ movieId }) => {
         setLoadingShows(true);
         setShowError("");
 
-        // Converts the selected date to Java LocalDate format.
-        // Example: 2026-09-09.
+        // Formats the selected date for Spring Boot.
         const formattedDate = selectedDate.format("YYYY-MM-DD");
 
-        // Calls GET /api/shows with movie ID, date, and state.
-        // The state is sent as the backend location parameter.
+        // Fetches shows using movie ID, date, and state.
         const response = await getShows(
           movieId,
           formattedDate,
           state
         );
 
-        // Stores the show data returned from Spring Boot.
-        // This data is used to build theater cards and show timings.
         setShows(response.data);
 
       } catch (error) {
-
-        // Displays an error message if the backend request fails.
-        // Clears old show data so incorrect results are not displayed.
         setShowError("Unable to load show timings.");
         setShows([]);
 
       } finally {
-
-        // Stops the loading state after the API request finishes.
-        // This runs whether the request succeeds or fails.
         setLoadingShows(false);
       }
     };
@@ -87,33 +70,35 @@ const TheaterTimings = ({ movieId }) => {
   }, [movieId, selectedDate, state]);
 
   // Groups multiple shows from the same theater together.
-  // This lets one theater card display all of its available show times.
-  const groupedTheaters = shows.reduce((result, show) => {
-    const theaterId = show.theater?.id;
+  const groupedTheaters = shows.reduce(
+    (result, show) => {
+      const theaterId = show.theater?.id;
 
-    if (!theaterId) {
+      if (!theaterId) {
+        return result;
+      }
+
+      const existingTheater = result.find(
+        (item) => item.id === theaterId
+      );
+
+      if (existingTheater) {
+        existingTheater.shows.push(show);
+
+      } else {
+        result.push({
+          id: theaterId,
+          theater: show.theater,
+          shows: [show],
+        });
+      }
+
       return result;
-    }
+    },
+    []
+  );
 
-    const existingTheater = result.find(
-      (item) => item.id === theaterId
-    );
-
-    if (existingTheater) {
-      existingTheater.shows.push(show);
-    } else {
-      result.push({
-        id: theaterId,
-        theater: show.theater,
-        shows: [show],
-      });
-    }
-
-    return result;
-  }, []);
-
-  // Filter options displayed above the theater list.
-  // These remain frontend display options for now.
+  // Stores the filter options shown above the theater list.
   const filters = [
     "2D",
     "3D",
@@ -132,6 +117,7 @@ const TheaterTimings = ({ movieId }) => {
 
       {/* Displays movie format and theater feature filters. */}
       <div className="filters-wrapper">
+
         <div className="filters-container">
           {filters.map((item, i) => (
             <button
@@ -146,6 +132,7 @@ const TheaterTimings = ({ movieId }) => {
 
         {/* Displays seat availability status information. */}
         <div className="status-row">
+
           <span className="status-item">
             <span className="status-dot available"></span>
             Available
@@ -160,11 +147,13 @@ const TheaterTimings = ({ movieId }) => {
             <span className="status-dot almost"></span>
             Almost Full
           </span>
+
         </div>
       </div>
 
-      {/* Displays seven selectable dates for finding shows. */}
+      {/* Displays seven selectable dates. */}
       <div className="date-container">
+
         {next7days.map((date, i) => {
           const isSelected = selectedDate.isSame(date, "day");
 
@@ -191,38 +180,41 @@ const TheaterTimings = ({ movieId }) => {
             </button>
           );
         })}
+
       </div>
 
       <br />
 
-      {/* Displays while show data is being loaded from Spring Boot. */}
+      {/* Displays a loading message while shows are being fetched. */}
       {loadingShows && (
         <p>Loading show timings...</p>
       )}
 
-      {/* Displays when the backend request fails. */}
+      {/* Displays an error message if the request fails. */}
       {!loadingShows && showError && (
         <p>{showError}</p>
       )}
 
-      {/* Displays when the request works but no shows match the search. */}
+      {/* Displays a message when no shows are available. */}
       {!loadingShows &&
         !showError &&
         groupedTheaters.length === 0 && (
           <p>No shows available for the selected date.</p>
         )}
 
-      {/* Displays real theaters and show times returned from MySQL. */}
+      {/* Displays real theaters and show timings from the backend. */}
       {!loadingShows && !showError && (
+
         <div className="theatres-container">
 
           {groupedTheaters.map((item) => (
+
             <div
               key={item.id}
               className="theatre-card"
             >
 
-              {/* Displays theater information returned by Spring Boot. */}
+              {/* Displays the theater information. */}
               <div className="theatre-header">
 
                 {item.theater?.logo && (
@@ -234,6 +226,7 @@ const TheaterTimings = ({ movieId }) => {
                 )}
 
                 <div className="theatre-info">
+
                   <h3 className="theatre-name">
                     {item.theater?.name}
                   </h3>
@@ -241,11 +234,11 @@ const TheaterTimings = ({ movieId }) => {
                   <p className="theatre-location">
                     {item.theater?.location}
                   </p>
-                </div>
 
+                </div>
               </div>
 
-              {/* Displays all backend show times for this theater. */}
+              {/* Displays all available show times for the theater. */}
               <div className="timings-row">
 
                 {item.shows.map((show) => (
@@ -253,6 +246,9 @@ const TheaterTimings = ({ movieId }) => {
                     key={show.id}
                     className="timing-btn"
                     type="button"
+                    onClick={() =>
+                      navigate(`/shows/${show.id}/seats`)
+                    }
                   >
                     {show.startTime}
                   </button>

@@ -37,7 +37,7 @@ const MovieCard = ({ movie, addToWishlist }) => {
 
       {/* Display the movie rating returned from the backend */}
       <p className="movie-card-rating">
-        {movie.rating}
+        ⭐ {movie.rating}/10
       </p>
 
       {/* Display the movie age/certificate classification */}
@@ -51,20 +51,22 @@ const MovieCard = ({ movie, addToWishlist }) => {
       </p>
 
       {/* Add the selected movie to the user's wishlist */}
-      <button
-        type="button"
-        onClick={(e) => {
+      {addToWishlist && (
+        <button
+          type="button"
+          onClick={(e) => {
 
-          // Prevent the movie card click event from running when
-          // the user only wants to click the wishlist button.
-          e.stopPropagation();
+            // Prevent the movie card click event from running when
+            // the user only wants to click the wishlist button.
+            e.stopPropagation();
 
-          // Pass the selected movie to the wishlist function.
-          addToWishlist(movie);
-        }}
-      >
-        Add to Wishlist
-      </button>
+            // Pass the selected movie to the wishlist function.
+            addToWishlist(movie);
+          }}
+        >
+          Add to Wishlist
+        </button>
+      )}
 
     </div>
   );
