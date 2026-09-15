@@ -8,6 +8,7 @@ import App from "./App.jsx";
 import { LocationProvider } from "./context/LocationContext";
 
 
+
 // Render the React application into the root DOM element
 createRoot(document.getElementById("root")).render(
   <StrictMode>
