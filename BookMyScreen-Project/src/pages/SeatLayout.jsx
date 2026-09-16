@@ -18,6 +18,9 @@ const SeatLayout = () => {
   // Stores the IDs of seats selected by the user.
   const [selectedSeats, setSelectedSeats] = useState([]);
 
+  // Checks whether at least one seat is selected.
+const isSelectedSeats = selectedSeats.length > 0;
+
   // Tracks whether the show information is loading.
   const [loading, setLoading] = useState(true);
 
@@ -425,8 +428,14 @@ const SeatLayout = () => {
           ====================================== */}
 
       {/* Displays the seat status/footer section. */}
-        
-<Footer />
+        <div className="fixed bottom-0 left-0 w-full bg-white z-50">
+  <Footer
+    isSelected={isSelectedSeats}
+    selectedSeats={selectedSeats}
+    showData={show}
+  />
+</div>
+
     </div>  
   );
 };
