@@ -360,12 +360,6 @@ const SeatLayout = () => {
  
                 <div className="flex items-center justify-center gap-5 mt-3 text-xs">
 
-              
-
-                
-
-                 
-
                 </div>
 
               </div>
@@ -431,9 +425,9 @@ const SeatLayout = () => {
           ====================================== */}
 
       {/* Displays the seat status/footer section. */}
-      <Footer />
-
-    </div>
+        
+<Footer />
+    </div>  
   );
 };
 
