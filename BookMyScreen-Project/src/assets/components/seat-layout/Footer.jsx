@@ -1,7 +1,46 @@
 import React from "react";
 
-// Displays the screen direction and seat status information.
-const Footer = () => {
+// Footer changes depending on whether seats are selected.
+const Footer = ({ isSelected, selectedSeats }) => {
+
+  // =========================================
+  // SELECTED SEATS FOOTER
+  // =========================================
+  // When one or more seats are selected,
+  // show the selected seat count and Proceed button.
+  if (isSelected) {
+    return (
+      <footer className="w-full mt-auto py-4 border-t border-gray-200">
+
+        <div className="flex items-center justify-between px-6">
+
+          {/* Number of selected seats */}
+          <p className="text-sm font-semibold m-0">
+            ★ {selectedSeats.length}{" "}
+            {selectedSeats.length === 1
+              ? "Seat Selected"
+              : "Seats Selected"}
+          </p>
+
+          {/* Proceed button */}
+          <button
+            type="button"
+            className="bg-black text-white px-7 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition"
+          >
+            Proceed
+          </button>
+
+        </div>
+
+      </footer>
+    );
+  }
+
+  // =========================================
+  // NORMAL FOOTER
+  // =========================================
+  // When no seats are selected,
+  // show SCREEN THIS WAY and the seat legend.
   return (
     <footer className="w-full mt-auto py-4 border-t border-gray-200">
 

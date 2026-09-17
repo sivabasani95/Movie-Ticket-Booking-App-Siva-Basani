@@ -43,7 +43,7 @@ export const LocationProvider = ({ children }) => {
 
          // Stores the state separately for backend show searches.
         // Example: Missouri is sent to GET /api/shows.
-        setLocation(userLocation);
+        setLocation(userLocation?.replace(/’/g, "'"));
         setState(data?.address?.state || null);
 
       } catch (error) {
