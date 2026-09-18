@@ -1,444 +1,442 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import { getShowById } from "../apis";
+
 import Header from "../assets/components/seat-layout/Header";
 import Footer from "../assets/components/seat-layout/Footer";
+import { getShowById } from "../apis";
 
-// Main component for displaying the seat selection page.
 const SeatLayout = () => {
-
-  // Gets the showId from the URL.
-  // Example: /shows/1112/seats
+  // Gets the show ID from the URL, for example /shows/2204/seats.
   const { showId } = useParams();
 
-  // Stores the show information received from the backend.
+  // Allows this page to navigate to the Checkout page.
+  const navigate = useNavigate();
+
+  // Stores the show information returned by the backend.
   const [show, setShow] = useState(null);
 
-  // Stores the IDs of seats selected by the user.
+  // Stores all seats currently selected by the user.
   const [selectedSeats, setSelectedSeats] = useState([]);
 
-  // Checks whether at least one seat is selected.
-const isSelectedSeats = selectedSeats.length > 0;
-
-  // Tracks whether the show information is loading.
+  // Tracks whether show information is still loading.
   const [loading, setLoading] = useState(true);
 
-  // Stores an error message if the API request fails.
+  // Stores an error message if the backend request fails.
   const [error, setError] = useState("");
 
-  // ==========================================
-  // LOAD SHOW DATA FROM SPRING BOOT BACKEND
-  // ==========================================
+  // Temporary occupied seats until occupied-seat data comes from the backend.
+  const occupiedSeats = useMemo(
+    () => ["E6", "D10", "C12", "B16", "A6"],
+    []
+  );
 
+  // Defines the seat sections, prices, row letters, and number of seats.
+  const seatSections = [
+    {
+      name: "PREMIUM",
+      price: 20,
+      rows: [{ row: "E", seats: 10 }],
+    },
+    {
+      name: "EXECUTIVE",
+      price: 15,
+      rows: [
+        { row: "D", seats: 20 },
+        { row: "C", seats: 20 },
+        { row: "B", seats: 20 },
+      ],
+    },
+    {
+      name: "NORMAL",
+      price: 10,
+      rows: [{ row: "A", seats: 20 }],
+    },
+  ];
+
+  // Loads the selected show's movie, theater, date, and time from the backend.
   useEffect(() => {
-
-    // Function to get one show from the backend.
     const fetchShow = async () => {
       try {
-
-        // Start loading.
+        // Show the loading state while waiting for the backend response.
         setLoading(true);
 
-        // Clear old error messages.
+        // Clear any previous error message.
         setError("");
 
-        // Calls the API using the showId from the URL.
+        // Calls GET show-by-ID using the show ID from the URL.
         const response = await getShowById(showId);
 
-        // Stores the returned show information.
+        // Helps us inspect the exact backend show object in the browser console.
+        console.log("Show data:", response.data);
+
+        // Saves the complete backend show object in state.
         setShow(response.data);
+      } catch (err) {
+        // Prints the actual backend/API error for debugging.
+        console.error("Error loading show:", err);
 
-      } catch (error) {
-
-        // Shows an error message if the request fails.
-        setError("Unable to load seat information.");
-
-        // Clears old show information.
-        setShow(null);
-
+        // Displays a user-friendly error message on the page.
+        setError("Unable to load show information.");
       } finally {
-
-        // Stops loading after the API request finishes.
+        // Stops the loading state whether the request succeeds or fails.
         setLoading(false);
       }
     };
 
-    // Calls the function.
-    fetchShow();
-
+    // Only call the backend when a show ID exists.
+    if (showId) {
+      fetchShow();
+    }
   }, [showId]);
 
-  // ==========================================
-  // SELECT OR UNSELECT A SEAT
-  // ==========================================
+  // Returns the correct ticket price by checking the seat's row letter.
+  const getSeatPrice = (seatId) => {
+    // Gets the first character, such as A from A2 or E from E5.
+    const rowLetter = seatId.charAt(0);
 
-  const handleSeatClick = (seat) => {
+    // Finds which seat section contains that row.
+    const section = seatSections.find((section) =>
+      section.rows.some((row) => row.row === rowLetter)
+    );
 
-    // Do not allow the user to select an occupied seat.
-    if (seat.status !== "AVAILABLE") {
+    // Returns the section price, or 0 if no matching section exists.
+    return section?.price || 0;
+  };
+
+  // Calculates the total cost whenever selectedSeats changes.
+  const totalPrice = selectedSeats.reduce(
+    (total, seatId) => total + getSeatPrice(seatId),
+    0
+  );
+
+  // Selects an available seat or removes it when clicked again.
+  const handleSeatClick = (seatId) => {
+    // Prevent occupied seats from being selected.
+    if (occupiedSeats.includes(seatId)) {
       return;
     }
 
-    // Updates the selected seat list.
-    setSelectedSeats((previousSeats) =>
-
-      // If the seat is already selected,
-      // clicking it again removes it.
-      previousSeats.includes(seat.id)
-        ? previousSeats.filter((id) => id !== seat.id)
-
-        // Otherwise add the seat to the selected list.
-        : [...previousSeats, seat.id]
-    );
-  };
-
-  // ==========================================
-  // GROUP SEATS BY ROW
-  // ==========================================
-
-  /*
-    The backend gives us one seatLayout array.
-
-    This code groups the seats by row.
-
-    Example:
-
-    A -> 1, 2, 3, 4...
-    B -> 1, 2, 3, 4...
-    C -> 1, 2, 3, 4...
-  */
-
-  const groupedSeats =
-    show?.seatLayout?.reduce((result, seat) => {
-
-      // If this row does not exist yet,
-      // create an empty array for it.
-      if (!result[seat.row]) {
-        result[seat.row] = [];
+    // Update the selected seats using the previous state.
+    setSelectedSeats((currentSeats) => {
+      // If the seat is already selected, clicking it again deselects it.
+      if (currentSeats.includes(seatId)) {
+        return currentSeats.filter((seat) => seat !== seatId);
       }
 
-      // Add the current seat to its row.
-      result[seat.row].push(seat);
+      // Otherwise add the new seat to the selected seats.
+      return [...currentSeats, seatId];
+    });
+  };
 
-      // Return the updated result.
-      return result;
+  // Returns different Tailwind classes based on each seat's current status.
+  const getSeatClass = (seatId) => {
+    // Shared size, shape, text, alignment, and animation for every seat.
+    const baseClasses =
+      "w-9 h-9 rounded-md text-sm flex items-center justify-center transition-all duration-150";
 
-    }, {}) || {};
+    // Gray styling represents an occupied seat.
+    if (occupiedSeats.includes(seatId)) {
+      return `${baseClasses} bg-gray-200 border border-gray-200 text-gray-500 cursor-not-allowed`;
+    }
 
-  // ==========================================
-  // LOADING MESSAGE
-  // ==========================================
+    // Violet styling represents a seat selected by the user.
+    if (selectedSeats.includes(seatId)) {
+      return `${baseClasses} bg-violet-600 border border-violet-600 text-white cursor-pointer`;
+    }
 
-  // Displays this while waiting for backend data.
+    // White styling represents an available seat.
+    return `${baseClasses} bg-white border border-gray-500 text-gray-900 cursor-pointer hover:border-violet-600 hover:-translate-y-0.5`;
+  };
+
+  // Display a loading message while show information is being retrieved.
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Loading seats...</p>
+      <div className="py-20 text-center text-lg">
+        Loading seats...
       </div>
     );
   }
 
-  // ==========================================
-  // ERROR MESSAGE
-  // ==========================================
-
-  // Displays this if the API request fails.
+  // Display an error message if the backend request failed.
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>{error}</p>
+      <div className="py-20 text-center text-lg text-red-500">
+        {error}
       </div>
     );
   }
 
-  // ==========================================
-  // SHOW NOT FOUND
-  // ==========================================
-
-  // Displays this if there is no show information.
+  // Prevent the seat layout from rendering when no show was returned.
   if (!show) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Show not found.</p>
+      <div className="py-20 text-center text-lg">
+        Show not found.
       </div>
     );
   }
 
-  // ==========================================
-  // PAGE
-  // ==========================================
+  // Gets the movie title from the backend show object.
+  const movieTitle =
+    show.movie?.title ||
+    show.movieTitle ||
+    "Movie";
+
+  // Gets the theater name from the backend show object.
+  const theaterName =
+    show.theater?.name ||
+    show.theaterName ||
+    "";
+
+  // Formats the backend show date into a readable format.
+  const showDate = show.date
+    ? dayjs(show.date).format("DD MMMM YYYY")
+    : "";
+
+  // Formats the backend start time into a readable 12-hour time.
+  const showTime = show.startTime
+    ? dayjs(`2000-01-01T${show.startTime}`).format("hh:mm A")
+    : "";
+
+  // Gets the show format, such as 2D, 3D, or IMAX, when available.
+  const showFormat = show.format || "";
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen bg-white text-gray-900">
 
-      {/* ======================================
-          HEADER
-          ====================================== */}
+      {/* Uses the special SeatLayout header instead of the normal application header. */}
+      <Header />
 
-      {/* Passes show information to Header.jsx. */}
-      <Header showData={show} />
+      {/* Displays the selected movie and show information above the seats. */}
+      <div className="border-b border-gray-200 px-5 py-3 text-center">
 
-      {/* ======================================
-          MAIN PAGE CONTENT
-          ====================================== */}
+        {/* Displays the movie title dynamically from the backend. */}
+        <h2 className="m-0 text-2xl font-bold">
+          {movieTitle}
+        </h2>
 
-      {/* flex-1 allows the main section to use
-          the available space between header and footer. */}
-      <main className="flex-1">
+        {/* Displays date, theater, time, and format when those values exist. */}
+        <p className="mt-1 text-sm text-gray-500">
 
-        {/* ======================================
-            SHOW DATE AND TIME SECTION
-            ====================================== */}
+          {showDate}
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-4">
+          {theaterName && (
+            <>
+              {" | "}
+              {theaterName}
+            </>
+          )}
 
-          {/* Page title */}
-          <h2 className="text-lg font-semibold mb-4">
-            Select Your Seats
-          </h2>
+          {showTime && (
+            <>
+              {" | "}
+              {showTime}
+            </>
+          )}
 
-          {/* Places date and show time next to each other. */}
-          <div className="flex items-center gap-4 border-b border-gray-300 pb-4">
+          {showFormat && (
+            <>
+              {" | "}
+              {showFormat}
+            </>
+          )}
 
-            {/* ======================================
-                SHOW DATE
-                ====================================== */}
+        </p>
 
-            <div className="text-center min-w-[90px]">
+      </div>
 
-              {/* Displays short day name.
-                  Example: Tue */}
-              <p className="text-xs text-gray-500">
-                {dayjs(show.date).format("ddd")}
-              </p>
+      {/* Contains all Premium, Executive, and Normal seat sections. */}
+      <main className="mx-auto w-full max-w-6xl overflow-x-auto px-5 py-10">
 
-              {/* Displays date and month.
-                  Example: 15 September */}
-              <p className="text-sm font-semibold">
-                {dayjs(show.date).format("D MMMM")}
-              </p>
+        {/* Creates each seat section from the seatSections array. */}
+        {seatSections.map((section) => (
 
-            </div>
+          <section
+            key={section.name}
+            className="mb-10 min-w-[900px]"
+          >
 
-            {/* ======================================
-                SHOW TIME
-                ====================================== */}
+            {/* Displays the section name and price. */}
+            <h3 className="mb-5 text-center text-lg font-bold">
+              {section.name} : ${section.price}
+            </h3>
 
-            <button
-              type="button"
-              className="border border-gray-400 rounded-xl px-6 py-2 text-sm font-medium bg-gray-100"
-            >
+            {/* Creates every row belonging to this section. */}
+            {section.rows.map((rowData) => (
 
-              {/* Displays the movie start time.
-                  Example: 09:00:00 */}
-              <span className="block">
-                {show.startTime}
-              </span>
+              <div
+                key={rowData.row}
+                className="my-2 flex items-center justify-center"
+              >
 
-              {/* Displays the movie format.
-                  Example: 2D */}
-              <span className="block text-xs text-gray-500 mt-1">
-                {show.format}
-              </span>
+                {/* Displays the row letter beside the seats. */}
+                <span className="w-10 text-center font-medium text-gray-500">
+                  {rowData.row}
+                </span>
 
-            </button>
+                {/* Keeps all seats in the current row aligned horizontally. */}
+                <div className="flex gap-2">
 
-          </div>
+                  {/* Generates the correct number of seat buttons for this row. */}
+                  {Array.from(
+                    { length: rowData.seats },
+                    (_, index) => {
+                      // Converts the zero-based array index into seat numbers starting at 1.
+                      const seatNumber = index + 1;
 
-        </div>
+                      // Creates a unique seat ID such as A2, C10, or E5.
+                      const seatId = `${rowData.row}${seatNumber}`;
 
-        {/* ======================================
-            SEAT AREA
-            ====================================== */}
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-32">
-
-          {/* Allows horizontal scrolling when
-              the screen is small, such as a phone. */}
-          <div className="overflow-x-auto">
-
-            {/* Keeps all seat rows centered. */}
-            <div className="min-w-max flex flex-col items-center">
-
-              {/* ======================================
-                  SEAT ROWS
-                  ====================================== */}
-
-              {/* Loops through grouped seat rows.
-                  Example: A, B, C, D, E */}
-              {Object.entries(groupedSeats).map(([row, seats]) => (
-
-                <div
-                  key={row}
-                  className="flex items-center mb-3"
-                >
-
-                  {/* Displays row letter.
-                      Example: A */}
-                  <span className="w-8 text-sm text-gray-500 font-medium">
-                    {row}
-                  </span>
-
-                  {/* Holds all seats for this row. */}
-                  <div className="flex gap-2">
-
-                    {/* Loops through each seat. */}
-                    {seats.map((seat) => {
-
-                      // Checks if this seat is selected.
-                      const isSelected =
-                        selectedSeats.includes(seat.id);
-
-                      // If the seat is not AVAILABLE,
-                      // treat it as occupied.
-                      const isBooked =
-                        seat.status !== "AVAILABLE";
+                      // Checks whether this seat is already occupied.
+                      const occupied = occupiedSeats.includes(seatId);
 
                       return (
-
                         <button
-                          key={seat.id}
+                          key={seatId}
                           type="button"
 
-                          // Occupied seats cannot be clicked.
-                          disabled={isBooked}
+                          // Prevents clicking an occupied seat.
+                          disabled={occupied}
 
-                          // Selects or unselects the seat.
-                          onClick={() => handleSeatClick(seat)}
+                          // Applies available, occupied, or selected Tailwind styling.
+                          className={getSeatClass(seatId)}
 
-                          // Changes seat style depending
-                          // on available, occupied, or selected.
-                          className={`
-                            w-8
-                            h-8
-                            rounded-md
-                            text-xs
-                            font-medium
-                            border
-                            transition
-                            duration-200
-
-                            ${
-                              isBooked
-                                ? "bg-gray-300 border-gray-300 text-gray-500 cursor-not-allowed"
-                                : isSelected
-                                ? "bg-purple-600 border-purple-600 text-white"
-                                : "bg-white border-gray-400 text-gray-700 hover:border-purple-500 cursor-pointer"
-                            }
-                          `}
+                          // Selects or deselects this seat when clicked.
+                          onClick={() => handleSeatClick(seatId)}
                         >
-
-                          {/* Displays seat number.
-                              Example: 1, 2, 3... */}
-                          {seat.number}
-
+                          {/* Occupied seats display X; available seats display their number. */}
+                          {occupied ? "X" : seatNumber}
                         </button>
                       );
-                    })}
-
-                  </div>
-
-                </div>
-              ))}
-
-              {/* ======================================
-                  MOVIE SCREEN
-                  ====================================== */}
-
-              <div className="flex flex-col items-center mt-12">
-
-                {/* Curved movie screen shape */}
-                <div className="w-64 sm:w-80 h-3 bg-purple-200 rounded-[50%] shadow-sm" />
-
-                {/* Shows which direction the screen is. */}
-                <p className="text-xs font-semibold text-purple-600 mt-3">
-                  SCREEN THIS WAY
-                </p>
-
-              
-                     {/* ======================================
-                    SEAT STATUS LEGEND
-                    ======================================  */}
- 
-                <div className="flex items-center justify-center gap-5 mt-3 text-xs">
+                    }
+                  )}
 
                 </div>
 
               </div>
 
-            </div>
+            ))}
 
-          </div>
+          </section>
+
+        ))}
+
+        {/* Displays the curved cinema screen below the seats. */}
+        <div className="mt-12 text-center">
+
+          {/* Creates the curved purple screen using only Tailwind CSS. */}
+          <div
+            className="
+              mx-auto
+              h-10
+              w-[380px]
+              max-w-[70%]
+              rounded-[50%_50%_8px_8px]
+              border-2
+              border-violet-500
+              bg-gradient-to-b
+              from-violet-100
+              to-violet-300
+            "
+          />
+
+          {/* Shows the direction of the cinema screen. */}
+          <p className="mt-3 text-sm tracking-wide text-gray-500">
+            SCREEN THIS WAY
+          </p>
 
         </div>
 
       </main>
 
-      {/* ======================================
-          BOTTOM BOOKING BAR
-          ====================================== */}
+      {/* Displays the selected-seat count, total price, and Proceed button. */}
+      <div
+        className="
+          flex
+          w-full
+          items-center
+          justify-between
+          border-t
+          border-gray-200
+          bg-white
+          px-9
+          py-5
+        "
+      >
 
-      {/* This bar appears only when the user
-          selects at least one seat. */}
-      {selectedSeats.length > 0 && (
+        {/* Displays how many seats the user has selected. */}
+        <div>
 
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg px-6 py-4 flex items-center justify-between z-50">
+          <p className="text-lg font-bold">
+            {selectedSeats.length}{" "}
+            {selectedSeats.length === 1
+              ? "Seat"
+              : "Seats"}{" "}
+            Selected
+          </p>
 
-          {/* ======================================
-              SELECTED SEAT COUNT
-              ====================================== */}
-
-          <div>
-
-            {/* Shows how many seats are selected. */}
-            <p className="text-sm font-semibold">
-
-              ★ {selectedSeats.length}{" "}
-
-              {/* Uses Seat for one and Seats for multiple. */}
-              {selectedSeats.length === 1
-                ? "Seat"
-                : "Seats"}{" "}
-
-              Selected
-
+          {/* Displays the actual seat IDs only when at least one seat is selected. */}
+          {selectedSeats.length > 0 && (
+            <p className="mt-1 text-sm text-gray-500">
+              {selectedSeats.join(", ")}
             </p>
+          )}
 
-          </div>
+        </div>
 
-          {/* ======================================
-              PROCEED BUTTON
-              ====================================== */}
+        {/* Keeps the total price and Proceed button together on the right side. */}
+        <div className="flex items-center gap-6">
 
-          {/* Later this button can navigate
-              to the booking/payment page. */}
+          {/* Displays the dynamically calculated price for all selected seats. */}
+          <p className="text-xl font-bold">
+            Total: ${totalPrice}
+          </p>
+
+          {/* Navigates to Checkout and passes all booking information. */}
           <button
             type="button"
-            className="bg-black text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition"
+
+            // The user cannot proceed without selecting at least one seat.
+            disabled={selectedSeats.length === 0}
+
+            // Pass selected seats, calculated total, and complete show data to Checkout.jsx.
+            onClick={() => {
+              navigate(`/shows/${showId}/checkout`, {
+                state: {
+                  selectedSeats,
+                  totalPrice,
+                  show,
+                },
+              });
+            }}
+
+            // Tailwind styles the active, hover, and disabled button states.
+            className="
+              min-w-[140px]
+              rounded-lg
+              bg-violet-600
+              px-6
+              py-3
+              font-semibold
+              text-white
+              transition
+              hover:bg-violet-700
+              disabled:cursor-not-allowed
+              disabled:bg-gray-300
+            "
           >
             Proceed
           </button>
 
         </div>
-      )}
 
-      {/* ======================================
-          FOOTER
-          ====================================== */}
+      </div>
 
-      {/* Displays the seat status/footer section. */}
-        <div className="fixed bottom-0 left-0 w-full bg-white z-50">
-  <Footer
-    isSelected={isSelectedSeats}
-    selectedSeats={selectedSeats}
-    showData={show}
-  />
-</div>
+      {/* Uses the SeatLayout-specific footer at the bottom of this page. */}
+      <Footer />
 
-    </div>  
+    </div>
   );
 };
 
-// Makes SeatLayout available to App.jsx.
 export default SeatLayout;

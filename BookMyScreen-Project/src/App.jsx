@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { Route, Routes, useMatch } from "react-router-dom";
+
 import Header from "./assets/components/shared/Header";
 import Footer from "./assets/components/shared/Footer";
+
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
 import MovieDetails from "./pages/MovieDetails";
 import Profile from "./pages/Profile";
 import About from "./assets/components/shared/About";
 import SeatLayout from "./pages/SeatLayout";
+import Checkout from "./pages/Checkout";
 
 // Main App component handles routing and shared wishlist state.
 function App() {
@@ -15,6 +18,12 @@ function App() {
 
   // Checks whether the current page is the seat layout page.
   const isSeatLayoutPage = useMatch("/shows/:showId/seats");
+
+  // Checks whether the current page is the checkout page.
+  const isCheckoutPage = useMatch("/shows/:showId/checkout");
+
+  // Hide the normal shared Header/Footer on SeatLayout and Checkout pages.
+  const hideSharedLayout = isSeatLayoutPage || isCheckoutPage;
 
   // Adds a movie to the wishlist if it is not already added.
   const addToWishlist = (movie) => {
@@ -35,19 +44,19 @@ function App() {
   return (
     <div className="app-container">
 
-      {/* Hides the header on the seat layout page. */}
-      {!isSeatLayoutPage && <Header />}
+      {/* Normal shared header */}
+      {!hideSharedLayout && <Header />}
 
       <main className="main-content">
         <Routes>
 
-          {/* Displays the home page. */}
+          {/* Home page */}
           <Route
             path="/"
             element={<Home />}
           />
 
-          {/* Displays the movies page. */}
+          {/* Movies page */}
           <Route
             path="/movies"
             element={
@@ -58,13 +67,13 @@ function App() {
             }
           />
 
-          {/* Displays details for the selected movie. */}
+          {/* Movie details page */}
           <Route
             path="/movies/:movieId"
             element={<MovieDetails />}
           />
 
-          {/* Displays the user's profile and wishlist. */}
+          {/* Profile page */}
           <Route
             path="/profile"
             element={
@@ -75,23 +84,29 @@ function App() {
             }
           />
 
-          {/* Displays the About page. */}
+          {/* About page */}
           <Route
             path="/about"
             element={<About />}
           />
 
-          {/* Displays the seat layout for the selected show. */}
+          {/* Seat layout page */}
           <Route
             path="/shows/:showId/seats"
             element={<SeatLayout />}
           />
 
+          {/* Checkout page */}
+          <Route
+            path="/shows/:showId/checkout"
+            element={<Checkout />}
+          />
+
         </Routes>
       </main>
 
-      {/* Hides the footer on the seat layout page. */}
-      {!isSeatLayoutPage && <Footer />}
+      {/* Normal shared footer */}
+      {!hideSharedLayout && <Footer />}
 
     </div>
   );
