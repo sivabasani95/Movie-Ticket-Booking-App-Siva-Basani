@@ -1,14 +1,16 @@
-// Import React tools used to create and manage the authentication context.
+
+
+// Import React tools used for authentication state.
 import {
   createContext,
   useContext,
   useState,
 } from "react";
 
-// Import useNavigate so we can move the user to another page.
+// Import navigation for moving between pages.
 import { useNavigate } from "react-router-dom";
 
-// Import the API functions that communicate with the Spring Boot backend.
+// Import authentication API functions.
 import {
   sendOTP,
   verifyOTP,
@@ -21,7 +23,7 @@ import {
 // CREATE AUTH CONTEXT
 // ==========================================================
 
-// Creates a shared authentication context for the application.
+// Create a shared authentication context.
 const AuthContext = createContext();
 
 
@@ -29,61 +31,55 @@ const AuthContext = createContext();
 // AUTH PROVIDER
 // ==========================================================
 
-// Provides authentication information and functions
-// to the rest of the React application.
+// Provide authentication data to the application.
 export const AuthProvider = ({ children }) => {
 
-  // Allows us to navigate to another React page.
+  // Allow navigation to another page.
   const navigate = useNavigate();
 
-  // Controls whether the Sign In modal is visible.
+  // Control whether the Sign In modal is visible.
   const [showModal, setShowModal] = useState(false);
 
-  // Controls which authentication screen is displayed.
-  // 1 = Email
-  // 2 = OTP
-  // 3 = Account Creation
+  // Store the current authentication screen.
   const [step, setStep] = useState(1);
 
-  // Stores the email entered by the user.
+  // Store the email entered by the user.
   const [email, setEmail] = useState("");
 
-  // Stores the user returned from the Spring Boot backend.
+  // Store the currently logged-in user.
   const [user, setUser] = useState(null);
 
-  // Stores the access token.
-  // If a token already exists in localStorage,
-  // load it when the application starts.
+  // Load the saved access token when React starts.
   const [accessToken, setAccessToken] = useState(
     () => localStorage.getItem("accessToken")
   );
 
-  // Stores the refresh token.
-  // If a token already exists in localStorage,
-  // load it when the application starts.
+  // Load the saved refresh token when React starts.
   const [refreshToken, setRefreshToken] = useState(
     () => localStorage.getItem("refreshToken")
   );
 
-  // Controls loading messages such as
-  // "Verifying..." and "Creating Account..."
+  // Store whether an authentication request is loading.
   const [loading, setLoading] = useState(false);
 
-  // Stores authentication error messages.
+  // Store authentication error messages.
   const [authError, setAuthError] = useState("");
+
+  // User is authenticated when an access token exists.
+  const auth = Boolean(accessToken);
 
 
   // ==========================================================
   // OPEN / CLOSE SIGN IN MODAL
   // ==========================================================
 
-  // Opens or closes the Sign In modal.
+  // Open or close the Sign In modal.
   const toggleModal = () => {
 
     // Change the current modal visibility.
     setShowModal((currentValue) => !currentValue);
 
-    // Remove an old error message.
+    // Clear an old authentication error.
     setAuthError("");
   };
 
@@ -92,15 +88,15 @@ export const AuthProvider = ({ children }) => {
   // SEND OTP
   // ==========================================================
 
-  // Sends an OTP to the email entered by the user.
+  // Send an OTP to the user's email.
   const sendOtpRequest = async (userEmail) => {
 
     try {
 
-      // Start loading.
+      // Start the loading state.
       setLoading(true);
 
-      // Remove any previous error.
+      // Clear an old authentication error.
       setAuthError("");
 
       // Send the email to Spring Boot.
@@ -108,35 +104,36 @@ export const AuthProvider = ({ children }) => {
         email: userEmail,
       });
 
-      // Save the email because we need it again
-      // when verifying the OTP.
+      // Save the email for OTP verification.
       setEmail(userEmail);
 
-      // Move from Step 1 to Step 2.
+      // Move to the OTP screen.
       setStep(2);
 
+      // Tell the component the request succeeded.
       return true;
 
     } catch (error) {
 
-      // Get the backend error message when available.
+      // Get the backend error message.
       const message =
         error.response?.data?.message ||
         error.response?.data ||
         "Unable to send OTP. Please try again.";
 
-      // Display the error message.
+      // Save the error message.
       setAuthError(
         typeof message === "string"
           ? message
           : "Unable to send OTP. Please try again."
       );
 
+      // Tell the component the request failed.
       return false;
 
     } finally {
 
-      // Stop loading.
+      // Stop the loading state.
       setLoading(false);
     }
   };
@@ -146,15 +143,15 @@ export const AuthProvider = ({ children }) => {
   // VERIFY OTP
   // ==========================================================
 
-  // Sends the email and OTP to Spring Boot for verification.
+  // Verify the OTP entered by the user.
   const verifyOtpRequest = async (otp, onNext) => {
 
     try {
 
-      // Start loading.
+      // Start the loading state.
       setLoading(true);
 
-      // Remove an old error.
+      // Clear an old authentication error.
       setAuthError("");
 
       // Send the email and OTP to Spring Boot.
@@ -163,25 +160,25 @@ export const AuthProvider = ({ children }) => {
         otp: otp,
       });
 
-      // Get the response data.
+      // Get the backend response data.
       const data = response.data;
 
-      // Make sure OTP verification was successful.
+      // Stop if OTP verification failed.
       if (!data?.auth) {
         setAuthError("OTP verification failed.");
         return false;
       }
 
-      // Get the user returned from Spring Boot.
+      // Get the verified user.
       const verifiedUser = data.user;
 
-      // Make sure the backend returned a user.
+      // Stop if the backend did not return a user.
       if (!verifiedUser) {
         setAuthError("User information was not found.");
         return false;
       }
 
-      // Save the verified user in AuthContext.
+      // Save the logged-in user.
       setUser(verifiedUser);
 
       // Save the access token in React state.
@@ -190,15 +187,13 @@ export const AuthProvider = ({ children }) => {
       // Save the refresh token in React state.
       setRefreshToken(data.refreshToken);
 
-      // Save the access token in localStorage.
-      // This allows the token to remain available
-      // after refreshing the browser.
+      // Save the access token in the browser.
       localStorage.setItem(
         "accessToken",
         data.accessToken
       );
 
-      // Save the refresh token in localStorage.
+      // Save the refresh token in the browser.
       localStorage.setItem(
         "refreshToken",
         data.refreshToken
@@ -206,60 +201,61 @@ export const AuthProvider = ({ children }) => {
 
 
       // ======================================================
-      // NEW / NOT ACTIVATED USER
+      // NEW USER
       // ======================================================
 
-      // activateUser = false means the user still needs
-      // to enter their name and phone number.
+      // Check whether the user still needs account setup.
       if (!verifiedUser.activateUser) {
 
-        // Move from OTP screen to Account Creation screen.
+        // Move to the account creation screen.
         if (onNext) {
           onNext();
         } else {
           setStep(3);
         }
 
+        // Finish the function.
         return true;
       }
 
 
       // ======================================================
-      // EXISTING / ACTIVATED USER
+      // EXISTING USER
       // ======================================================
 
-      // The account is already activated,
-      // so close the Sign In modal.
+      // Close the Sign In modal.
       setShowModal(false);
 
-      // Reset the modal to Step 1.
+      // Reset the modal to the email screen.
       setStep(1);
 
-      // Navigate the activated user to the Profile page.
+      // Navigate the logged-in user to Profile.
       navigate("/profile");
 
+      // Tell the component login succeeded.
       return true;
 
     } catch (error) {
 
-      // Get the error returned by Spring Boot.
+      // Get the backend error message.
       const message =
         error.response?.data?.message ||
         error.response?.data ||
         "Invalid or expired OTP.";
 
-      // Display the error.
+      // Save the authentication error.
       setAuthError(
         typeof message === "string"
           ? message
           : "Invalid or expired OTP."
       );
 
+      // Tell the component login failed.
       return false;
 
     } finally {
 
-      // Stop loading.
+      // Stop the loading state.
       setLoading(false);
     }
   };
@@ -269,8 +265,7 @@ export const AuthProvider = ({ children }) => {
   // ACTIVATE USER
   // ==========================================================
 
-  // Saves the new user's name and phone number
-  // and activates their account.
+  // Complete account setup for a new user.
   const activateUserRequest = async (
     userId,
     userData
@@ -278,57 +273,57 @@ export const AuthProvider = ({ children }) => {
 
     try {
 
-      // Start loading.
+      // Start the loading state.
       setLoading(true);
 
-      // Remove an old error.
+      // Clear an old authentication error.
       setAuthError("");
 
-      // Send the user's name and phone number
-      // to the Spring Boot backend.
+      // Send the user's information to Spring Boot.
       const response = await activateUser(
         userId,
         userData
       );
 
-      // Get the updated user returned by Spring Boot.
+      // Get the activated user.
       const activatedUser = response.data;
 
-      // Save the activated user in AuthContext.
+      // Save the activated user.
       setUser(activatedUser);
 
       // Close the Sign In modal.
       setShowModal(false);
 
-      // Reset the authentication modal to Step 1.
+      // Reset the modal to Step 1.
       setStep(1);
 
-      // Navigate the newly activated user
-      // to the Profile page.
+      // Navigate the user to Profile.
       navigate("/profile");
 
+      // Tell the component activation succeeded.
       return true;
 
     } catch (error) {
 
-      // Get the backend error when available.
+      // Get the backend error message.
       const message =
         error.response?.data?.message ||
         error.response?.data ||
         "Unable to create account.";
 
-      // Display the error.
+      // Save the authentication error.
       setAuthError(
         typeof message === "string"
           ? message
           : "Unable to create account."
       );
 
+      // Tell the component activation failed.
       return false;
 
     } finally {
 
-      // Stop loading.
+      // Stop the loading state.
       setLoading(false);
     }
   };
@@ -338,47 +333,46 @@ export const AuthProvider = ({ children }) => {
   // LOGOUT
   // ==========================================================
 
-  // Logs the current user out.
+  // Log out the currently logged-in user.
   const logoutUser = async () => {
 
     try {
 
-      // Ask the Spring Boot backend to log the user out.
+      // Ask Spring Boot to log the user out.
       await logout();
 
     } catch (error) {
 
-      // Even if the backend logout fails,
-      // we still clear the frontend login information.
+      // Show the error without stopping frontend logout.
       console.error("Logout failed:", error);
 
     } finally {
 
-      // Remove the current user from React state.
+      // Remove the logged-in user.
       setUser(null);
 
-      // Remove the access token from React state.
+      // Remove the access token from React.
       setAccessToken(null);
 
-      // Remove the refresh token from React state.
+      // Remove the refresh token from React.
       setRefreshToken(null);
 
-      // Remove the access token from localStorage.
+      // Remove the access token from the browser.
       localStorage.removeItem("accessToken");
 
-      // Remove the refresh token from localStorage.
+      // Remove the refresh token from the browser.
       localStorage.removeItem("refreshToken");
 
-      // Remove the stored email.
+      // Clear the stored email.
       setEmail("");
 
-      // Reset authentication to Step 1.
+      // Reset the authentication screen.
       setStep(1);
 
       // Close the Sign In modal.
       setShowModal(false);
 
-      // Clear old authentication errors.
+      // Clear authentication errors.
       setAuthError("");
 
       // Return the user to the Home page.
@@ -391,37 +385,41 @@ export const AuthProvider = ({ children }) => {
   // PROVIDE AUTH DATA
   // ==========================================================
 
+  // Share authentication information with the application.
   return (
     <AuthContext.Provider
       value={{
 
-        // Modal
+        // Login status.
+        auth,
+
+        // Modal information.
         showModal,
         setShowModal,
         toggleModal,
 
-        // Authentication step
+        // Authentication step.
         step,
         setStep,
 
-        // Email
+        // User email.
         email,
         setEmail,
 
-        // Current user
+        // Logged-in user.
         user,
         setUser,
 
-        // Tokens
+        // Authentication tokens.
         accessToken,
         refreshToken,
 
-        // Loading and errors
+        // Loading and errors.
         loading,
         authError,
         setAuthError,
 
-        // Authentication functions
+        // Authentication functions.
         sendOtpRequest,
         verifyOtpRequest,
         activateUserRequest,
@@ -438,19 +436,19 @@ export const AuthProvider = ({ children }) => {
 // USE AUTH HOOK
 // ==========================================================
 
-// Allows components to easily access AuthContext.
+// Allow components to access AuthContext.
 export const useAuth = () => {
 
   // Get the authentication context.
   const context = useContext(AuthContext);
 
-  // Show a clear error if useAuth is used
-  // outside of AuthProvider.
+  // Stop if useAuth is outside AuthProvider.
   if (!context) {
     throw new Error(
       "useAuth must be used inside AuthProvider"
     );
   }
 
+  // Return the authentication context.
   return context;
 };

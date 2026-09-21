@@ -3,31 +3,34 @@ import "./TheaterTimings.css";
 import dayjs from "dayjs";
 import { getShows } from "../../../apis";
 import { useLocation } from "../../../context/LocationContext";
+import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 // Displays theaters and show timings for the selected movie.
 const TheaterTimings = ({ movieId }) => {
+
+  // Gets today's date.
   const today = dayjs();
 
-  // Allows navigation to the seat selection page.
+  // Allows navigation to another page.
   const navigate = useNavigate();
 
   // Gets the user's state from LocationContext.
-  // Example: Missouri
-  // The backend uses state for searching shows.
   const { state } = useLocation();
 
-  // No date is selected when the page first opens.
-  // This allows shows to appear before clicking a date.
+  // Gets login status and the Sign In modal function.
+  const { auth, toggleModal } = useAuth();
+
+  // Stores the selected movie date.
   const [selectedDate, setSelectedDate] = useState(null);
 
   // Stores shows returned from Spring Boot.
   const [shows, setShows] = useState([]);
 
-  // Tracks loading state.
+  // Tracks whether shows are loading.
   const [loadingShows, setLoadingShows] = useState(false);
 
-  // Stores API error message.
+  // Stores an error when shows cannot be loaded.
   const [showError, setShowError] = useState("");
 
   // Creates date buttons for today and the next 6 days.
@@ -36,72 +39,109 @@ const TheaterTimings = ({ movieId }) => {
     (_, i) => today.add(i, "day")
   );
 
-  // Loads shows whenever movie, date, or state changes.
+  // Loads shows whenever the movie, date, or state changes.
   useEffect(() => {
+
+    // Gets shows from the Spring Boot backend.
     const fetchShows = async () => {
 
-      // Wait until movie ID and state are available.
+      // Stop until the movie ID and state are available.
       if (!movieId || !state) {
         return;
       }
 
       try {
+
+        // Start the loading state.
         setLoadingShows(true);
+
+        // Clear an old error.
         setShowError("");
 
-        // If a date is selected, send the date.
-        // Otherwise send null.
+        // Format the selected date for Spring Boot.
         const formattedDate = selectedDate
           ? selectedDate.format("YYYY-MM-DD")
           : null;
 
-        // Calls the Spring Boot shows API.
+        // Get shows from the backend.
         const response = await getShows(
           movieId,
           formattedDate,
           state
         );
 
-        // Store shows returned by backend.
+        // Save the returned shows.
         setShows(response.data);
 
       } catch (error) {
+
+        // Display the error in the browser console.
         console.error("Error loading shows:", error);
 
+        // Save a user-friendly error message.
         setShowError("Unable to load show timings.");
+
+        // Clear old show information.
         setShows([]);
 
       } finally {
+
+        // Stop the loading state.
         setLoadingShows(false);
       }
     };
 
+    // Run the show-loading function.
     fetchShows();
 
   }, [movieId, selectedDate, state]);
+
+
+  // ==========================================================
+  // SHOW TIME CLICK
+  // ==========================================================
+
+  // Handles what happens when the user clicks a show time.
+  const handleShowClick = (showId) => {
+
+    // Open Sign In when the user is not logged in.
+    if (!auth) {
+      toggleModal();
+      return;
+    }
+
+    // Open Seat Layout when the user is logged in.
+    navigate(`/shows/${showId}/seats`);
+  };
+
+
+  // ==========================================================
+  // GROUP SHOWS BY THEATER
+  // ==========================================================
 
   // Groups all shows by theater.
   const groupedTheaters = shows.reduce(
     (result, show) => {
 
-      // Get theater ID.
+      // Get the theater ID.
       const theaterId = show.theater?.id;
 
-      // Skip if theater information is missing.
+      // Skip the show if theater information is missing.
       if (!theaterId) {
         return result;
       }
 
-      // Check if this theater is already added.
+      // Find whether this theater was already added.
       const existingTheater = result.find(
         (item) => item.id === theaterId
       );
 
+      // Add the show to an existing theater.
       if (existingTheater) {
-        // Add show to existing theater.
         existingTheater.shows.push(show);
       } else {
-        // Add new theater.
+
+        // Add a new theater and its first show.
         result.push({
           id: theaterId,
           theater: show.theater,
@@ -109,12 +149,18 @@ const TheaterTimings = ({ movieId }) => {
         });
       }
 
+      // Return the updated theater list.
       return result;
     },
     []
   );
 
-  // Filter buttons displayed above theaters.
+
+  // ==========================================================
+  // FILTERS
+  // ==========================================================
+
+  // Stores the filter buttons displayed above theaters.
   const filters = [
     "2D",
     "3D",
@@ -128,16 +174,19 @@ const TheaterTimings = ({ movieId }) => {
     "Dolby Atmos",
   ];
 
+
+  // ==========================================================
+  // PAGE UI
+  // ==========================================================
+
   return (
     <div className="theater-timings">
 
-      {/* ================================
-          FILTERS
-          ================================ */}
-
+      {/* Displays the theater filters. */}
       <div className="filters-wrapper">
 
         <div className="filters-container">
+
           {filters.map((item, i) => (
             <button
               key={i}
@@ -147,12 +196,11 @@ const TheaterTimings = ({ movieId }) => {
               {item}
             </button>
           ))}
+
         </div>
 
-        {/* ================================
-            SEAT AVAILABILITY STATUS
-            ================================ */}
 
+        {/* Displays seat availability information. */}
         <div className="status-row">
 
           <span className="status-item">
@@ -171,17 +219,16 @@ const TheaterTimings = ({ movieId }) => {
           </span>
 
         </div>
+
       </div>
 
-      {/* ================================
-          DATE SELECTION
-          ================================ */}
 
+      {/* Displays the next seven dates. */}
       <div className="date-container">
 
         {next7days.map((date, i) => {
 
-          // Check whether this date is selected.
+          // Check whether this date is currently selected.
           const isSelected =
             selectedDate &&
             selectedDate.isSame(date, "day");
@@ -216,26 +263,20 @@ const TheaterTimings = ({ movieId }) => {
 
       <br />
 
-      {/* ================================
-          LOADING
-          ================================ */}
 
+      {/* Displays a message while shows are loading. */}
       {loadingShows && (
         <p>Loading show timings...</p>
       )}
 
-      {/* ================================
-          ERROR
-          ================================ */}
 
+      {/* Displays an error when shows cannot be loaded. */}
       {!loadingShows && showError && (
         <p>{showError}</p>
       )}
 
-      {/* ================================
-          NO SHOWS
-          ================================ */}
 
+      {/* Displays a message when no shows are available. */}
       {!loadingShows &&
         !showError &&
         groupedTheaters.length === 0 && (
@@ -246,28 +287,15 @@ const TheaterTimings = ({ movieId }) => {
           </p>
         )}
 
-      {/* ================================
-          THEATERS AND SHOW TIMES
-          ================================ */}
 
+      {/* Displays theaters and their show times. */}
       {!loadingShows && !showError && (
 
         <div className="theatres-container">
 
           {groupedTheaters.map((item) => {
 
-            // When no date is selected, the backend returns
-            // shows from multiple dates.
-            //
-            // Example:
-            // Sep 17 -> 09:00
-            // Sep 18 -> 09:00
-            // Sep 19 -> 09:00
-            //
-            // We only want to display 09:00 once.
-            //
-            // Map uses startTime as the key,
-            // so duplicate times are removed.
+            // Remove duplicate times when no date is selected.
             const showsToDisplay = selectedDate
               ? item.shows
               : [
@@ -285,13 +313,10 @@ const TheaterTimings = ({ movieId }) => {
                 className="theatre-card"
               >
 
-                {/* ================================
-                    THEATER INFORMATION
-                    ================================ */}
-
+                {/* Displays the theater information. */}
                 <div className="theatre-header">
 
-                  {/* Theater logo */}
+                  {/* Displays the theater logo when available. */}
                   {item.theater?.logo && (
                     <img
                       src={item.theater.logo}
@@ -300,7 +325,7 @@ const TheaterTimings = ({ movieId }) => {
                     />
                   )}
 
-                  {/* Theater name and location */}
+                  {/* Displays the theater name and location. */}
                   <div className="theatre-info">
 
                     <h3 className="theatre-name">
@@ -315,10 +340,8 @@ const TheaterTimings = ({ movieId }) => {
 
                 </div>
 
-                {/* ================================
-                    SHOW TIMES
-                    ================================ */}
 
+                {/* Displays the available show times. */}
                 <div className="timings-row">
 
                   {showsToDisplay.map((show) => (
@@ -328,10 +351,9 @@ const TheaterTimings = ({ movieId }) => {
                       className="timing-btn"
                       type="button"
 
-                      // Opens seat selection page
-                      // for this show.
+                      // Checks login before opening Seat Layout.
                       onClick={() =>
-                        navigate(`/shows/${show.id}/seats`)
+                        handleShowClick(show.id)
                       }
                     >
                       {show.startTime}
@@ -339,7 +361,8 @@ const TheaterTimings = ({ movieId }) => {
 
                   ))}
 
-                  {/* Cancellation information */}
+
+                  {/* Displays cancellation information. */}
                   <button
                     className="cancel-btn"
                     type="button"
