@@ -1,78 +1,71 @@
-// Imports React and useState for managing application state.
+
+
+// Imports React and useState.
 import React, { useState } from "react";
 
-// Imports routing components and useMatch for checking the current route.
+// Imports React Router components.
 import { Route, Routes, useMatch } from "react-router-dom";
 
-// Imports the shared Header displayed on normal application pages.
+// Imports the shared Header.
 import Header from "./assets/components/shared/Header";
 
-// Imports the shared Footer displayed on normal application pages.
+// Imports the shared Footer.
 import Footer from "./assets/components/shared/Footer";
 
-// Imports the Sign In modal used for the multi-step authentication process.
+// Imports the Sign In modal.
 import SignInModel from "./assets/components/shared/SignInModel";
 
-// Imports the Home page component.
+// Imports the Home page.
 import Home from "./pages/Home";
 
-// Imports the Movies page component.
+// Imports the Movies page.
 import Movies from "./pages/Movies";
 
-// Imports the Movie Details page component.
+// Imports the Movie Details page.
 import MovieDetails from "./pages/MovieDetails";
 
-// Imports the Profile page component.
+// Imports the Profile page.
 import Profile from "./pages/Profile";
 
-// Imports the About page component.
+// Imports the About page.
 import About from "./assets/components/shared/About";
 
-// Imports the Seat Layout page used for selecting movie seats.
+// Imports the Seat Layout page.
 import SeatLayout from "./pages/SeatLayout";
 
-// Imports the Checkout page used during the booking process.
+// Imports the Checkout page.
 import Checkout from "./pages/Checkout";
 
-// Imports the custom hook that loads the currently logged-in user.
+// Imports the hook that loads the logged-in user.
 import { useLoadUser } from "./hooks/useLoadUser";
 
+// Imports ProtectedRoute for pages that require login.
+import ProtectedRoute from "./components/ProtectedRoute";
 
-// ==========================================================
-// APP COMPONENT
-// ==========================================================
 
-// Main App component handles routing, shared layout,
-// authentication state, and wishlist state.
+// Main App component.
 function App() {
 
-  // Stores the movies that the user has added to their wishlist.
+  // Stores movies added to the wishlist.
   const [wishlist, setWishlist] = useState([]);
 
-  // Loads the currently logged-in user from the backend.
-  // This calls GET /api/users/me when the application starts.
+  // Checks whether a user is already logged in.
   const { isLoading } = useLoadUser();
 
-  // Checks whether the current page is the seat layout page.
+  // Checks whether the current page is the Seat Layout page.
   const isSeatLayoutPage = useMatch("/shows/:showId/seats");
 
-  // Checks whether the current page is the checkout page.
+  // Checks whether the current page is the Checkout page.
   const isCheckoutPage = useMatch("/shows/:showId/checkout");
 
-  // Hides the normal shared Header and Footer
-  // on SeatLayout and Checkout pages.
-  const hideSharedLayout =
-    isSeatLayoutPage || isCheckoutPage;
+  // Hides the normal Header and Footer on booking pages.
+  const hideSharedLayout = isSeatLayoutPage || isCheckoutPage;
 
 
-  // ==========================================================
-  // WISHLIST FUNCTIONS
-  // ==========================================================
-
-  // Adds a movie to the wishlist only if
-  // that movie is not already present.
+  // Adds a movie to the wishlist.
   const addToWishlist = (movie) => {
 
+    // Prevents the same movie from being added twice.
     setWishlist((prev) =>
       prev.some((item) => item.id === movie.id)
         ? prev
@@ -81,24 +74,17 @@ function App() {
   };
 
 
-  // Removes a movie from the wishlist using the movie's ID.
+  // Removes a movie from the wishlist.
   const removeFromWishlist = (id) => {
 
+    // Keeps every movie except the selected movie.
     setWishlist((prev) =>
       prev.filter((movie) => movie.id !== id)
     );
   };
 
 
-  // ==========================================================
-  // INITIAL USER LOADING
-  // ==========================================================
-
-  // Wait until the application finishes checking
-  // whether there is already a logged-in user.
-  //
-  // IMPORTANT:
-  // This comes AFTER all React hooks above.
+  // Shows loading while checking the logged-in user.
   if (isLoading) {
     return (
       <div
@@ -115,40 +101,33 @@ function App() {
   }
 
 
-  // ==========================================================
-  // APPLICATION UI
-  // ==========================================================
-
+  // Displays the application.
   return (
 
     <div className="app-container">
 
-      {/* Displays the shared Header except
-          on SeatLayout and Checkout pages. */}
+      {/* Shows the normal Header outside booking pages. */}
       {!hideSharedLayout && <Header />}
 
 
-      {/* Displays the Sign In modal when
-          showModal is true inside AuthContext. */}
+      {/* Displays the Sign In modal when needed. */}
       <SignInModel />
 
 
-      {/* Contains the main page content
-          controlled by React Router. */}
+      {/* Contains all application routes. */}
       <main className="main-content">
 
         <Routes>
 
-          {/* ================= HOME ================= */}
 
+          {/* Home page does not require login. */}
           <Route
             path="/"
             element={<Home />}
           />
 
 
-          {/* ================= MOVIES ================= */}
-
+          {/* Movies page does not require login. */}
           <Route
             path="/movies"
             element={
@@ -160,57 +139,62 @@ function App() {
           />
 
 
-          {/* ================= MOVIE DETAILS ================= */}
-
+          {/* Movie Details page does not require login. */}
           <Route
             path="/movies/:movieId"
             element={<MovieDetails />}
           />
 
 
-          {/* ================= PROFILE ================= */}
-
+          {/* Profile page requires login. */}
           <Route
             path="/profile"
             element={
-              <Profile
-                wishlist={wishlist}
-                removeFromWishlist={removeFromWishlist}
-              />
+              <ProtectedRoute>
+                <Profile
+                  wishlist={wishlist}
+                  removeFromWishlist={removeFromWishlist}
+                />
+              </ProtectedRoute>
             }
           />
 
 
-          {/* ================= ABOUT ================= */}
-
+          {/* About page does not require login. */}
           <Route
             path="/about"
             element={<About />}
           />
 
 
-          {/* ================= SEAT SELECTION ================= */}
-
+          {/* Seat Layout page requires login. */}
           <Route
             path="/shows/:showId/seats"
-            element={<SeatLayout />}
+            element={
+              <ProtectedRoute>
+                <SeatLayout />
+              </ProtectedRoute>
+            }
           />
 
 
-          {/* ================= CHECKOUT ================= */}
-
+          {/* Checkout page requires login. */}
           <Route
             path="/shows/:showId/checkout"
-            element={<Checkout />}
+            element={
+              <ProtectedRoute>
+                <Checkout />
+              </ProtectedRoute>
+            }
           />
+
 
         </Routes>
 
       </main>
 
 
-      {/* Displays the shared Footer except
-          on SeatLayout and Checkout pages. */}
+      {/* Shows the normal Footer outside booking pages. */}
       {!hideSharedLayout && <Footer />}
 
     </div>
@@ -218,5 +202,5 @@ function App() {
 }
 
 
-// Exports App so it can be rendered by main.jsx.
+// Exports App for use in main.jsx.
 export default App;

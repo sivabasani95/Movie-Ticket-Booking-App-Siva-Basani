@@ -1,22 +1,22 @@
-// Imports the search icon used inside the movie and event search box.
+// Imports the search and user icons.
 import { FaSearch, FaUser } from "react-icons/fa";
 
-// Imports the location context hook to access the user's selected/current location.
+// Imports the location context hook.
 import { useLocation } from "../../../context/LocationContext";
 
 // Imports the authentication context hook.
 import { useAuth } from "../../../context/AuthContext";
 
-// Imports the main BookMyScreen logo displayed in the header.
+// Imports the BookMyScreen logo.
 import mainLogo from "/src/images/main-icon.png";
 
-// Imports the animated location pin displayed next to the user's location.
+// Imports the animated location pin.
 import map from "/src/images/pin.gif";
 
-// Imports Link to navigate between pages without refreshing the application.
+// Imports Link for navigation without refreshing the page.
 import { Link } from "react-router-dom";
 
-// Creates the main navigation header displayed across the BookMyScreen application.
+// Creates the main navigation header.
 const Header = () => {
 
   // Gets location information from LocationContext.
@@ -26,14 +26,14 @@ const Header = () => {
     error,
   } = useLocation();
 
-  // Gets the logged-in user and modal function from AuthContext.
+  // Gets login status, user information, and modal function.
   const {
+    auth,
     user,
     toggleModal,
   } = useAuth();
 
-  // Get the first name from the user's full name.
-  // Example: "Siva Basani" becomes "Siva".
+  // Gets the first name from the user's full name.
   const firstName = user?.name
     ? user.name.trim().split(" ")[0]
     : "";
@@ -45,10 +45,10 @@ const Header = () => {
         {/* ================= TOP HEADER ================= */}
         <div className="header-top">
 
-          {/* Logo and search section */}
+          {/* Displays the logo and search box. */}
           <div className="header-left">
 
-            {/* Clicking the logo returns to the home page. */}
+            {/* Returns to the Home page when the logo is clicked. */}
             <Link to="/">
               <img
                 src={mainLogo}
@@ -57,7 +57,7 @@ const Header = () => {
               />
             </Link>
 
-            {/* Search box */}
+            {/* Displays the search box. */}
             <div className="search-box">
 
               <input
@@ -69,19 +69,23 @@ const Header = () => {
               <FaSearch className="search-icon" />
 
             </div>
+
           </div>
 
 
           {/* ================= RIGHT HEADER ================= */}
           <div className="header-right">
 
-            {/* Location */}
+            {/* Displays the user's current location. */}
             <div className="location">
 
+              {/* Displays while location is loading. */}
               {loading && <p>Loading...</p>}
 
+              {/* Displays a location error if one occurs. */}
               {error && <p>{error}</p>}
 
+              {/* Displays the location icon when location is available. */}
               {location && (
                 <img
                   src={map}
@@ -90,6 +94,7 @@ const Header = () => {
                 />
               )}
 
+              {/* Displays the current location. */}
               {location && (
                 <p>
                   {location} ▼
@@ -101,20 +106,24 @@ const Header = () => {
 
             {/* ================= AUTH SECTION ================= */}
 
-            {user ? (
+            {/* Displays the user's name when they are logged in. */}
+            {auth && user ? (
 
-              // If the user is logged in, display their name.
+              // Opens the Profile page when the user's name is clicked.
               <Link
                 to="/profile"
                 className="user-profile-link"
               >
 
+                {/* Displays the user icon. */}
                 <FaUser className="user-profile-icon" />
 
+                {/* Displays the logged-in user's first name. */}
                 <span>
                   Hi, {firstName}
                 </span>
 
+                {/* Displays the small dropdown arrow. */}
                 <span>
                   ▼
                 </span>
@@ -123,8 +132,9 @@ const Header = () => {
 
             ) : (
 
-              // If there is no logged-in user, display Sign in.
+              // Opens the Sign In modal when the user is logged out.
               <button
+                type="button"
                 className="sign-in-btn"
                 onClick={toggleModal}
               >
@@ -139,6 +149,7 @@ const Header = () => {
           {/* ================= ABOUT ================= */}
           <div className="about-container">
 
+            {/* Opens the About page. */}
             <Link
               to="/about"
               className="about-btn"
@@ -154,6 +165,7 @@ const Header = () => {
         {/* ================= BOTTOM NAVIGATION ================= */}
         <div className="header-bottom">
 
+          {/* Displays the main navigation links. */}
           <div className="bottom-left-nav">
 
             <Link to="/movies">
@@ -169,6 +181,7 @@ const Header = () => {
           </div>
 
 
+          {/* Displays the secondary navigation links. */}
           <div className="bottom-right-nav">
 
             <span>ListYourShow</span>
@@ -185,5 +198,5 @@ const Header = () => {
   );
 };
 
-// Exports Header so it can be displayed throughout the application.
+// Exports Header for use throughout the application.
 export default Header;
