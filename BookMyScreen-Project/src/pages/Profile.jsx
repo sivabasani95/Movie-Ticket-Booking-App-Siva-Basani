@@ -1,72 +1,166 @@
-
-
 import "./Profile.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BookingHistory from "../assets/components/profileActiveTab/BookingHistory";
 
-// Profile component handles user information, wishlist, and order history
-const Profile = ({ wishlist, removeFromWishlist }) => {
+// Imports useAuth to access the logged-in user and logout function.
+import { useAuth } from "../context/AuthContext";
+
+// Profile component displays user information, wishlist, and order history.
+const Profile = ({ wishlist = [], removeFromWishlist }) => {
+
+  // Gets the logged-in user and logout function from AuthContext.
+  const { user, logoutUser } = useAuth();
+
+  // Stores the values displayed inside the profile form.
   const [formData, setFormData] = useState({
     email: "",
     mobile: "",
     firstName: "",
     lastName: "",
     birthday: "",
-    identity: "",
-    married: "",
   });
 
-  // State for managing active tab (Profile / Orders)
+  // Stores which profile tab is currently selected.
   const [activeTab, setActiveTab] = useState("profile");
-  // Handles input field changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    // Update form state dynamically
-    setFormData({
-      ...formData,
+
+  // Loads the logged-in user's information into the profile form.
+  useEffect(() => {
+
+    // Checks that the logged-in user information is available.
+    if (user) {
+
+      // Splits the user's full name into separate name parts.
+      const nameParts = user.name
+        ? user.name.trim().split(" ")
+        : [];
+
+      // Uses the first part of the full name as the first name.
+      const firstName = nameParts[0] || "";
+
+      // Uses the remaining parts of the full name as the last name.
+      const lastName = nameParts.slice(1).join(" ");
+
+      // Copies the logged-in user's backend data into the profile form.
+      setFormData((previousData) => ({
+        ...previousData,
+        email: user.email || "",
+        mobile: user.phone || "",
+        firstName: firstName,
+        lastName: lastName,
+      }));
+    }
+
+  }, [user]);
+
+  // Updates the correct form field whenever the user changes an input.
+  const handleChange = (event) => {
+
+    // Gets the name and value from the input that was changed.
+    const { name, value } = event.target;
+
+    // Updates only the form field that was changed.
+    setFormData((previousData) => ({
+      ...previousData,
       [name]: value,
-    });
+    }));
+  };
+
+  // Logs out the current user using the logoutUser function from AuthContext.
+  const handleLogout = async () => {
+
+    try {
+
+      // Calls AuthContext to clear the login information and return to the home page.
+      await logoutUser();
+
+    } catch (error) {
+
+      // Displays the logout error in the browser console if logout fails.
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
     <>
-      {/* Top tab navigation */}
+
+      {/* Displays the Profile and Your Orders navigation tabs. */}
       <div className="tabs-wrapper">
+
         <div className="tabs-container">
-          {/* Profile tab button */}
+
+          {/* Opens the Profile tab. */}
           <button
-            className={`tab-btn ${activeTab === "profile" ? "active" : ""}`}
+            className={`tab-btn ${
+              activeTab === "profile" ? "active" : ""
+            }`}
             onClick={() => setActiveTab("profile")}
           >
             Profile
           </button>
-          {/* Orders tab button */}
+
+          {/* Opens the Your Orders tab. */}
           <button
-            className={`tab-btn ${activeTab === "orders" ? "active" : ""}`}
+            className={`tab-btn ${
+              activeTab === "orders" ? "active" : ""
+            }`}
             onClick={() => setActiveTab("orders")}
           >
             Your Orders
           </button>
+
         </div>
+
       </div>
 
-      {/* PROFILE TAB CONTENT */}
+      {/* Displays the profile information when the Profile tab is selected. */}
       {activeTab === "profile" && (
+
         <div className="profile-page">
+
           <div className="profile-card">
-            {/* Profile header */}
+
+            {/* Displays the logged-in user's name and logout button. */}
             <div className="profile-header">
-              <div className="profile-avatar">+</div>
-              <h2>Hi, User</h2>
+
+              {/* Displays the profile avatar placeholder. */}
+              <div className="profile-avatar">
+                +
+              </div>
+
+              {/* Groups the user's name and Logout button together. */}
+              <div className="profile-user-info">
+
+                {/* Displays the logged-in user's name. */}
+                <h2>
+                  Hi, {user?.name || "User"}
+                </h2>
+
+                {/* Logs the user out when the Logout button is clicked. */}
+                <button
+                  type="button"
+                  className="logout-btn"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+
+              </div>
+
             </div>
 
-            {/* ACCOUNT DETAILS */}
+            {/* Displays the user's account information. */}
             <div className="profile-section">
-              <h3>Account Details</h3>
 
-              {/* Email */}
+              <h3>
+                Account Details
+              </h3>
+
+              {/* Displays the email address returned by the backend. */}
               <div className="profile-row">
-                <span className="label">Email Address</span>
+
+                <span className="label">
+                  Email Address
+                </span>
 
                 <input
                   type="email"
@@ -77,16 +171,27 @@ const Profile = ({ wishlist, removeFromWishlist }) => {
                   onChange={handleChange}
                 />
 
+                {/* Shows that the email address has been verified. */}
                 <label className="verified-checkbox">
-                  <input type="checkbox" disabled />
-                  <span className="custom-check"></span>
+
+                  <input
+                    type="checkbox"
+                    checked={Boolean(user?.email)}
+                    readOnly
+                  />
+
                   Verified
+
                 </label>
+
               </div>
 
-              {/* Mobile */}
+              {/* Displays the phone number returned by the backend. */}
               <div className="profile-row">
-                <span className="label">Mobile Number</span>
+
+                <span className="label">
+                  Mobile Number
+                </span>
 
                 <input
                   type="text"
@@ -97,22 +202,39 @@ const Profile = ({ wishlist, removeFromWishlist }) => {
                   onChange={handleChange}
                 />
 
+                {/* Shows that the phone number is available for the logged-in user. */}
                 <label className="verified-checkbox">
-                  <input type="checkbox" disabled />
-                  <span className="custom-check"></span>
+
+                  <input
+                    type="checkbox"
+                    checked={Boolean(user?.phone)}
+                    readOnly
+                  />
+
                   Verified
+
                 </label>
+
               </div>
+
             </div>
 
-            {/* PERSONAL DETAILS */}
+            {/* Displays the user's personal information. */}
             <div className="profile-section">
-              <h3>Personal Details</h3>
 
-              {/* First Name */}
+              <h3>
+                Personal Details
+              </h3>
+
               <div className="profile-grid">
+
+                {/* Displays the first part of the user's full name. */}
                 <div className="profile-field">
-                  <label>First Name</label>
+
+                  <label>
+                    First Name
+                  </label>
+
                   <input
                     type="text"
                     name="firstName"
@@ -121,11 +243,16 @@ const Profile = ({ wishlist, removeFromWishlist }) => {
                     value={formData.firstName}
                     onChange={handleChange}
                   />
+
                 </div>
 
-                {/* Last Name */}
+                {/* Displays the remaining part of the user's full name. */}
                 <div className="profile-field">
-                  <label>Last Name</label>
+
+                  <label>
+                    Last Name
+                  </label>
+
                   <input
                     type="text"
                     name="lastName"
@@ -134,11 +261,16 @@ const Profile = ({ wishlist, removeFromWishlist }) => {
                     value={formData.lastName}
                     onChange={handleChange}
                   />
+
                 </div>
 
-                {/* Birthday */}
+                {/* Allows the user to enter an optional birthday. */}
                 <div className="profile-field">
-                  <label>Birthday (Optional)</label>
+
+                  <label>
+                    Birthday (Optional)
+                  </label>
+
                   <input
                     type="text"
                     name="birthday"
@@ -147,106 +279,90 @@ const Profile = ({ wishlist, removeFromWishlist }) => {
                     value={formData.birthday}
                     onChange={handleChange}
                   />
+
                 </div>
 
-                {/* Identity */}
-                <div className="profile-field">
-                  <label>Identity</label>
-                  <div className="radio-group">
-                    <label className="radio-item">
-                      <input
-                        type="radio"
-                        name="identity"
-                        value="Man"
-                        checked={formData.identity === "Man"}
-                        onChange={handleChange}
-                      />
-                      <span className="custom-radio"></span>
-                      Man
-                    </label>
-
-                    <label className="radio-item">168
-                      <input
-                        type="radio"
-                        name="identity"
-                        value="Woman"
-                        checked={formData.identity === "Woman"}
-                        onChange={handleChange}
-                      />
-                      <span className="custom-radio"></span>
-                      Woman
-                    </label>
-                  </div>
-                </div>
-
-                {/* Marital Status */}
-                <div className="profile-field full-width">
-                  <label>Married?</label>
-                  <div className="radio-group">
-                    <label className="radio-item">
-                      <input
-                        type="radio"
-                        name="married"
-                        value="Yes"
-                        checked={formData.married === "Yes"}
-                        onChange={handleChange}
-                      />
-                      <span className="custom-radio"></span>
-                      Yes
-                    </label>
-
-                    <label className="radio-item">
-                      <input
-                        type="radio"
-                        name="married"
-                        value="No"
-                        checked={formData.married === "No"}
-                        onChange={handleChange}
-                      />
-                      <span className="custom-radio"></span>
-                      No
-                    </label>
-                  </div>
-                </div>
               </div>
+
             </div>
 
-            {/* Save button */}
+            {/* Displays the button that will later save profile changes to the backend. */}
             <div className="profile-actions">
-              <button className="save-btn">Save Details</button>
+
+              <button
+                type="button"
+                className="save-btn"
+              >
+                Save Details
+              </button>
+
             </div>
 
-            {/* WISHLIST SECTION */}
+            {/* Displays the movies currently stored in the user's wishlist. */}
             <div className="profile-section">
-              <h3>My Wishlist</h3>
-              {/* Conditional rendering for empty wishlist */}
-              {wishlist.length === 0 ? (
-                <p>No movies added yet</p>
-              ) : (
-                wishlist.map((movie) => (
-                  <div key={movie.id} style={{ marginBottom: "10px" }}>
-                    <span>{movie.title}</span>
 
-                    {/* Remove movie from wishlist */}
+              <h3>
+                My Wishlist
+              </h3>
+
+              {/* Displays a message when the wishlist does not contain any movies. */}
+              {wishlist.length === 0 ? (
+
+                <p>
+                  No movies added yet
+                </p>
+
+              ) : (
+
+                // Displays each movie currently stored in the wishlist.
+                wishlist.map((movie) => (
+
+                  <div
+                    key={movie.id}
+                    style={{ marginBottom: "10px" }}
+                  >
+
+                    {/* Displays the movie title. */}
+                    <span>
+                      {movie.title}
+                    </span>
+
+                    {/* Removes the selected movie from the wishlist. */}
                     <button
+                      type="button"
                       style={{ marginLeft: "10px" }}
-                      onClick={() => removeFromWishlist(movie.id)}
+                      onClick={() =>
+                        removeFromWishlist(movie.id)
+                      }
                     >
                       Remove
                     </button>
+
                   </div>
+
                 ))
+
               )}
+
             </div>
+
           </div>
+
         </div>
+
       )}
 
+      {/* Displays booking history when the Your Orders tab is selected. */}
       {activeTab === "orders" && (
+
         <div className="profile-page">
+
           <BookingHistory />
+
         </div>
+
       )}
+
     </>
   );
 };
