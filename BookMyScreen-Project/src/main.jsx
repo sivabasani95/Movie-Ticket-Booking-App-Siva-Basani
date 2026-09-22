@@ -22,8 +22,11 @@ import App from "./App.jsx";
 // Imports LocationProvider to make location information available throughout the application.
 import { LocationProvider } from "./context/LocationContext";
 
-// Imports AuthProvider to make authentication state available throughout the application.
+// Imports AuthProvider to make authentication information available throughout the application.
 import { AuthProvider } from "./context/AuthContext";
+
+// Imports SeatContextProvider to make selected seat information available throughout the application.
+import { SeatContextProvider } from "./context/SeatContext";
 
 // Renders the React application inside the root element in index.html.
 createRoot(document.getElementById("root")).render(
@@ -32,14 +35,19 @@ createRoot(document.getElementById("root")).render(
     {/* Enables React Router navigation throughout the application. */}
     <BrowserRouter>
 
-      {/* Provides location information to components throughout the application. */}
+      {/* Provides location information throughout the application. */}
       <LocationProvider>
 
-        {/* Provides authentication state such as modal visibility and login steps globally. */}
+        {/* Provides authentication information throughout the application. */}
         <AuthProvider>
 
-          {/* Loads the main BookMyScreen application. */}
-          <App />
+          {/* Provides selected seat information throughout the application. */}
+          <SeatContextProvider>
+
+            {/* Loads the main BookMyScreen application. */}
+            <App />
+
+          </SeatContextProvider>
 
         </AuthProvider>
 

@@ -105,7 +105,7 @@ const Profile = ({ wishlist = [], removeFromWishlist }) => {
             }`}
             onClick={() => setActiveTab("orders")}
           >
-            Your Orders
+            Bookings
           </button>
 
         </div>

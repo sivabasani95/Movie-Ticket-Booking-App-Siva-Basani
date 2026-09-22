@@ -1,85 +1,228 @@
-import React, { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
 
+
+// Imports React and useState for managing component state.
+import React, { useState } from "react";
+
+// Imports React Router hooks.
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+
+// Imports the checkout and seat-layout header.
 import Header from "../assets/components/seat-layout/Header";
 
+// Imports AuthContext to access the logged-in user.
+import { useAuth } from "../context/AuthContext";
+
+// Imports booking API.
+import { createBooking } from "../apis";
+import dayjs from "dayjs";
+
+// ==========================================================
+// CHECKOUT COMPONENT
+// ==========================================================
+
 const Checkout = () => {
+
+  // Gets the show ID from the URL.
   const { showId } = useParams();
+
+  // Used to navigate after successful booking.
+  const navigate = useNavigate();
+
+  // Gets booking information passed from SeatLayout.jsx.
   const location = useLocation();
 
-  // Controls whether the Terms and Conditions popup is open or closed.
-  const [showTerms, setShowTerms] = useState(false);
+  // Gets the currently logged-in user.
+  const { user } = useAuth();
 
-  // Controls whether the Available Offers popup is open or closed.
+  // Controls popup visibility.
+  const [showTerms, setShowTerms] = useState(false);
   const [showOffers, setShowOffers] = useState(false);
 
-  // Gets the booking information passed from SeatLayout.jsx.
+  // Controls booking/payment state.
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+
+
+  // ==========================================================
+  // BOOKING INFORMATION
+  // ==========================================================
+
+  // Gets selected seat objects passed from SeatLayout.jsx.
   const selectedSeats = location.state?.selectedSeats || [];
+
+  // Gets total ticket price before fees.
   const totalPrice = Number(location.state?.totalPrice) || 0;
+
+  // Gets selected show.
   const show = location.state?.show || null;
 
-  // Gets the movie title from the show information.
+
+  // ==========================================================
+  // MOVIE INFORMATION
+  // ==========================================================
+
   const movieTitle =
     show?.movie?.title ||
     show?.movieTitle ||
     "Movie";
 
-  // Gets the movie poster URL from the show information.
   const posterUrl =
     show?.movie?.posterUrl ||
     show?.posterUrl ||
     "";
 
-  // Gets the theater name from the show information.
   const theaterName =
     show?.theater?.name ||
     show?.theaterName ||
     "";
 
-  // Gets the date, time, and format for the selected show.
   const showDate = show?.date || "";
   const showTime = show?.startTime || "";
   const showFormat = show?.format || "";
 
-  // Calculates a 5% tax and fee amount based on the ticket total.
+
+  // ==========================================================
+  // PAYMENT CALCULATION
+  // ==========================================================
+
+  // Calculates 5% taxes and fees.
   const fees = totalPrice * 0.05;
 
-  // Calculates the final amount the user needs to pay.
+  // Calculates final amount.
   const finalTotal = totalPrice + fees;
+
+
+  // ==========================================================
+  // PROCEED TO PAY
+  // ==========================================================
+
+  const handleProceedToPay = async () => {
+
+    // Clear old error.
+    setPaymentError("");
+
+    // User must be signed in.
+    if (!user) {
+      setPaymentError(
+        "Please sign in before booking."
+      );
+      return;
+    }
+
+    // User must select at least one seat.
+    if (selectedSeats.length === 0) {
+      setPaymentError(
+        "Please select at least one seat."
+      );
+      return;
+    }
+
+    try {
+
+      setIsProcessing(true);
+
+      // Get real MySQL seat IDs.
+      const seatIds = selectedSeats.map(
+        (seat) => seat.id
+      );
+
+      // Make sure every seat has a database ID.
+      if (seatIds.some((id) => !id)) {
+        throw new Error(
+          "One or more selected seats do not have a valid seat ID."
+        );
+      }
+
+      // Data expected by BookingRequest.java.
+      const bookingData = {
+        showId: Number(showId),
+        seatIds: seatIds,
+        paymentMethod: "TEST",
+        paymentId: `PAY-${Date.now()}`,
+      };
+
+      // Creates booking in Spring Boot.
+      await createBooking(bookingData);
+
+      // After successful booking, open Bookings.
+      navigate("/profile", {
+        state: {
+          activeTab: "bookings",
+        },
+      });
+
+    } catch (error) {
+
+      // Display backend error if available.
+      const backendError = error.response?.data;
+
+      if (typeof backendError === "string") {
+        setPaymentError(backendError);
+      } else if (backendError?.message) {
+        setPaymentError(backendError.message);
+      } else {
+        setPaymentError(
+          error.message ||
+          "Booking failed. Please try again."
+        );
+      }
+
+    } finally {
+
+      setIsProcessing(false);
+    }
+  };
+
+
+  // ==========================================================
+  // CHECKOUT PAGE
+  // ==========================================================
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
 
-      {/* Displays the checkout-specific header. */}
-      <Header type="checkout" showData={show} />
+      {/* Checkout header */}
+      <Header
+        type="checkout"
+        showData={show}
+      />
 
-      {/* Contains the main checkout page content. */}
       <main className="mx-auto w-full max-w-5xl px-6 py-8">
 
-        {/* Creates the left booking column and right payment column. */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[2fr_1fr]">
 
-          {/* LEFT SIDE */}
+
+          {/* ==================================================
+              LEFT SIDE
+              ================================================== */}
+
           <section>
 
-            {/* Displays the selected movie information. */}
+            {/* Movie information */}
             <div className="mb-6 flex items-start gap-4">
 
-              {/* Displays the movie poster when available. */}
               {posterUrl ? (
+
                 <img
                   src={posterUrl}
                   alt={movieTitle}
                   className="h-28 w-20 shrink-0 rounded-md object-cover shadow-sm"
                 />
+
               ) : (
+
                 <div className="flex h-28 w-20 shrink-0 items-center justify-center rounded-md bg-gray-200 text-center text-xs text-gray-500">
                   No Poster
                 </div>
+
               )}
 
-              {/* Displays the movie details. */}
               <div>
+
                 <h2 className="text-xl font-bold">
                   {movieTitle}
                 </h2>
@@ -95,44 +238,70 @@ const Checkout = () => {
                     {theaterName}
                   </p>
                 )}
+
               </div>
 
             </div>
 
-            {/* Displays the selected show and ticket details. */}
+
+            {/* ==================================================
+                SHOW AND TICKET DETAILS
+                ================================================== */}
+
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
 
-              {/* Displays the selected show date and time. */}
               <div className="border-b border-gray-200 pb-5">
-                <p className="font-semibold">
-                  {showDate || "Show Date"}
-                  {showTime && ` • ${showTime}`}
+
+                 <p className="font-semibold">
+
+                  {showDate
+                    ? dayjs(showDate).format("D MMMM YYYY")
+                    : "Show Date"}
+
+                  {showTime &&
+                    ` • ${dayjs(
+                      `${showDate}T${showTime}`
+                    ).format("hh:mm A")}`}
+
                 </p>
+
+                
+
               </div>
 
-              {/* Displays selected seats and ticket price. */}
+
               <div className="flex items-start justify-between pt-5">
 
                 <div>
 
-                  {/* Displays the number of selected tickets. */}
                   <p className="font-bold">
+
                     {selectedSeats.length}{" "}
+
                     {selectedSeats.length === 1
                       ? "ticket"
                       : "tickets"}
+
                   </p>
 
-                  {/* Displays all selected seat numbers. */}
+
+                  {/* FIXED: Display row + seat number */}
                   <p className="mt-2 text-sm text-gray-500">
+
                     {selectedSeats.length > 0
-                      ? selectedSeats.join(", ")
+                      ? selectedSeats
+                          .map(
+                            (seat) =>
+                              `${seat.row}${seat.number}`
+                          )
+                          .join(", ")
                       : "No seats selected"}
+
                   </p>
 
                 </div>
 
-                {/* Displays the ticket price before taxes. */}
+
                 <p className="font-bold">
                   ${totalPrice.toFixed(2)}
                 </p>
@@ -141,7 +310,11 @@ const Checkout = () => {
 
             </div>
 
-            {/* Displays cancellation information. */}
+
+            {/* ==================================================
+                CANCELLATION INFORMATION
+                ================================================== */}
+
             <div className="mt-5 flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-5 py-4">
 
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-600 text-xs font-bold text-white">
@@ -154,12 +327,15 @@ const Checkout = () => {
 
             </div>
 
-            {/* Displays the available offers section. */}
+
+            {/* ==================================================
+                AVAILABLE OFFERS
+                ================================================== */}
+
             <div className="mt-5 flex items-center justify-between rounded-lg border border-gray-200 bg-white px-5 py-4">
 
               <div className="flex items-center gap-3">
 
-                {/* Displays the offer percentage icon. */}
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-black text-xs text-white">
                   %
                 </span>
@@ -170,7 +346,7 @@ const Checkout = () => {
 
               </div>
 
-              {/* Opens the Available Offers popup. */}
+
               <button
                 type="button"
                 onClick={() => setShowOffers(true)}
@@ -183,19 +359,27 @@ const Checkout = () => {
 
           </section>
 
-          {/* RIGHT SIDE */}
+
+          {/* ==================================================
+              RIGHT SIDE
+              ================================================== */}
+
           <aside>
 
-            {/* Displays the payment summary heading. */}
+
+            {/* ==================================================
+                PAYMENT SUMMARY
+                ================================================== */}
+
             <h2 className="mb-4 text-lg font-bold">
               Payment Summary
             </h2>
 
-            {/* Displays the payment calculations. */}
+
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
 
-              {/* Displays the order amount. */}
               <div className="flex justify-between text-sm">
+
                 <span className="text-gray-500">
                   Order amount
                 </span>
@@ -203,10 +387,12 @@ const Checkout = () => {
                 <span className="font-medium">
                   ${totalPrice.toFixed(2)}
                 </span>
+
               </div>
 
-              {/* Displays the 5% taxes and fees. */}
+
               <div className="mt-4 flex justify-between text-sm">
+
                 <span className="font-medium">
                   Taxes & fees (5%)
                 </span>
@@ -214,13 +400,15 @@ const Checkout = () => {
                 <span className="font-medium">
                   ${fees.toFixed(2)}
                 </span>
+
               </div>
 
-              {/* Separates the final total from the other amounts. */}
+
               <div className="my-5 border-t border-gray-200" />
 
-              {/* Displays the final amount. */}
+
               <div className="flex justify-between text-base font-bold">
+
                 <span>
                   To be paid
                 </span>
@@ -228,40 +416,60 @@ const Checkout = () => {
                 <span>
                   ${finalTotal.toFixed(2)}
                 </span>
+
               </div>
 
             </div>
 
-            {/* Displays the user details heading. */}
+
+            {/* ==================================================
+                USER DETAILS
+                ================================================== */}
+
             <h2 className="mb-4 mt-7 text-lg font-bold">
               Your details
             </h2>
 
-            {/* Displays guest user information. */}
+
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
 
               <div className="flex items-start gap-4">
 
-                {/* Displays a simple user icon. */}
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-400">
                   ♙
                 </div>
 
+
                 <div>
+
                   <p className="font-semibold">
-                    Guest User
+
+                    {user?.name
+                      ? user.name
+                      : "Guest User"}
+
                   </p>
 
+
                   <p className="mt-1 text-sm text-gray-500">
-                    Sign in to save your booking details.
+
+                    {user?.email
+                      ? user.email
+                      : "Sign in to save your booking details."}
+
                   </p>
+
                 </div>
 
               </div>
 
             </div>
 
-            {/* Opens the Terms and Conditions popup. */}
+
+            {/* ==================================================
+                TERMS AND CONDITIONS
+                ================================================== */}
+
             <button
               type="button"
               onClick={() => setShowTerms(true)}
@@ -278,24 +486,51 @@ const Checkout = () => {
 
             </button>
 
-            {/* Displays the final total and payment button. */}
+
+            {/* ==================================================
+                PROCEED TO PAY
+                ================================================== */}
+
             <button
               type="button"
-              className="mt-5 flex w-full items-center justify-between rounded-full bg-black px-6 py-4 text-white transition hover:bg-gray-800"
+              onClick={handleProceedToPay}
+              disabled={
+                isProcessing ||
+                selectedSeats.length === 0
+              }
+              className="mt-5 flex w-full items-center justify-between rounded-full bg-black px-6 py-4 text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
 
               <span className="text-sm font-bold">
+
                 ${finalTotal.toFixed(2)}{" "}
+
                 <span className="text-xs font-medium">
                   TOTAL
                 </span>
+
               </span>
 
+
               <span className="text-sm font-semibold">
-                Proceed To Pay
+
+                {isProcessing
+                  ? "Processing..."
+                  : "Proceed To Pay"}
+
               </span>
 
             </button>
+
+
+            {/* Displays booking/payment errors */}
+            {paymentError && (
+
+              <p className="mt-3 text-sm font-medium text-red-600">
+                {paymentError}
+              </p>
+
+            )}
 
           </aside>
 
@@ -303,21 +538,22 @@ const Checkout = () => {
 
       </main>
 
-      {/* ================= AVAILABLE OFFERS POPUP ================= */}
 
-      {/* Displays the Available Offers popup when showOffers is true. */}
+      {/* ========================================================
+          AVAILABLE OFFERS POPUP
+          ======================================================== */}
+
       {showOffers && (
 
-        /* Creates a dark transparent background behind the popup. */
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
 
-          {/* Contains all available offers. */}
           <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
 
-            {/* Displays the popup heading and close button. */}
+
             <div className="flex items-center justify-between border-b border-gray-200 pb-4">
 
               <div>
+
                 <h2 className="text-xl font-bold">
                   Available Offers
                 </h2>
@@ -325,9 +561,10 @@ const Checkout = () => {
                 <p className="mt-1 text-sm text-gray-500">
                   Choose an offer for your booking.
                 </p>
+
               </div>
 
-              {/* Closes the Available Offers popup. */}
+
               <button
                 type="button"
                 onClick={() => setShowOffers(false)}
@@ -339,15 +576,18 @@ const Checkout = () => {
 
             </div>
 
-            {/* Contains all available offer cards. */}
+
             <div className="mt-5 space-y-4">
 
-              {/* First offer */}
+
+              {/* OFFER 1 */}
+
               <div className="rounded-lg border border-gray-200 p-4">
 
                 <div className="flex items-start justify-between gap-4">
 
                   <div>
+
                     <h3 className="font-bold">
                       SAVE10
                     </h3>
@@ -359,7 +599,9 @@ const Checkout = () => {
                     <p className="mt-2 text-xs text-gray-500">
                       Maximum discount $10.
                     </p>
+
                   </div>
+
 
                   <button
                     type="button"
@@ -372,12 +614,15 @@ const Checkout = () => {
 
               </div>
 
-              {/* Second offer */}
+
+              {/* OFFER 2 */}
+
               <div className="rounded-lg border border-gray-200 p-4">
 
                 <div className="flex items-start justify-between gap-4">
 
                   <div>
+
                     <h3 className="font-bold">
                       MOVIE5
                     </h3>
@@ -389,7 +634,9 @@ const Checkout = () => {
                     <p className="mt-2 text-xs text-gray-500">
                       Valid once per booking.
                     </p>
+
                   </div>
+
 
                   <button
                     type="button"
@@ -402,12 +649,15 @@ const Checkout = () => {
 
               </div>
 
-              {/* Third offer */}
+
+              {/* OFFER 3 */}
+
               <div className="rounded-lg border border-gray-200 p-4">
 
                 <div className="flex items-start justify-between gap-4">
 
                   <div>
+
                     <h3 className="font-bold">
                       WEEKEND15
                     </h3>
@@ -419,7 +669,9 @@ const Checkout = () => {
                     <p className="mt-2 text-xs text-gray-500">
                       Maximum discount $15.
                     </p>
+
                   </div>
+
 
                   <button
                     type="button"
@@ -434,7 +686,7 @@ const Checkout = () => {
 
             </div>
 
-            {/* Closes the Available Offers popup. */}
+
             <button
               type="button"
               onClick={() => setShowOffers(false)}
@@ -446,27 +698,28 @@ const Checkout = () => {
           </div>
 
         </div>
+
       )}
 
-      {/* ================= TERMS AND CONDITIONS POPUP ================= */}
 
-      {/* Displays the Terms and Conditions popup when showTerms is true. */}
+      {/* ========================================================
+          TERMS AND CONDITIONS POPUP
+          ======================================================== */}
+
       {showTerms && (
 
-        /* Creates the dark transparent background behind the popup. */
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
 
-          {/* Contains all Terms and Conditions information. */}
           <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
 
-            {/* Displays the popup heading and close icon. */}
+
             <div className="flex items-center justify-between border-b border-gray-200 pb-4">
 
               <h2 className="text-xl font-bold">
                 Terms and Conditions
               </h2>
 
-              {/* Closes the Terms and Conditions popup. */}
+
               <button
                 type="button"
                 onClick={() => setShowTerms(false)}
@@ -478,7 +731,7 @@ const Checkout = () => {
 
             </div>
 
-            {/* Contains the booking rules shown to the user. */}
+
             <div className="mt-5 space-y-4 text-sm leading-6 text-gray-600">
 
               <p>
@@ -488,12 +741,14 @@ const Checkout = () => {
                 Your booking is confirmed only after successful payment.
               </p>
 
+
               <p>
                 <strong className="text-gray-900">
                   2. Cancellation and Refund:
                 </strong>{" "}
                 Tickets cannot be cancelled or refunded after payment.
               </p>
+
 
               <p>
                 <strong className="text-gray-900">
@@ -503,12 +758,14 @@ const Checkout = () => {
                 is completed.
               </p>
 
+
               <p>
                 <strong className="text-gray-900">
                   4. Show Time:
                 </strong>{" "}
                 Please arrive at the theater before the scheduled show time.
               </p>
+
 
               <p>
                 <strong className="text-gray-900">
@@ -520,7 +777,7 @@ const Checkout = () => {
 
             </div>
 
-            {/* Closes the Terms and Conditions popup. */}
+
             <button
               type="button"
               onClick={() => setShowTerms(false)}
@@ -532,10 +789,13 @@ const Checkout = () => {
           </div>
 
         </div>
+
       )}
 
     </div>
   );
 };
 
+
+// Exports Checkout so it can be used by App.jsx.
 export default Checkout;

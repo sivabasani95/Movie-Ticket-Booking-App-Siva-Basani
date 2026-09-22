@@ -50,6 +50,15 @@ export const getShowById = (id) => {
 };
 
 
+// Gets all seats belonging to one show.
+export const getShowSeats = (showId) => {
+
+  // Calls the Spring Boot endpoint:
+  // GET /api/shows/{showId}/seats
+  return axiosWrapper.get(`/shows/${showId}/seats`);
+};
+
+
 // ==========================================================
 // AUTHENTICATION APIs
 // ==========================================================
@@ -83,21 +92,17 @@ export const createUser = (data) => {
 // from the Spring Boot backend.
 export const getUser = () => {
 
-  // Get the access token that was saved
+  // Gets the access token that was saved
   // after successful OTP verification.
   const accessToken =
     localStorage.getItem("accessToken");
 
-  // Send GET /api/users/me to Spring Boot.
-  //
-  // The access token is sent in the Authorization header
-  // so the backend can identify the logged-in user.
+  // Sends GET /api/users/me to Spring Boot.
   return axiosWrapper.get("/users/me", {
 
     headers: {
 
       // Spring Boot receives:
-      //
       // Authorization: Bearer <accessToken>
       Authorization: `Bearer ${accessToken}`,
     },
@@ -115,6 +120,35 @@ export const activateUser = (id, data) => {
     `/users/activate/${id}`,
     data
   );
+};
+
+
+// ==========================================================
+// BOOKING APIs
+// ==========================================================
+
+// Creates a new booking for the currently signed-in user.
+export const createBooking = (data) => {
+
+  // Calls the Spring Boot endpoint:
+  // POST /api/bookings
+  //
+  // axiosWrapper automatically adds the access token
+  // to the Authorization header.
+  return axiosWrapper.post("/bookings", data);
+};
+
+
+// Gets all bookings belonging to the currently
+// signed-in user.
+export const getMyBookings = () => {
+
+  // Calls the Spring Boot endpoint:
+  // GET /api/bookings/me
+  //
+  // axiosWrapper automatically adds the access token
+  // to the Authorization header.
+  return axiosWrapper.get("/bookings/me");
 };
 
 

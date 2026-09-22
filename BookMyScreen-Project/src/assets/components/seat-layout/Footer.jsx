@@ -66,7 +66,7 @@ const Footer = ({ isSelected, selectedSeats }) => {
             <div className="w-3 h-3 bg-gray-300 border border-gray-400 rounded flex items-center justify-center">
               <span className="text-[8px]">×</span>
             </div>
-            <span>Occupied</span>
+            <span>Occaupied</span>
           </div>
 
           {/* Selected seat */}
