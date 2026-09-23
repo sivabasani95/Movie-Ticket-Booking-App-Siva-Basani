@@ -14,7 +14,7 @@ import { getMyBookings } from "../../../apis";
 // Displays all bookings belonging to the logged-in user.
 const BookingHistory = () => {
 
-    // Stores bookings returned by the Spring Boot backend.
+    // Stores bookings that should be displayed on the page.
     const [bookings, setBookings] = useState([]);
 
     // Tracks whether booking data is still loading.
@@ -24,7 +24,7 @@ const BookingHistory = () => {
     const [error, setError] = useState("");
 
 
-    // Loads the logged-in user's bookings when the component opens.
+    // Loads the logged-in user's bookings when the page opens.
     useEffect(() => {
 
         // Gets booking history from the backend.
@@ -41,18 +41,37 @@ const BookingHistory = () => {
                 // Calls GET /api/bookings/me.
                 const response = await getMyBookings();
 
-                // Saves the returned bookings.
-                setBookings(response.data);
+
+                // Gets previously hidden booking IDs from localStorage.
+                const hiddenBookingIds = JSON.parse(
+                    localStorage.getItem("hiddenBookingIds") || "[]"
+                );
+
+
+                // Keeps only bookings that were not hidden by the user.
+                const visibleBookings = response.data.filter(
+                    (booking) =>
+                        !hiddenBookingIds.includes(booking.id)
+                );
+
+
+                // Saves only visible bookings in React state.
+                setBookings(visibleBookings);
 
             } catch (error) {
 
                 // Displays the error in the browser console.
-                console.error("Error loading bookings:", error);
+                console.error(
+                    "Error loading bookings:",
+                    error
+                );
 
-                // Shows a simple error message to the user.
-                setError("Unable to load your bookings.");
+                // Shows a simple error message.
+                setError(
+                    "Unable to load your bookings."
+                );
 
-                // Clears old booking data if the request fails.
+                // Clears booking data if loading fails.
                 setBookings([]);
 
             } finally {
@@ -62,96 +81,162 @@ const BookingHistory = () => {
             }
         };
 
-        // Runs the booking API request.
+
+        // Loads bookings when this component opens.
         loadBookings();
 
     }, []);
 
 
-    // Shows a loading message while bookings are being fetched.
+    // Permanently hides one booking from this browser.
+    const handleCloseBooking = (bookingId) => {
+
+        // Gets already hidden booking IDs.
+        const hiddenBookingIds = JSON.parse(
+            localStorage.getItem("hiddenBookingIds") || "[]"
+        );
+
+
+        // Checks whether this booking was already hidden.
+        const alreadyHidden =
+            hiddenBookingIds.includes(bookingId);
+
+
+        // Saves the booking ID only when it is not already saved.
+        if (!alreadyHidden) {
+
+            // Adds the selected booking ID.
+            const updatedHiddenBookingIds = [
+                ...hiddenBookingIds,
+                bookingId,
+            ];
+
+
+            // Saves hidden booking IDs in localStorage.
+            localStorage.setItem(
+                "hiddenBookingIds",
+                JSON.stringify(updatedHiddenBookingIds)
+            );
+        }
+
+
+        // Immediately removes the selected booking from the page.
+        setBookings((currentBookings) =>
+            currentBookings.filter(
+                (booking) =>
+                    booking.id !== bookingId
+            )
+        );
+    };
+
+
+    // Shows a loading message while bookings are loading.
     if (loading) {
+
         return (
             <div className="booking-container">
+
                 <h3 className="booking-title">
                     Bookings
                 </h3>
 
-                <p>Loading your bookings...</p>
+                <p>
+                    Loading your bookings...
+                </p>
+
             </div>
         );
     }
 
 
-    // Shows an error message if the booking request fails.
+    // Shows an error message if bookings cannot be loaded.
     if (error) {
+
         return (
             <div className="booking-container">
+
                 <h3 className="booking-title">
                     Bookings
                 </h3>
 
-                <p>{error}</p>
+                <p>
+                    {error}
+                </p>
+
             </div>
         );
     }
 
 
-    // Displays the logged-in user's booking history.
+    // Displays the booking history.
     return (
+
         <div className="booking-container">
 
-            {/* Displays the booking history heading. */}
+            {/* Displays the page heading. */}
             <h3 className="booking-title">
                 Bookings
             </h3>
 
 
-            {/* Displays a message when the user has no bookings. */}
+            {/* Shows a message when there are no visible bookings. */}
             {bookings.length === 0 ? (
 
-                <p>No bookings found.</p>
+                <p>
+                    No bookings found.
+                </p>
 
             ) : (
 
-                // Loops through every booking returned by the backend.
+                // Displays every visible booking.
                 bookings.map((booking) => {
 
-                    // Gets the movie from the booking's show.
-                    const movie = booking.show?.movie;
+                    // Gets the movie belonging to this booking.
+                    const movie =
+                        booking.show?.movie;
 
-                    // Gets the theater from the booking's show.
-                    const theater = booking.show?.theater;
+                    // Gets the theater belonging to this booking.
+                    const theater =
+                        booking.show?.theater;
 
-                    // Creates a readable list of booked seats.
-                    const seatNames = booking.seats
-                        ?.map(
-                            (seat) =>
-                                `${seat.row}${seat.number}`
-                        )
-                        .join(", ");
 
-                    // Gets the number of booked seats.
+                    // Creates seat names such as A1, A2, and B3.
+                    const seatNames =
+                        booking.seats
+                            ?.map(
+                                (seat) =>
+                                    `${seat.row}${seat.number}`
+                            )
+                            .join(", ");
+
+
+                    // Gets the total number of booked seats.
                     const quantity =
                         booking.seats?.length || 0;
 
-                    // Formats the movie show date.
-                    const showDate = booking.show?.date
-                        ? new Date(
-                            `${booking.show.date}T00:00:00`
-                        ).toLocaleDateString()
-                        : "";
 
-                    // Formats the show start time.
+                    // Formats the movie show date.
+                    const showDate =
+                        booking.show?.date
+                            ? new Date(
+                                `${booking.show.date}T00:00:00`
+                            ).toLocaleDateString()
+                            : "";
+
+
+                    // Gets the movie show time.
                     const showTime =
                         booking.show?.startTime || "";
 
-                    // Formats the date and time when the booking was created.
+
+                    // Formats the booking creation date and time.
                     const bookingDateTime =
                         booking.bookingDateTime
                             ? new Date(
                                 booking.bookingDateTime
                             ).toLocaleString()
                             : "";
+
 
                     return (
 
@@ -161,23 +246,44 @@ const BookingHistory = () => {
                             className="booking-card"
                         >
 
-                            {/* Displays the movie poster and booking details. */}
+                            {/* Hides only this specific booking. */}
+                            <button
+                                type="button"
+                                className="booking-close-button"
+                                onClick={() =>
+                                    handleCloseBooking(
+                                        booking.id
+                                    )
+                                }
+                                aria-label="Remove booking"
+                                title="Remove booking"
+                            >
+                                ×
+                            </button>
+
+
+                            {/* Displays movie poster and information. */}
                             <div className="booking-top">
+
 
                                 {/* Displays the movie poster when available. */}
                                 {movie?.posterUrl && (
+
                                     <img
                                         src={movie.posterUrl}
                                         alt={movie.title}
                                         className="booking-poster"
                                     />
+
                                 )}
 
 
-                                {/* Displays movie and show information. */}
+                                {/* Displays booking information. */}
                                 <div className="booking-details">
 
+
                                     <div className="booking-info">
+
 
                                         {/* Displays the movie title. */}
                                         <p className="movie-title">
@@ -193,21 +299,29 @@ const BookingHistory = () => {
 
                                         {/* Displays show date, time, and theater. */}
                                         <p className="movie-time">
+
                                             {showDate}
+
                                             {" "}
+
                                             {showTime}
+
                                             {" - "}
+
                                             {theater?.name}
+
                                         </p>
 
 
-                                        {/* Displays how many seats were booked. */}
+                                        {/* Displays ticket quantity. */}
                                         <small className="movie-qty">
+
                                             Quantity: {quantity}
+
                                         </small>
 
 
-                                        {/* Displays the booked seat numbers. */}
+                                        {/* Displays booked seats. */}
                                         <p className="movie-seats">
 
                                             <MdEventSeat
@@ -219,6 +333,7 @@ const BookingHistory = () => {
 
                                         </p>
 
+
                                     </div>
 
 
@@ -227,7 +342,9 @@ const BookingHistory = () => {
                                         M-Ticket
                                     </p>
 
+
                                 </div>
+
 
                             </div>
 
@@ -235,32 +352,45 @@ const BookingHistory = () => {
                             {/* Displays ticket price information. */}
                             <div className="booking-price">
 
+
+                                {/* Displays ticket price and convenience fee. */}
                                 <p className="price-breakdown">
+
                                     Ticket: $
+
                                     {Number(
                                         booking.ticketAmount || 0
                                     ).toFixed(2)}
+
                                     {" + "}
+
                                     Convenience Fees: $
+
                                     {Number(
                                         booking.convenienceFee || 0
                                     ).toFixed(2)}
+
                                 </p>
 
 
-                                {/* Displays the final booking amount. */}
+                                {/* Displays the total booking amount. */}
                                 <p className="total-price">
+
                                     $
+
                                     {Number(
                                         booking.totalAmount || 0
                                     ).toFixed(2)}
+
                                 </p>
+
 
                             </div>
 
 
                             {/* Displays additional booking information. */}
                             <div className="booking-meta">
+
 
                                 {/* Displays when the booking was created. */}
                                 <div>
@@ -290,7 +420,7 @@ const BookingHistory = () => {
                                 </div>
 
 
-                                {/* Displays the booking database ID. */}
+                                {/* Displays the booking ID. */}
                                 <div>
 
                                     <p className="meta-title">
@@ -303,14 +433,20 @@ const BookingHistory = () => {
 
                                 </div>
 
+
                             </div>
 
+
                         </div>
+
                     );
                 })
+
             )}
 
+
         </div>
+
     );
 };
 
